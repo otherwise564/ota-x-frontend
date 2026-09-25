@@ -1,1824 +1,564 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>OTA X</title>
-
-<style>
-*{
-  box-sizing:border-box;
-  margin:0;
-  padding:0;
-}
-
-:root{
-  --red:#e00000;
-  --black:#050505;
-  --dark:#101010;
-  --card:#171717;
-  --white:#fff;
-  --gray:#999;
-  --line:#292929;
-}
-
-body{
-  font-family:Arial,Helvetica,sans-serif;
-  background:#000;
-  color:#fff;
-  overflow:hidden;
-}
-
-button,
-input{
-  font:inherit;
-}
-
-button{
-  border:0;
-  cursor:pointer;
-}
-
-.hidden{
-  display:none!important;
-}
-
-/* ================= AUTH ================= */
-
-#authScreen{
-  position:fixed;
-  inset:0;
-  z-index:1000;
-  background:
-    radial-gradient(circle at top right,#420000 0,transparent 35%),
-    #050505;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  padding:20px;
-}
-
-.authBox{
-  width:100%;
-  max-width:420px;
-  background:#111;
-  border:1px solid #292929;
-  border-radius:24px;
-  padding:30px 24px;
-  box-shadow:0 20px 70px rgba(0,0,0,.7);
-}
-
-.logo{
-  text-align:center;
-  font-size:44px;
-  font-weight:900;
-  letter-spacing:-3px;
-  color:#fff;
-  margin-bottom:5px;
-}
-
-.logo span{
-  color:var(--red);
-}
-
-.authSubtitle{
-  text-align:center;
-  color:#888;
-  margin-bottom:28px;
-}
-
-.authTabs{
-  display:flex;
-  background:#1a1a1a;
-  border-radius:12px;
-  padding:4px;
-  margin-bottom:22px;
-}
-
-.authTabs button{
-  width:50%;
-  padding:11px;
-  border-radius:9px;
-  background:transparent;
-  color:#888;
-}
-
-.authTabs button.active{
-  background:#fff;
-  color:#000;
-  font-weight:bold;
-}
-
-.authForm{
-  display:none;
-}
-
-.authForm.active{
-  display:block;
-}
-
-.inputGroup{
-  margin-bottom:15px;
-}
-
-.inputGroup label{
-  display:block;
-  color:#aaa;
-  font-size:13px;
-  margin-bottom:7px;
-}
-
-.inputGroup input{
-  width:100%;
-  padding:14px;
-  background:#1a1a1a;
-  border:1px solid #303030;
-  color:#fff;
-  border-radius:12px;
-  outline:none;
-}
-
-.inputGroup input:focus{
-  border-color:var(--red);
-}
-
-.authButton{
-  width:100%;
-  padding:14px;
-  background:var(--red);
-  color:#fff;
-  border-radius:12px;
-  font-weight:bold;
-  margin-top:5px;
-}
-
-.authButton:active{
-  transform:scale(.98);
-}
-
-.authMessage{
-  min-height:20px;
-  text-align:center;
-  color:#ff5555;
-  font-size:13px;
-  margin-top:14px;
-}
-
-/* ================= APP ================= */
-
-#app{
-  height:100vh;
-  width:100%;
-  position:relative;
-  background:#000;
-}
-
-.topBar{
-  position:fixed;
-  top:0;
-  left:0;
-  right:0;
-  height:60px;
-  z-index:50;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding:0 18px;
-  background:linear-gradient(to bottom,rgba(0,0,0,.9),transparent);
-}
-
-.topLogo{
-  font-size:28px;
-  font-weight:900;
-  letter-spacing:-2px;
-}
-
-.topLogo span{
-  color:var(--red);
-}
-
-.topRight{
-  display:flex;
-  align-items:center;
-  gap:14px;
-}
-
-.searchTop{
-  width:38px;
-  height:38px;
-  border-radius:50%;
-  background:rgba(255,255,255,.12);
-  color:#fff;
-  font-size:20px;
-}
-
-.feedTabs{
-  position:fixed;
-  top:15px;
-  left:50%;
-  transform:translateX(-50%);
-  z-index:55;
-  display:flex;
-  gap:20px;
-}
-
-.feedTabs button{
-  background:none;
-  color:#888;
-  font-weight:bold;
-  padding-bottom:6px;
-}
-
-.feedTabs button.active{
-  color:#fff;
-  border-bottom:2px solid var(--red);
-}
-
-/* ================= FEED ================= */
-
-.feed{
-  height:100vh;
-  overflow-y:auto;
-  scroll-snap-type:y mandatory;
-  scrollbar-width:none;
-}
-
-.feed::-webkit-scrollbar{
-  display:none;
-}
-
-.post{
-  position:relative;
-  height:100vh;
-  min-height:600px;
-  scroll-snap-align:start;
-  overflow:hidden;
-  background:#111;
-}
-
-.videoBackground{
-  position:absolute;
-  inset:0;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  overflow:hidden;
-}
-
-.videoBackground.one{
-  background:
-    radial-gradient(circle at 70% 20%,#ff4444,transparent 22%),
-    linear-gradient(135deg,#180000,#090909 50%,#400000);
-}
-
-.videoBackground.two{
-  background:
-    radial-gradient(circle at 25% 30%,#8b0000,transparent 25%),
-    linear-gradient(135deg,#050505,#260000 60%,#090909);
-}
-
-.videoBackground.three{
-  background:
-    radial-gradient(circle at 65% 45%,#555,transparent 20%),
-    linear-gradient(135deg,#111,#050505 60%,#330000);
-}
-
-.videoText{
-  font-size:80px;
-  font-weight:900;
-  opacity:.08;
-  transform:rotate(-15deg);
-}
-
-.videoOverlay{
-  position:absolute;
-  inset:0;
-  background:linear-gradient(
-    to bottom,
-    rgba(0,0,0,.25),
-    transparent 35%,
-    rgba(0,0,0,.05) 50%,
-    rgba(0,0,0,.9)
-  );
-}
-
-.watermark{
-  position:absolute;
-  top:50%;
-  left:50%;
-  transform:translate(-50%,-50%) rotate(-15deg);
-  font-size:60px;
-  font-weight:900;
-  opacity:.05;
-}
-
-.watermark span{
-  color:var(--red);
-}
-
-.postContent{
-  position:absolute;
-  left:0;
-  right:0;
-  bottom:78px;
-  padding:20px;
-  z-index:5;
-}
-
-.postInfo{
-  max-width:calc(100% - 75px);
-}
-
-.username{
-  font-weight:bold;
-  font-size:16px;
-  margin-bottom:8px;
-}
-
-.verified{
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  width:18px;
-  height:18px;
-  background:var(--red);
-  color:#000;
-  border-radius:50%;
-  font-size:11px;
-  margin-left:4px;
-}
-
-.caption{
-  font-size:15px;
-  line-height:1.4;
-  margin-bottom:10px;
-}
-
-.sound{
-  color:#ddd;
-  font-size:13px;
-}
-
-.actions{
-  position:absolute;
-  right:14px;
-  bottom:92px;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  gap:16px;
-  z-index:10;
-}
-
-.avatarWrap{
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  margin-bottom:3px;
-}
-
-.avatar{
-  width:48px;
-  height:48px;
-  border-radius:50%;
-  background:#fff;
-  color:#000;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:21px;
-  font-weight:bold;
-  border:2px solid #fff;
-}
-
-.followPlus{
-  margin-top:-8px;
-  width:22px;
-  height:22px;
-  border-radius:50%;
-  background:var(--red);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-weight:bold;
-  border:2px solid #000;
-}
-
-.action{
-  background:none;
-  color:#fff;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  gap:4px;
-}
-
-.actionIcon{
-  width:42px;
-  height:42px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  border-radius:50%;
-  background:rgba(0,0,0,.35);
-  font-size:22px;
-}
-
-.action span{
-  font-size:11px;
-  color:#fff;
-}
-
-.action.liked .actionIcon{
-  color:var(--red);
-}
-
-.action.saved .actionIcon{
-  color:var(--red);
-}
-
-/* ================= BOTTOM NAV ================= */
-
-.bottomNav{
-  position:fixed;
-  bottom:0;
-  left:0;
-  right:0;
-  height:65px;
-  z-index:100;
-  background:rgba(0,0,0,.92);
-  border-top:1px solid #222;
-  display:flex;
-  justify-content:space-around;
-  align-items:center;
-}
-
-.navButton{
-  background:none;
-  color:#888;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  gap:3px;
-  font-size:11px;
-}
-
-.navButton .navIcon{
-  font-size:21px;
-}
-
-.navButton.active{
-  color:#fff;
-}
-
-.createNav{
-  width:48px;
-  height:34px;
-  border-radius:10px;
-  background:#fff;
-  color:#000;
-  font-size:25px;
-  line-height:30px;
-}
-
-/* ================= SEARCH ================= */
-
-.overlayPanel{
-  position:fixed;
-  inset:0;
-  z-index:200;
-  background:#090909;
-  transform:translateY(100%);
-  transition:.25s ease;
-  display:flex;
-  flex-direction:column;
-}
-
-.overlayPanel.open{
-  transform:translateY(0);
-}
-
-.panelHeader{
-  height:65px;
-  display:flex;
-  align-items:center;
-  gap:12px;
-  padding:0 16px;
-  border-bottom:1px solid #222;
-}
-
-.closeButton{
-  width:38px;
-  height:38px;
-  border-radius:50%;
-  background:#1b1b1b;
-  color:#fff;
-  font-size:20px;
-}
-
-.searchInput{
-  flex:1;
-  padding:13px 15px;
-  background:#1b1b1b;
-  color:#fff;
-  border:1px solid #292929;
-  border-radius:12px;
-  outline:none;
-}
-
-.panelBody{
-  padding:20px;
-  overflow:auto;
-}
-
-.sectionTitle{
-  font-size:18px;
-  font-weight:bold;
-  margin-bottom:16px;
-}
-
-.trend{
-  padding:15px 0;
-  border-bottom:1px solid #222;
-}
-
-.trend strong{
-  display:block;
-  margin-bottom:4px;
-}
-
-.trend span{
-  color:#888;
-  font-size:12px;
-}
-
-/* ================= COMMENTS ================= */
-
-.commentsPanel{
-  position:fixed;
-  left:0;
-  right:0;
-  bottom:0;
-  height:75vh;
-  z-index:300;
-  background:#111;
-  border-radius:22px 22px 0 0;
-  transform:translateY(100%);
-  transition:.25s ease;
-  display:flex;
-  flex-direction:column;
-}
-
-.commentsPanel.open{
-  transform:translateY(0);
-}
-
-.commentsHeader{
-  padding:17px;
-  border-bottom:1px solid #292929;
-  text-align:center;
-  position:relative;
-  font-weight:bold;
-}
-
-.commentsClose{
-  position:absolute;
-  right:15px;
-  top:13px;
-  width:34px;
-  height:34px;
-  background:#222;
-  color:#fff;
-  border-radius:50%;
-}
-
-.commentsList{
-  flex:1;
-  overflow:auto;
-  padding:15px;
-}
-
-.comment{
-  display:flex;
-  gap:10px;
-  margin-bottom:18px;
-}
-
-.commentAvatar{
-  flex:none;
-  width:38px;
-  height:38px;
-  border-radius:50%;
-  background:#fff;
-  color:#000;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-weight:bold;
-}
-
-.commentBody{
-  flex:1;
-}
-
-.commentName{
-  font-weight:bold;
-  font-size:14px;
-  margin-bottom:4px;
-}
-
-.commentText{
-  color:#ddd;
-  font-size:14px;
-  line-height:1.4;
-}
-
-.voiceComment{
-  background:#1d1d1d;
-  border-radius:15px;
-  padding:10px;
-  display:flex;
-  align-items:center;
-  gap:10px;
-}
-
-.voicePlay{
-  width:38px;
-  height:38px;
-  border-radius:50%;
-  background:var(--red);
-  color:#000;
-}
-
-.voiceLabel{
-  color:#aaa;
-  font-size:13px;
-}
-
-.commentComposer{
-  padding:10px;
-  border-top:1px solid #292929;
-  display:flex;
-  gap:8px;
-  align-items:center;
-}
-
-.commentInput{
-  flex:1;
-  background:#1c1c1c;
-  color:#fff;
-  border:1px solid #292929;
-  border-radius:22px;
-  padding:12px 15px;
-  outline:none;
-}
-
-.micButton,
-.sendButton{
-  width:43px;
-  height:43px;
-  border-radius:50%;
-  background:#222;
-  color:#fff;
-}
-
-.sendButton{
-  background:var(--red);
-  color:#000;
-}
-
-.recording{
-  background:var(--red)!important;
-  color:#000!important;
-}
-
-.recordingStatus{
-  padding:7px 15px;
-  color:#ff4444;
-  font-size:12px;
-  display:none;
-}
-
-.recordingStatus.show{
-  display:block;
-}
-
-/* ================= PROFILE ================= */
-
-.profilePanel{
-  position:fixed;
-  inset:0;
-  z-index:250;
-  background:#090909;
-  transform:translateX(100%);
-  transition:.25s ease;
-  overflow:auto;
-}
-
-.profilePanel.open{
-  transform:translateX(0);
-}
-
-.profileHeader{
-  padding:18px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  border-bottom:1px solid #222;
-}
-
-.profileTop{
-  padding:30px 20px;
-  text-align:center;
-}
-
-.bigAvatar{
-  width:90px;
-  height:90px;
-  margin:auto;
-  border-radius:50%;
-  background:#fff;
-  color:#000;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:38px;
-  font-weight:bold;
-}
-
-.profileName{
-  font-size:21px;
-  font-weight:bold;
-  margin-top:13px;
-}
-
-.profileUsername{
-  color:#888;
-  margin-top:4px;
-}
-
-.profileStats{
-  display:flex;
-  justify-content:center;
-  gap:40px;
-  margin-top:22px;
-}
-
-.stat strong{
-  display:block;
-  font-size:18px;
-}
-
-.stat span{
-  color:#888;
-  font-size:12px;
-}
-
-.profileActions{
-  display:flex;
-  justify-content:center;
-  gap:10px;
-  margin-top:25px;
-}
-
-.profileButton{
-  padding:11px 22px;
-  border-radius:10px;
-  background:#222;
-  color:#fff;
-}
-
-.profileButton.red{
-  background:var(--red);
-  color:#000;
-}
-
-.profileGrid{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:2px;
-  margin-top:20px;
-}
-
-.gridItem{
-  aspect-ratio:1;
-  background:#191919;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:30px;
-}
-
-.gridItem:nth-child(2){
-  background:#250000;
-}
-
-.gridItem:nth-child(3){
-  background:#222;
-}
-
-/* ================= CREATE ================= */
-
-.createPanel{
-  position:fixed;
-  inset:0;
-  z-index:350;
-  background:#090909;
-  transform:translateY(100%);
-  transition:.25s ease;
-  padding:20px;
-}
-
-.createPanel.open{
-  transform:translateY(0);
-}
-
-.createOptions{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:14px;
-  margin-top:30px;
-}
-
-.createOption{
-  background:#191919;
-  border:1px solid #292929;
-  border-radius:18px;
-  padding:30px 15px;
-  color:#fff;
-  text-align:center;
-}
-
-.createOption div{
-  font-size:38px;
-  margin-bottom:10px;
-}
-
-/* ================= TOAST ================= */
-
-.toast{
-  position:fixed;
-  left:50%;
-  bottom:85px;
-  transform:translateX(-50%) translateY(20px);
-  background:#fff;
-  color:#000;
-  padding:11px 17px;
-  border-radius:20px;
-  z-index:1000;
-  opacity:0;
-  pointer-events:none;
-  transition:.2s;
-  font-size:13px;
-}
-
-.toast.show{
-  opacity:1;
-  transform:translateX(-50%) translateY(0);
-}
-
-/* ================= RESPONSIVE ================= */
-
-@media(max-width:600px){
-
-  .feedTabs{
-    gap:12px;
-  }
-
-  .feedTabs button{
-    font-size:12px;
-  }
-
-  .topLogo{
-    font-size:25px;
-  }
-
-  .postContent{
-    bottom:72px;
-  }
-
-  .actions{
-    bottom:85px;
-  }
-}
-</style>
-</head>
-
-<body>
-
-<!-- ================= AUTH ================= -->
-
-<div id="authScreen">
-
-  <div class="authBox">
-
-    <div class="logo">OTA<span>X</span></div>
-
-    <div class="authSubtitle">
-      Connect. Create. Share your world.
-    </div>
-
-    <div class="authTabs">
-      <button
-        id="loginTab"
-        class="active"
-        onclick="showAuth('login')">
-        Login
-      </button>
-
-      <button
-        id="signupTab"
-        onclick="showAuth('signup')">
-        Sign Up
-      </button>
-    </div>
-
-    <!-- LOGIN -->
-
-    <form
-      id="loginForm"
-      class="authForm active"
-      onsubmit="loginUser(event)">
-
-      <div class="inputGroup">
-        <label>Email</label>
-
-        <input
-          id="loginEmail"
-          type="email"
-          placeholder="Enter your email"
-          required>
-      </div>
-
-      <div class="inputGroup">
-        <label>Password</label>
-
-        <input
-          id="loginPassword"
-          type="password"
-          placeholder="Enter your password"
-          required>
-      </div>
-
-      <button class="authButton">
-        Login
-      </button>
-
-    </form>
-
-    <!-- SIGN UP -->
-
-    <form
-      id="signupForm"
-      class="authForm"
-      onsubmit="registerUser(event)">
-
-      <div class="inputGroup">
-        <label>Username</label>
-
-        <input
-          id="signupUsername"
-          type="text"
-          placeholder="Choose a username"
-          required>
-      </div>
-
-      <div class="inputGroup">
-        <label>Email</label>
-
-        <input
-          id="signupEmail"
-          type="email"
-          placeholder="Enter your email"
-          required>
-      </div>
-
-      <div class="inputGroup">
-        <label>Password</label>
-
-        <input
-          id="signupPassword"
-          type="password"
-          placeholder="Create a password"
-          required>
-      </div>
-
-      <button class="authButton">
-        Create Account
-      </button>
-
-    </form>
-
-    <div
-      id="authMessage"
-      class="authMessage">
-    </div>
-
+<link rel="stylesheet" href="style.css">
+</head><body><!-- ================= AUTH ================= --><div id="authScreen">  <div class="authBox"><div class="logo">OTA<span>X</span></div>
+
+<div class="authSubtitle">
+  Connect. Create. Share your world.
+</div>
+
+<div class="authTabs">
+  <button id="loginTab" class="active" onclick="showAuth('login')">
+    Login
+  </button>
+
+  <button id="signupTab" onclick="showAuth('signup')">
+    Sign Up
+  </button>
+</div>
+
+<form id="loginForm" class="authForm active" onsubmit="loginUser(event)">
+
+  <div class="inputGroup">
+    <label>Email</label>
+    <input id="loginEmail" type="email"
+           placeholder="Enter your email" required>
   </div>
+
+  <div class="inputGroup">
+    <label>Password</label>
+    <input id="loginPassword" type="password"
+           placeholder="Enter your password" required>
+  </div>
+
+  <button class="authButton">
+    Login
+  </button>
+
+</form>
+
+<form id="signupForm" class="authForm" onsubmit="registerUser(event)">
+
+  <div class="inputGroup">
+    <label>Username</label>
+    <input id="signupUsername" type="text"
+           placeholder="Choose a username" required>
+  </div>
+
+  <div class="inputGroup">
+    <label>Email</label>
+    <input id="signupEmail" type="email"
+           placeholder="Enter your email" required>
+  </div>
+
+  <div class="inputGroup">
+    <label>Password</label>
+    <input id="signupPassword" type="password"
+           placeholder="Create a password" required>
+  </div>
+
+  <button class="authButton">
+    Create Account
+  </button>
+
+</form>
+
+<div id="authMessage" class="authMessage"></div>
+
+  </div></div><!-- ================= MAIN APP ================= --><div id="app" class="hidden">  <div class="topBar"><div class="topLogo">
+  OTA<span>X</span>
+</div>
+
+<div class="feedTabs">
+
+  <button id="followingTab"
+          onclick="switchFeed('following')">
+    Following
+  </button>
+
+  <button id="forYouTab"
+          class="active"
+          onclick="switchFeed('foryou')">
+    For You
+  </button>
 
 </div>
 
+<div class="topRight">
 
-<!-- ================= MAIN APP ================= -->
+  <button class="searchTop"
+          onclick="openSearch()">
+    ⌕
+  </button>
 
-<div id="app" class="hidden">
+</div>
 
-  <!-- TOP BAR -->
+  </div>  <!-- ================= FEED ================= -->  <main class="feed" id="feed"><!-- POST 1 -->
 
-  <div class="topBar">
+<article class="post">
 
-    <div class="topLogo">
+  <div class="videoBackground one">
+
+    <div class="videoText">OTA X</div>
+
+    <div class="watermark">
       OTA<span>X</span>
     </div>
 
-    <div class="feedTabs">
+  </div>
 
-      <button
-        id="followingTab"
-        onclick="switchFeed('following')">
-        Following
-      </button>
+  <div class="videoOverlay"></div>
 
-      <button
-        id="forYouTab"
-        class="active"
-        onclick="switchFeed('foryou')">
-        For You
-      </button>
+  <div class="actions">
 
+    <div class="avatarWrap">
+      <div class="avatar">O</div>
+      <div class="followPlus">+</div>
     </div>
 
-    <div class="topRight">
+    <button class="action likeButton"
+            onclick="toggleLike(this)">
 
-      <button
-        class="searchTop"
-        onclick="openSearch()">
-        ⌕
-      </button>
+      <div class="actionIcon">♡</div>
+      <span>12.4K</span>
 
-    </div>
+    </button>
+
+    <button class="action"
+            onclick="openComments()">
+
+      <div class="actionIcon">💬</div>
+      <span>840</span>
+
+    </button>
+
+    <button class="action"
+            onclick="sharePost()">
+
+      <div class="actionIcon">↗</div>
+      <span>Share</span>
+
+    </button>
+
+    <button class="action"
+            onclick="savePost(this)">
+
+      <div class="actionIcon">🔖</div>
+      <span>Save</span>
+
+    </button>
 
   </div>
 
+  <div class="postContent">
 
-  <!-- ================= FEED ================= -->
+    <div class="postInfo">
 
-  <main class="feed" id="feed">
-
-    <!-- POST 1 -->
-
-    <article class="post">
-
-      <div class="videoBackground one">
-
-        <div class="videoText">
-          OTA X
-        </div>
-
-        <div class="watermark">
-          OTA<span>X</span>
-        </div>
-
+      <div class="username">
+        @OTAcreator
+        <span class="verified">✓</span>
       </div>
 
-      <div class="videoOverlay"></div>
-
-      <div class="actions">
-
-        <div class="avatarWrap">
-
-          <div class="avatar">
-            O
-          </div>
-
-          <div class="followPlus">
-            +
-          </div>
-
-        </div>
-
-        <button
-          class="action likeButton"
-          onclick="toggleLike(this)">
-
-          <div class="actionIcon">
-            ♡
-          </div>
-
-          <span>
-            12.4K
-          </span>
-
-        </button>
-
-        <button
-          class="action"
-          onclick="openComments()">
-
-          <div class="actionIcon">
-            💬
-          </div>
-
-          <span>
-            840
-          </span>
-
-        </button>
-
-        <button
-          class="action"
-          onclick="sharePost()">
-
-          <div class="actionIcon">
-            ↗
-          </div>
-
-          <span>
-            Share
-          </span>
-
-        </button>
-
-        <button
-          class="action"
-          onclick="savePost(this)">
-
-          <div class="actionIcon">
-            🔖
-          </div>
-
-          <span>
-            Save
-          </span>
-
-        </button>
-
+      <div class="caption">
+        Welcome to OTA X — connect, create and share your world.
       </div>
 
-      <div class="postContent">
-
-        <div class="postInfo">
-
-          <div class="username">
-            @OTAcreator
-
-            <span class="verified">
-              ✓
-            </span>
-          </div>
-
-          <div class="caption">
-            Welcome to OTA X — connect, create and share your world.
-          </div>
-
-          <div class="sound">
-            🎵 Original sound · OTA X
-          </div>
-
-        </div>
-
+      <div class="sound">
+        🎵 Original sound · OTA X
       </div>
 
-    </article>
-
-
-    <!-- POST 2 -->
-
-    <article class="post">
-
-      <div class="videoBackground two">
-
-        <div class="videoText">
-          CREATE
-        </div>
-
-        <div class="watermark">
-          OTA<span>X</span>
-        </div>
-
-      </div>
-
-      <div class="videoOverlay"></div>
-
-      <div class="actions">
-
-        <div class="avatarWrap">
-
-          <div class="avatar">
-            A
-          </div>
-
-          <div class="followPlus">
-            +
-          </div>
-
-        </div>
-
-        <button
-          class="action likeButton"
-          onclick="toggleLike(this)">
-
-          <div class="actionIcon">
-            ♡
-          </div>
-
-          <span>
-            8.7K
-          </span>
-
-        </button>
-
-        <button
-          class="action"
-          onclick="openComments()">
-
-          <div class="actionIcon">
-            💬
-          </div>
-
-          <span>
-            421
-          </span>
-
-        </button>
-
-        <button
-          class="action"
-          onclick="sharePost()">
-
-          <div class="actionIcon">
-            ↗
-          </div>
-
-          <span>
-            Share
-          </span>
-
-        </button>
-
-        <button
-          class="action"
-          onclick="savePost(this)">
-
-          <div class="actionIcon">
-            🔖
-          </div>
-
-          <span>
-            Save
-          </span>
-
-        </button>
-
-      </div>
-
-      <div class="postContent">
-
-        <div class="postInfo">
-
-          <div class="username">
-            @AfricaCreators
-
-            <span class="verified">
-              ✓
-            </span>
-          </div>
-
-          <div class="caption">
-            Your creativity belongs here. Create something original today.
-          </div>
-
-          <div class="sound">
-            🎵 Original sound · Africa Creators
-          </div>
-
-        </div>
-
-      </div>
-
-    </article>
-
-
-    <!-- POST 3 -->
-
-    <article class="post">
-
-      <div class="videoBackground three">
-
-        <div class="videoText">
-          AFRICA
-        </div>
-
-        <div class="watermark">
-          OTA<span>X</span>
-        </div>
-
-      </div>
-
-      <div class="videoOverlay"></div>
-
-      <div class="actions">
-
-        <div class="avatarWrap">
-
-          <div class="avatar">
-            N
-          </div>
-
-          <div class="followPlus">
-            +
-          </div>
-
-        </div>
-
-        <button
-          class="action likeButton"
-          onclick="toggleLike(this)">
-
-          <div class="actionIcon">
-            ♡
-          </div>
-
-          <span>
-            21.3K
-          </span>
-
-</button>
-
-<button
-  class="action"
-  onclick="openComments()">
-
-  <div class="actionIcon">
-    💬
-  </div>
-
-  <span>
-    1.2K
-  </span>
-
-</button>
-
-<button
-  class="action"
-  onclick="sharePost()">
-
-  <div class="actionIcon">
-    ↗
-  </div>
-
-  <span>
-    Share
-  </span>
-
-</button>
-
-<button
-  class="action"
-  onclick="savePost(this)">
-
-  <div class="actionIcon">
-    🔖
-  </div>
-
-  <span>
-    Save
-  </span>
-
-</button>
-
-</div>
-
-<div class="postContent">
-
-  <div class="postInfo">
-
-    <div class="username">
-      @OTAcommunity
-
-      <span class="verified">
-        ✓
-      </span>
-    </div>
-
-    <div class="caption">
-      Africa has a voice. OTA X is built for creators, communities and everyone.
-    </div>
-
-    <div class="sound">
-      🎵 Original sound · OTA Community
     </div>
 
   </div>
-
-</div>
 
 </article>
 
 
-<!-- ================= BOTTOM NAV ================= -->
+<!-- POST 2 -->
 
-<nav class="bottomNav">
+<article class="post">
 
-  <button
-    class="navButton active"
-    onclick="goHome()">
+  <div class="videoBackground two">
 
-    <span class="navIcon">
-      ⌂
-    </span>
+    <div class="videoText">CREATE</div>
 
-    Home
+    <div class="watermark">
+      OTA<span>X</span>
+    </div>
 
-  </button>
+  </div>
 
-  <button
-    class="navButton"
-    onclick="openSearch()">
+  <div class="videoOverlay"></div>
 
-    <span class="navIcon">
-      ⌕
-    </span>
+  <div class="actions">
 
-    Search
+    <div class="avatarWrap">
+      <div class="avatar">A</div>
+      <div class="followPlus">+</div>
+    </div>
 
-  </button>
+    <button class="action"
+            onclick="toggleLike(this)">
 
-  <button
-    class="navButton"
-    onclick="openCreate()">
+      <div class="actionIcon">♡</div>
+      <span>8.7K</span>
 
-    <span class="createNav">
-      +
-    </span>
-
-    Create
-
-  </button>
-
-  <button
-    class="navButton"
-    onclick="openInbox()">
-
-    <span class="navIcon">
-      ♡
-    </span>
-
-    Inbox
-
-  </button>
-
-  <button
-    class="navButton"
-    onclick="openProfile()">
-
-    <span class="navIcon">
-      ♙
-    </span>
-
-    Profile
-
-  </button>
-
-</nav>
-
-
-<!-- ================= SEARCH ================= -->
-
-<section
-  id="searchPanel"
-  class="overlayPanel">
-
-  <div class="panelHeader">
-
-    <button
-      class="closeButton"
-      onclick="closeSearch()">
-      ←
     </button>
 
-    <input
-      id="searchInput"
-      class="searchInput"
-      placeholder="Search OTA X..."
-      oninput="performSearch()">
+    <button class="action"
+            onclick="openComments()">
 
-  </div>
+      <div class="actionIcon">💬</div>
+      <span>421</span>
 
-  <div class="panelBody">
+    </button>
 
-    <div class="sectionTitle">
-      Trending
-    </div>
+    <button class="action"
+            onclick="sharePost()">
 
-    <div class="trend">
-      <strong>#OTAX</strong>
-      <span>Trending on OTA X</span>
-    </div>
+      <div class="actionIcon">↗</div>
+      <span>Share</span>
 
-    <div class="trend">
-      <strong>#Africa</strong>
-      <span>Popular in Africa</span>
-    </div>
+    </button>
 
-    <div class="trend">
-      <strong>#Football</strong>
-      <span>Sports creators</span>
-    </div>
+    <button class="action"
+            onclick="savePost(this)">
 
-    <div class="trend">
-      <strong>#Music</strong>
-      <span>Popular sounds</span>
-    </div>
+      <div class="actionIcon">🔖</div>
+      <span>Save</span>
 
-    <div class="trend">
-      <strong>#Creators</strong>
-      <span>Creator community</span>
-    </div>
-
-    <div
-      id="searchResults"
-      style="margin-top:25px;color:#aaa;">
-    </div>
-
-  </div>
-
-</section>
-
-
-<!-- ================= COMMENTS ================= -->
-
-<section
-  id="commentsPanel"
-  class="commentsPanel">
-
-  <div class="commentsHeader">
-
-    Comments
-
-    <button
-      class="commentsClose"
-      onclick="closeComments()">
-      ×
     </button>
 
   </div>
 
-  <div
-    id="commentsList"
-    class="commentsList">
+  <div class="postContent">
 
-    <div class="comment">
+    <div class="postInfo">
 
-      <div class="commentAvatar">
-        J
+      <div class="username">
+        @AfricaCreators
+        <span class="verified">✓</span>
       </div>
 
-      <div class="commentBody">
-
-        <div class="commentName">
-          @james
-        </div>
-
-        <div class="commentText">
-          OTA X is looking really good 🔥
-        </div>
-
+      <div class="caption">
+        Your creativity belongs here. Create something original today.
       </div>
 
-    </div>
-
-    <div class="comment">
-
-      <div class="commentAvatar">
-        M
-      </div>
-
-      <div class="commentBody">
-
-        <div class="commentName">
-          @maria
-        </div>
-
-        <div class="commentText">
-          Can't wait to see more creators here.
-        </div>
-
+      <div class="sound">
+        🎵 Original sound · Africa Creators
       </div>
 
     </div>
 
   </div>
 
-  <div
-    id="recordingStatus"
-    class="recordingStatus">
-    Recording voice note... Tap the microphone again to stop.
-  </div>
-
-  <div class="commentComposer">
-
-    <input
-      id="commentInput"
-      class="commentInput"
-      placeholder="Add a comment...">
-
-    <button
-      id="micButton"
-      class="micButton"
-      onclick="toggleVoiceRecording()">
-      🎙
-    </button>
-
-    <button
-      class="sendButton"
-      onclick="sendComment()">
-      ➤
-    </button>
-
-  </div>
-
-</section>
+</article>
 
 
-<!-- ================= CREATE ================= -->
+<!-- POST 3 -->
 
-<section
-  id="createPanel"
-  class="createPanel">
+<article class="post">
 
-  <div class="panelHeader">
+  <div class="videoBackground three">
 
-    <button
-      class="closeButton"
-      onclick="closeCreate()">
-      ×
-    </button>
+    <div class="videoText">AFRICA</div>
 
-    <strong>
-      Create
-    </strong>
-
-  </div>
-
-  <div class="createOptions">
-
-    <button
-      class="createOption"
-      onclick="createComingSoon('Video')">
-
-      <div>▶</div>
-      Video
-
-    </button>
-
-    <button
-      class="createOption"
-      onclick="createComingSoon('Photo')">
-
-      <div>◉</div>
-      Photo
-
-    </button>
-
-    <button
-      class="createOption"
-      onclick="createComingSoon('Story')">
-
-      <div>◎</div>
-      Story
-
-    </button>
-
-    <button
-      class="createOption"
-      onclick="createComingSoon('Community')">
-
-      <div>♧</div>
-      Community
-
-    </button>
-
-  </div>
-
-</section>
-
-
-<!-- ================= PROFILE ================= -->
-
-<section
-  id="profilePanel"
-  class="profilePanel">
-
-  <div class="profileHeader">
-
-    <button
-      class="closeButton"
-      onclick="closeProfile()">
-      ←
-    </button>
-
-    <strong>
-      Profile
-    </strong>
-
-    <button
-      class="closeButton"
-      onclick="logoutUser()">
-      ⇥
-    </button>
-
-  </div>
-
-  <div class="profileTop">
-
-    <div
-      id="profileAvatar"
-      class="bigAvatar">
-      O
+    <div class="watermark">
+      OTA<span>X</span>
     </div>
 
-    <div
-      id="profileName"
-      class="profileName">
-      OTA Creator
+  </div>
+
+  <div class="videoOverlay"></div>
+
+  <div class="actions">
+
+    <div class="avatarWrap">
+      <div class="avatar">N</div>
+      <div class="followPlus">+</div>
     </div>
 
-    <div
-      id="profileUsername"
-      class="profileUsername">
-      @creator
-    </div>
+    <button class="action"
+            onclick="toggleLike(this)">
 
-    <div class="profileStats">
+      <div class="actionIcon">♡</div>
+      <span>21.3K</span>
 
-      <div class="stat">
-        <strong>0</strong>
-        <span>Following</span>
+    </button>
+
+    <button class="action"
+            onclick="openComments()">
+
+      <div class="actionIcon">💬</div>
+      <span>1.2K</span>
+
+    </button>
+
+    <button class="action"
+            onclick="sharePost()">
+
+      <div class="actionIcon">↗</div>
+      <span>Share</span>
+
+    </button>
+
+    <button class="action"
+            onclick="savePost(this)">
+
+      <div class="actionIcon">🔖</div>
+      <span>Save</span>
+
+    </button>
+
+  </div>
+
+  <div class="postContent">
+
+    <div class="postInfo">
+
+      <div class="username">
+        @NigerianCreator
+        <span class="verified">✓</span>
       </div>
 
-      <div class="stat">
-        <strong>0</strong>
-        <span>Followers</span>
+      <div class="caption">
+        Africa has a story to tell. This is your space to create.
       </div>
 
-      <div class="stat">
-        <strong>0</strong>
-        <span>Likes</span>
+      <div class="sound">
+        🎵 Original sound · OTA X
       </div>
 
     </div>
 
-    <div class="profileActions">
-
-      <button
-        class="profileButton red"
-        onclick="showToast('Edit profile coming soon')">
-        Edit Profile
-      </button>
-
-      <button
-        class="profileButton"
-        onclick="showToast('Settings coming soon')">
-        Settings
-      </button>
-
-    </div>
-
   </div>
 
-  <div class="profileGrid">
+</article>
 
-    <div class="gridItem">+</div>
-    <div class="gridItem">▶</div>
-    <div class="gridItem">◎</div>
-    <div class="gridItem">◉</div>
-    <div class="gridItem">OTA</div>
-    <div class="gridItem">X</div>
+  </main>  <!-- ================= BOTTOM NAV ================= -->  <nav class="bottomNav"><button class="navButton active"
+        onclick="goHome()">
+  <span class="navIcon">⌂</span>
+  Home
+</button>
 
-  </div>
+<button class="navButton"
+        onclick="openSearch()">
+  <span class="navIcon">⌕</span>
+  Search
+</button>
 
-</section>
+<button class="navButton"
+        onclick="openCreate()">
+  <span class="createNav">+</span>
+  Create
+</button>
 
+<button class="navButton"
+        onclick="openProfile()">
+  <span class="navIcon">♙</span>
+  Profile
+</button>
 
-<!-- ================= TOAST ================= -->
+  </nav></div><!-- ================= SEARCH ================= --><div id="searchPanel" class="overlayPanel">  <div class="panelHeader"><button class="closeButton"
+        onclick="closeSearch()">
+  ×
+</button>
 
-<div
-  id="toast"
-  class="toast">
+<input id="searchInput"
+       class="searchInput"
+       placeholder="Search OTA X...">
+
+  </div>  <div class="panelBody"><div class="sectionTitle">
+  Trending on OTA X
 </div>
+
+<div class="trend">
+  <strong>#OTA X</strong>
+  <span>12.4K posts</span>
+</div>
+
+<div class="trend">
+  <strong>#AfricaCreators</strong>
+  <span>8.7K posts</span>
+</div>
+
+<div class="trend">
+  <strong>#Football</strong>
+  <span>245K posts</span>
+</div>
+
+<div class="trend">
+  <strong>#Music</strong>
+  <span>189K posts</span>
+</div>
+
+  </div></div><!-- ================= COMMENTS ================= --><div id="commentsPanel" class="commentsPanel">  <div class="commentsHeader">Comments
+
+<button class="commentsClose"
+        onclick="closeComments()">
+  ×
+</button>
+
+  </div>  <div class="commentsList"><div class="comment">
+
+  <div class="commentAvatar">A</div>
+
+  <div class="commentBody">
+
+    <div class="commentName">
+      @AfricaUser
+    </div>
+
+    <div class="commentText">
+      OTA X is looking good!
+    </div>
+
+  </div>
 
 </div>
 
 
-<script>
+<div class="comment">
+
+  <div class="commentAvatar">N</div>
+
+  <div class="commentBody">
+
+    <div class="commentName">
+      @NaijaCreator
+    </div>
+
+    <div class="commentText">
+      Can't wait to start creating here.
+    </div>
+
+  </div>
+
+</div>
+
+  </div>  <div id="recordingStatus"
+       class="recordingStatus">
+    Recording voice comment...
+  </div>  <div class="commentComposer"><input id="commentInput"
+       class="commentInput"
+       placeholder="Add a comment...">
+
+<button id="micButton"
+        class="micButton"
+        onclick="toggleRecording()">
+  🎤
+</button>
+
+<button class="sendButton"
+        onclick="sendComment()">
+  ➤
+</button>
+
+  </div></div><!-- ================= PROFILE ================= --><div id="profilePanel" class="profilePanel">  <div class="profileHeader"><strong>Profile</strong>
+
+<button class="closeButton"
+        onclick="closeProfile()">
+  ×
+</button>
+
+  </div>  <div class="profileTop"><div class="bigAvatar">O</div>
+
+<div class="profileName">
+  OTA Creator
+  <span class="verified">✓</span>
+</div>
+
+<div class="profileUsername">
+  @OTAcreator
+</div>
+
+<div class="profileStats">
+
+  <div class="stat">
+    <strong>125</strong>
+    <span>Following</span>
+  </div>
+
+  <div class="stat">
+    <strong>12.4K</strong>
+    <span>Followers</span>
+  </div>
+
+  <div class="stat">
+    <strong>245K</strong>
+    <span>Likes</span>
+  </div>
+
+</div>
+
+<div class="profileActions">
+
+  <button class="profileButton red">
+    Edit Profile
+  </button>
+
+  <button class="profileButton">
+    Share
+  </button>
+
+</div>
+
+  </div>  <div class="profileGrid"><div class="gridItem">▶</div>
+<div class="gridItem">★</div>
+<div class="gridItem">◉</div>
+<div class="gridItem">▶</div>
+<div class="gridItem">★</div>
+<div class="gridItem">◉</div>
+
+  </div></div><!-- ================= CREATE ================= --><div id="createPanel" class="createPanel">  <div class="panelHeader"><button class="closeButton"
+        onclick="closeCreate()">
+  ×
+</button>
+
+<strong>Create</strong>
+
+  </div>  <div class="createOptions"><button class="createOption"
+        onclick="createMessage('Video upload coming soon')">
+
+  <div>🎥</div>
+  <strong>Video</strong>
+  <p>Share a video</p>
+
+</button>
+
+<button class="createOption"
+        onclick="createMessage('Photo upload coming soon')">
+
+  <div>📷</div>
+  <strong>Photo</strong>
+  <p>Share a photo</p>
+
+</button>
+
+<button class="createOption"
+        onclick="createMessage('Story creation coming soon')">
+
+  <div>⭕</div>
+  <strong>Story</strong>
+  <p>Create a story</p>
+
+</button>
+
+<button class="createOption"
+        onclick="createMessage('LIVE coming soon')">
+
+  <div>🔴</div>
+  <strong>LIVE</strong>
+  <p>Go live</p>
+
+</button>
+
+  </div></div><div id="toast" class="toast"></div><!-- ================= JAVASCRIPT ================= --><script>
 
 const API_URL = "https://ota-x-backend.onrender.com";
-
-let mediaRecorder = null;
-let audioChunks = [];
-let isRecording = false;
-
 
 function showAuth(type){
 
@@ -1834,8 +574,6 @@ function showAuth(type){
   const signupTab =
     document.getElementById("signupTab");
 
-  document.getElementById("authMessage").textContent = "";
-
   if(type === "login"){
 
     loginForm.classList.add("active");
@@ -1846,13 +584,15 @@ function showAuth(type){
 
   }else{
 
-    signupForm.classList.add("active");
     loginForm.classList.remove("active");
+    signupForm.classList.add("active");
 
-    signupTab.classList.add("active");
     loginTab.classList.remove("active");
+    signupTab.classList.add("active");
 
   }
+
+  document.getElementById("authMessage").textContent = "";
 
 }
 
@@ -1877,50 +617,43 @@ async function registerUser(event){
 
   try{
 
-    const response =
-      await fetch(`${API_URL}/api/auth/register`,{
-
+    const response = await fetch(
+      API_URL + "/api/auth/register",
+      {
         method:"POST",
-
         headers:{
           "Content-Type":"application/json"
         },
-
         body:JSON.stringify({
           username,
           email,
           password
         })
-
-      });
+      }
+    );
 
     const data = await response.json();
 
     if(!response.ok){
 
       message.textContent =
-        data.error ||
-        data.message ||
-        "Registration failed.";
+        data.error || "Registration failed.";
 
       return;
 
     }
 
-    message.style.color = "#55ff88";
-
+    message.style.color = "#55ff77";
     message.textContent =
-      "Account created. You can now log in.";
+      "Account created. You can now login.";
 
-    document.getElementById("signupForm").reset();
+    document.getElementById("loginEmail").value = email;
 
-    setTimeout(()=>{
-      showAuth("login");
-    },1000);
+    showAuth("login");
 
   }catch(error){
 
-    console.error(error);
+    message.style.color = "#ff5555";
 
     message.textContent =
       "Could not connect to OTA X server.";
@@ -1943,54 +676,52 @@ async function loginUser(event){
   const message =
     document.getElementById("authMessage");
 
+  message.style.color = "#ff5555";
   message.textContent = "Logging in...";
 
   try{
 
-    const response =
-      await fetch(`${API_URL}/api/auth/login`,{
-
+    const response = await fetch(
+      API_URL + "/api/auth/login",
+      {
         method:"POST",
-
         headers:{
           "Content-Type":"application/json"
         },
-
         body:JSON.stringify({
           email,
           password
         })
-
-      });
+      }
+    );
 
     const data = await response.json();
 
     if(!response.ok){
 
       message.textContent =
-        data.error ||
-        data.message ||
-        "Login failed.";
+        data.error || "Login failed.";
 
       return;
 
     }
 
-    localStorage.setItem(
-      "ota_token",
-      data.token
-    );
+    if(data.token){
 
-    localStorage.setItem(
-      "ota_user",
-      JSON.stringify(data.user)
-    );
+      localStorage.setItem(
+        "ota_token",
+        data.token
+      );
 
-    showApp();
+    }
+
+    document.getElementById("authScreen")
+      .classList.add("hidden");
+
+    document.getElementById("app")
+      .classList.remove("hidden");
 
   }catch(error){
-
-    console.error(error);
 
     message.textContent =
       "Could not connect to OTA X server.";
@@ -2000,120 +731,31 @@ async function loginUser(event){
 }
 
 
-function showApp(){
-
-  document
-    .getElementById("authScreen")
-    .classList.add("hidden");
-
-  document
-    .getElementById("app")
-    .classList.remove("hidden");
-
-  loadProfile();
-
-}
-
-
-function checkExistingLogin(){
-
-  if(localStorage.getItem("ota_token")){
-    showApp();
-  }
-
-}
-
-
-function logoutUser(){
-
-  localStorage.removeItem("ota_token");
-  localStorage.removeItem("ota_user");
-
-  document
-    .getElementById("app")
-    .classList.add("hidden");
-
-  document
-    .getElementById("authScreen")
-    .classList.remove("hidden");
-
-  closeProfile();
-
-}
-
-
-function loadProfile(){
-
-  const userJSON =
-    localStorage.getItem("ota_user");
-
-  if(!userJSON) return;
-
-  try{
-
-    const user =
-      JSON.parse(userJSON);
-
-    const username =
-      user.username || "OTA User";
-
-    document.getElementById("profileName")
-      .textContent = username;
-
-    document.getElementById("profileUsername")
-      .textContent = "@" + username;
-
-    document.getElementById("profileAvatar")
-      .textContent =
-        username.charAt(0).toUpperCase();
-
-  }catch(error){
-
-    console.error(error);
-
-  }
-
-}
-
-
 function switchFeed(type){
 
-  const following =
-    document.getElementById("followingTab");
+  document
+    .getElementById("followingTab")
+    .classList.remove("active");
 
-  const forYou =
-    document.getElementById("forYouTab");
+  document
+    .getElementById("forYouTab")
+    .classList.remove("active");
 
   if(type === "following"){
 
-    following.classList.add("active");
-    forYou.classList.remove("active");
+    document
+      .getElementById("followingTab")
+      .classList.add("active");
 
     showToast("Following feed selected");
 
   }else{
 
-    forYou.classList.add("active");
-    following.classList.remove("active");
+    document
+      .getElementById("forYouTab")
+      .classList.add("active");
 
   }
-
-}
-
-
-function goHome(){
-
-  closeSearch();
-  closeComments();
-  closeProfile();
-  closeCreate();
-
-  document
-    .getElementById("feed")
-    .scrollTo({
-      top:0,
-      behavior:"smooth"
-    });
 
 }
 
@@ -2125,10 +767,15 @@ function toggleLike(button){
   const icon =
     button.querySelector(".actionIcon");
 
-  icon.textContent =
-    button.classList.contains("liked")
-    ? "♥"
-    : "♡";
+  if(button.classList.contains("liked")){
+
+    icon.textContent = "♥";
+
+  }else{
+
+    icon.textContent = "♡";
+
+  }
 
 }
 
@@ -2137,39 +784,35 @@ function savePost(button){
 
   button.classList.toggle("saved");
 
-  showToast(
-    button.classList.contains("saved")
-    ? "Post saved"
-    : "Post removed from saved"
-  );
+  const icon =
+    button.querySelector(".actionIcon");
+
+  if(button.classList.contains("saved")){
+
+    icon.textContent = "🔖";
+    showToast("Saved");
+
+  }else{
+
+    showToast("Removed from saved");
+
+  }
 
 }
 
 
-async function sharePost(){
+function sharePost(){
 
-  try{
+  if(navigator.share){
 
-    if(navigator.share){
+    navigator.share({
+      title:"OTA X",
+      text:"Check out this post on OTA X"
+    }).catch(()=>{});
 
-      await navigator.share({
-        title:"OTA X",
-        text:"Check this post on OTA X"
-      });
+  }else{
 
-    }else{
-
-      await navigator.clipboard.writeText(
-        window.location.href
-      );
-
-      showToast("Link copied");
-
-    }
-
-  }catch(error){
-
-    console.log(error);
+    showToast("Share link copied");
 
   }
 
@@ -2194,31 +837,6 @@ function closeSearch(){
 }
 
 
-function performSearch(){
-
-  const value =
-    document.getElementById("searchInput")
-      .value.trim();
-
-  const results =
-    document.getElementById("searchResults");
-
-  if(!value){
-
-    results.innerHTML = "";
-
-    return;
-
-  }
-
-  results.innerHTML =
-    "Searching OTA X for <strong>" +
-    escapeHTML(value) +
-    "</strong>...";
-
-}
-
-
 function openComments(){
 
   document
@@ -2237,236 +855,20 @@ function closeComments(){
 }
 
 
-function sendComment(){
-
-  const input =
-    document.getElementById("commentInput");
-
-  const text =
-    input.value.trim();
-
-  if(!text) return;
-
-  const list =
-    document.getElementById("commentsList");
-
-  const comment =
-    document.createElement("div");
-
-  comment.className = "comment";
-
-  comment.innerHTML = `
-
-    <div class="commentAvatar">
-      Y
-    </div>
-
-    <div class="commentBody">
-
-      <div class="commentName">
-        @You
-      </div>
-
-      <div class="commentText">
-        ${escapeHTML(text)}
-      </div>
-
-    </div>
-
-  `;
-
-  list.appendChild(comment);
-
-  input.value = "";
-
-  list.scrollTop = list.scrollHeight;
-
-}
-
-
-async function toggleVoiceRecording(){
-
-  if(isRecording){
-
-    stopVoiceRecording();
-
-  }else{
-
-    await startVoiceRecording();
-
-  }
-
-}
-
-
-async function startVoiceRecording(){
-
-  try{
-
-    const stream =
-      await navigator.mediaDevices.getUserMedia({
-        audio:true
-      });
-
-    audioChunks = [];
-
-    mediaRecorder =
-      new MediaRecorder(stream);
-
-    mediaRecorder.ondataavailable =
-      event => {
-
-        if(event.data.size > 0){
-          audioChunks.push(event.data);
-        }
-
-      };
-
-    mediaRecorder.onstop =
-      () => {
-
-        const audioBlob =
-          new Blob(audioChunks,{
-            type:"audio/webm"
-          });
-
-        const audioURL =
-          URL.createObjectURL(audioBlob);
-
-        addVoiceComment(audioURL);
-
-        stream
-          .getTracks()
-          .forEach(track=>track.stop());
-
-      };
-
-    mediaRecorder.start();
-
-    isRecording = true;
-
-    document
-      .getElementById("micButton")
-      .classList.add("recording");
-
-    document
-      .getElementById("recordingStatus")
-      .classList.add("show");
-
-  }catch(error){
-
-    console.error(error);
-
-    showToast(
-      "Microphone permission was not allowed."
-    );
-
-  }
-
-}
-
-
-function stopVoiceRecording(){
-
-  if(
-    mediaRecorder &&
-    mediaRecorder.state !== "inactive"
-  ){
-
-    mediaRecorder.stop();
-
-  }
-
-  isRecording = false;
+function openProfile(){
 
   document
-    .getElementById("micButton")
-    .classList.remove("recording");
+    .getElementById("profilePanel")
+    .classList.add("open");
+
+}
+
+
+function closeProfile(){
 
   document
-    .getElementById("recordingStatus")
-    .classList.remove("show");
-
-}
-
-
-function addVoiceComment(audioURL){
-
-  const list =
-    document.getElementById("commentsList");
-
-  const comment =
-    document.createElement("div");
-
-  comment.className = "comment";
-
-  comment.innerHTML = `
-
-    <div class="commentAvatar">
-      Y
-    </div>
-
-    <div class="commentBody">
-
-      <div class="commentName">
-        @You
-      </div>
-
-      <div class="voiceComment">
-
-        <button
-          class="voicePlay"
-          onclick="playVoice(this)">
-          ▶
-        </button>
-
-        <div class="voiceLabel">
-          Voice note
-        </div>
-
-        <audio
-          class="voiceAudio"
-          src="${audioURL}">
-        </audio>
-
-      </div>
-
-    </div>
-
-  `;
-
-  list.appendChild(comment);
-
-  list.scrollTop =
-    list.scrollHeight;
-
-}
-
-
-function playVoice(button){
-
-  const audio =
-    button.parentElement
-      .querySelector(".voiceAudio");
-
-  if(audio.paused){
-
-    audio.play();
-
-    button.textContent = "❚❚";
-
-    audio.onended =
-      () => {
-        button.textContent = "▶";
-      };
-
-  }else{
-
-    audio.pause();
-
-    button.textContent = "▶";
-
-  }
+    .getElementById("profilePanel")
+    .classList.remove("open");
 
 }
 
@@ -2489,45 +891,96 @@ function closeCreate(){
 }
 
 
-function createComingSoon(type){
-
-  showToast(
-    type + " upload will be connected next."
-  );
-
-}
-
-
-function openInbox(){
-
-  showToast(
-    "Inbox and messaging are coming next."
-  );
-
-}
-
-
-function openProfile(){
-
-  loadProfile();
+function goHome(){
 
   document
-    .getElementById("profilePanel")
-    .classList.add("open");
+    .getElementById("feed")
+    .scrollTo({
+      top:0,
+      behavior:"smooth"
+    });
 
 }
 
 
-function closeProfile(){
+function sendComment(){
 
-  document
-    .getElementById("profilePanel")
-    .classList.remove("open");
+  const input =
+    document.getElementById("commentInput");
+
+  const text =
+    input.value.trim();
+
+  if(!text){
+
+    showToast("Write a comment first");
+    return;
+
+  }
+
+  const list =
+    document.querySelector(".commentsList");
+
+  const comment =
+    document.createElement("div");
+
+  comment.className = "comment";
+
+  comment.innerHTML = `
+    <div class="commentAvatar">O</div>
+    <div class="commentBody">
+      <div class="commentName">@OTAcreator</div>
+      <div class="commentText"></div>
+    </div>
+  `;
+
+  comment.querySelector(".commentText")
+    .textContent = text;
+
+  list.appendChild(comment);
+
+  input.value = "";
+
+  list.scrollTop = list.scrollHeight;
 
 }
 
 
-let toastTimer;
+let recording = false;
+
+function toggleRecording(){
+
+  const button =
+    document.getElementById("micButton");
+
+  const status =
+    document.getElementById("recordingStatus");
+
+  recording = !recording;
+
+  if(recording){
+
+    button.classList.add("recording");
+    status.classList.add("show");
+    showToast("Voice recording started");
+
+  }else{
+
+    button.classList.remove("recording");
+    status.classList.remove("show");
+    showToast("Voice recording stopped");
+
+  }
+
+}
+
+
+function createMessage(message){
+
+  showToast(message);
+
+}
+
 
 function showToast(message){
 
@@ -2538,33 +991,1063 @@ function showToast(message){
 
   toast.classList.add("show");
 
-  clearTimeout(toastTimer);
-
-  toastTimer =
-    setTimeout(()=>{
-
-      toast.classList.remove("show");
-
-    },2200);
+  setTimeout(()=>{
+    toast.classList.remove("show");
+  },2000);
 
 }
 
 
-function escapeHTML(value){
+window.addEventListener("load",()=>{
 
-  return String(value)
-    .replace(/&/g,"&amp;")
-    .replace(/</g,"&lt;")
-    .replace(/>/g,"&gt;")
-    .replace(/"/g,"&quot;")
-    .replace(/'/g,"&#039;");
+  const token =
+    localStorage.getItem("ota_token");
 
+  if(token){
+
+    document
+      .getElementById("authScreen")
+      .classList.add("hidden");
+
+    document
+      .getElementById("app")
+      .classList.remove("hidden");
+
+  }
+
+});
+
+</script></body>
+        </html>
+        *{
+box-sizing:border-box;
+margin:0;
+padding:0;
 }
 
+:root{
+--red:#e00000;
+--black:#050505;
+--dark:#101010;
+--card:#171717;
+--white:#fff;
+--gray:#999;
+--line:#292929;
+}
 
-checkExistingLogin();
+html,
+body{
+width:100%;
+height:100%;
+}
 
-</script>
+body{
+font-family:Arial,Helvetica,sans-serif;
+background:#000;
+color:#fff;
+overflow:hidden;
+}
 
-</body>
-  </html>
+button,
+input{
+font:inherit;
+}
+
+button{
+border:0;
+cursor:pointer;
+}
+
+.hidden{
+display:none!important;
+}
+
+/* ================= AUTH ================= */
+
+#authScreen{
+position:fixed;
+inset:0;
+z-index:1000;
+background:
+radial-gradient(
+circle at top right,
+#420000 0,
+transparent 35%
+),
+#050505;
+
+display:flex;
+justify-content:center;
+align-items:center;
+padding:20px;
+}
+
+.authBox{
+width:100%;
+max-width:420px;
+background:#111;
+border:1px solid #292929;
+border-radius:24px;
+padding:30px 24px;
+box-shadow:0 20px 70px rgba(0,0,0,.7);
+}
+
+.logo{
+text-align:center;
+font-size:44px;
+font-weight:900;
+letter-spacing:-3px;
+color:#fff;
+margin-bottom:5px;
+}
+
+.logo span,
+.topLogo span,
+.watermark span{
+color:var(--red);
+}
+
+.authSubtitle{
+text-align:center;
+color:#888;
+margin-bottom:28px;
+}
+
+.authTabs{
+display:flex;
+background:#1a1a1a;
+border-radius:12px;
+padding:4px;
+margin-bottom:22px;
+}
+
+.authTabs button{
+width:50%;
+padding:11px;
+border-radius:9px;
+background:transparent;
+color:#888;
+}
+
+.authTabs button.active{
+background:#fff;
+color:#000;
+font-weight:bold;
+}
+
+.authForm{
+display:none;
+}
+
+.authForm.active{
+display:block;
+}
+
+.inputGroup{
+margin-bottom:15px;
+}
+
+.inputGroup label{
+display:block;
+color:#aaa;
+font-size:13px;
+margin-bottom:7px;
+}
+
+.inputGroup input{
+width:100%;
+padding:14px;
+background:#1a1a1a;
+border:1px solid #303030;
+color:#fff;
+border-radius:12px;
+outline:none;
+}
+
+.inputGroup input:focus{
+border-color:var(--red);
+}
+
+.authButton{
+width:100%;
+padding:14px;
+background:var(--red);
+color:#fff;
+border-radius:12px;
+font-weight:bold;
+margin-top:5px;
+}
+
+.authMessage{
+min-height:20px;
+text-align:center;
+color:#ff5555;
+font-size:13px;
+margin-top:14px;
+}
+
+/* ================= APP ================= */
+
+#app{
+height:100vh;
+width:100%;
+position:relative;
+background:#000;
+}
+
+/* ================= TOP BAR ================= */
+
+.topBar{
+position:fixed;
+top:0;
+left:0;
+right:0;
+height:60px;
+z-index:50;
+
+display:flex;
+align-items:center;
+justify-content:space-between;
+
+padding:0 18px;
+
+background:
+linear-gradient(
+to bottom,
+rgba(0,0,0,.9),
+transparent
+);
+}
+
+.topLogo{
+font-size:28px;
+font-weight:900;
+letter-spacing:-2px;
+}
+
+.topRight{
+display:flex;
+align-items:center;
+gap:14px;
+}
+
+.searchTop{
+width:38px;
+height:38px;
+border-radius:50%;
+background:rgba(255,255,255,.12);
+color:#fff;
+font-size:20px;
+}
+
+.feedTabs{
+position:fixed;
+top:15px;
+left:50%;
+transform:translateX(-50%);
+z-index:55;
+
+display:flex;
+gap:20px;
+}
+
+.feedTabs button{
+background:none;
+color:#888;
+font-weight:bold;
+padding-bottom:6px;
+}
+
+.feedTabs button.active{
+color:#fff;
+border-bottom:2px solid var(--red);
+}
+
+/* ================= FEED ================= */
+
+.feed{
+height:100vh;
+overflow-y:auto;
+scroll-snap-type:y mandatory;
+scrollbar-width:none;
+}
+
+.feed::-webkit-scrollbar{
+display:none;
+}
+
+.post{
+position:relative;
+height:100vh;
+min-height:600px;
+scroll-snap-align:start;
+overflow:hidden;
+background:#111;
+}
+
+.videoBackground{
+position:absolute;
+inset:0;
+
+display:flex;
+align-items:center;
+justify-content:center;
+
+overflow:hidden;
+}
+
+.videoBackground.one{
+background:
+radial-gradient(
+circle at 70% 20%,
+#ff4444,
+transparent 22%
+),
+linear-gradient(
+135deg,
+#180000,
+#090909 50%,
+#400000
+);
+}
+
+.videoBackground.two{
+background:
+radial-gradient(
+circle at 25% 30%,
+#8b0000,
+transparent 25%
+),
+linear-gradient(
+135deg,
+#050505,
+#260000 60%,
+#090909
+);
+}
+
+.videoBackground.three{
+background:
+radial-gradient(
+circle at 65% 45%,
+#555,
+transparent 20%
+),
+linear-gradient(
+135deg,
+#111,
+#050505 60%,
+#330000
+);
+}
+
+.videoText{
+font-size:80px;
+font-weight:900;
+opacity:.08;
+transform:rotate(-15deg);
+}
+
+.videoOverlay{
+position:absolute;
+inset:0;
+
+background:
+linear-gradient(
+to bottom,
+rgba(0,0,0,.25),
+transparent 35%,
+rgba(0,0,0,.05) 50%,
+rgba(0,0,0,.9)
+);
+}
+
+.watermark{
+position:absolute;
+top:50%;
+left:50%;
+transform:
+translate(-50%,-50%)
+rotate(-15deg);
+
+font-size:60px;
+font-weight:900;
+opacity:.05;
+}
+
+.postContent{
+position:absolute;
+left:0;
+right:0;
+bottom:78px;
+padding:20px;
+z-index:5;
+}
+
+.postInfo{
+max-width:calc(100% - 75px);
+}
+
+.username{
+font-weight:bold;
+font-size:16px;
+margin-bottom:8px;
+}
+
+.verified{
+display:inline-flex;
+align-items:center;
+justify-content:center;
+
+width:18px;
+height:18px;
+
+background:var(--red);
+color:#000;
+
+border-radius:50%;
+font-size:11px;
+margin-left:4px;
+}
+
+.caption{
+font-size:15px;
+line-height:1.4;
+margin-bottom:10px;
+}
+
+.sound{
+color:#ddd;
+font-size:13px;
+}
+
+/* ================= ACTIONS ================= */
+
+.actions{
+position:absolute;
+right:14px;
+bottom:92px;
+
+display:flex;
+flex-direction:column;
+align-items:center;
+
+gap:16px;
+z-index:10;
+}
+
+.avatarWrap{
+display:flex;
+flex-direction:column;
+align-items:center;
+margin-bottom:3px;
+}
+
+.avatar{
+width:48px;
+height:48px;
+
+border-radius:50%;
+background:#fff;
+color:#000;
+
+display:flex;
+align-items:center;
+justify-content:center;
+
+font-size:21px;
+font-weight:bold;
+
+border:2px solid #fff;
+}
+
+.followPlus{
+margin-top:-8px;
+
+width:22px;
+height:22px;
+
+border-radius:50%;
+background:var(--red);
+
+display:flex;
+align-items:center;
+justify-content:center;
+
+font-weight:bold;
+
+border:2px solid #000;
+}
+
+.action{
+background:none;
+color:#fff;
+
+display:flex;
+flex-direction:column;
+align-items:center;
+
+gap:4px;
+}
+
+.actionIcon{
+width:42px;
+height:42px;
+
+display:flex;
+align-items:center;
+justify-content:center;
+
+border-radius:50%;
+background:rgba(0,0,0,.35);
+
+font-size:22px;
+}
+
+.action span{
+font-size:11px;
+color:#fff;
+}
+
+.action.liked .actionIcon,
+.action.saved .actionIcon{
+color:var(--red);
+}
+
+/* ================= BOTTOM NAV ================= */
+
+.bottomNav{
+position:fixed;
+bottom:0;
+left:0;
+right:0;
+
+height:65px;
+z-index:100;
+
+background:rgba(0,0,0,.92);
+border-top:1px solid #222;
+
+display:flex;
+justify-content:space-around;
+align-items:center;
+}
+
+.navButton{
+background:none;
+color:#888;
+
+display:flex;
+flex-direction:column;
+align-items:center;
+
+gap:3px;
+font-size:11px;
+}
+
+.navButton .navIcon{
+font-size:21px;
+}
+
+.navButton.active{
+color:#fff;
+}
+
+.createNav{
+width:48px;
+height:34px;
+
+border-radius:10px;
+background:#fff;
+color:#000;
+
+font-size:25px;
+line-height:30px;
+}
+
+/* ================= PANELS ================= */
+
+.overlayPanel{
+position:fixed;
+inset:0;
+
+z-index:200;
+
+background:#090909;
+
+transform:translateY(100%);
+transition:.25s ease;
+
+display:flex;
+flex-direction:column;
+}
+
+.overlayPanel.open{
+transform:translateY(0);
+}
+
+.panelHeader{
+height:65px;
+
+display:flex;
+align-items:center;
+gap:12px;
+
+padding:0 16px;
+
+border-bottom:1px solid #222;
+}
+
+.closeButton{
+width:38px;
+height:38px;
+
+border-radius:50%;
+background:#1b1b1b;
+color:#fff;
+
+font-size:20px;
+}
+
+.searchInput{
+flex:1;
+
+padding:13px 15px;
+
+background:#1b1b1b;
+color:#fff;
+
+border:1px solid #292929;
+border-radius:12px;
+
+outline:none;
+}
+
+.panelBody{
+padding:20px;
+overflow:auto;
+}
+
+.sectionTitle{
+font-size:18px;
+font-weight:bold;
+margin-bottom:16px;
+}
+
+.trend{
+padding:15px 0;
+border-bottom:1px solid #222;
+}
+
+.trend strong{
+display:block;
+margin-bottom:4px;
+}
+
+.trend span{
+color:#888;
+font-size:12px;
+}
+
+/* ================= COMMENTS ================= */
+
+.commentsPanel{
+position:fixed;
+left:0;
+right:0;
+bottom:0;
+
+height:75vh;
+
+z-index:300;
+
+background:#111;
+
+border-radius:22px 22px 0 0;
+
+transform:translateY(100%);
+transition:.25s ease;
+
+display:flex;
+flex-direction:column;
+}
+
+.commentsPanel.open{
+transform:translateY(0);
+}
+
+.commentsHeader{
+padding:17px;
+border-bottom:1px solid #292929;
+text-align:center;
+position:relative;
+font-weight:bold;
+}
+
+.commentsClose{
+position:absolute;
+right:15px;
+top:13px;
+
+width:34px;
+height:34px;
+
+background:#222;
+color:#fff;
+
+border-radius:50%;
+}
+
+.commentsList{
+flex:1;
+overflow:auto;
+padding:15px;
+}
+
+.comment{
+display:flex;
+gap:10px;
+margin-bottom:18px;
+}
+
+.commentAvatar{
+flex:none;
+
+width:38px;
+height:38px;
+
+border-radius:50%;
+background:#fff;
+color:#000;
+
+display:flex;
+align-items:center;
+justify-content:center;
+
+font-weight:bold;
+}
+
+.commentBody{
+flex:1;
+}
+
+.commentName{
+font-weight:bold;
+font-size:14px;
+margin-bottom:4px;
+}
+
+.commentText{
+color:#ddd;
+font-size:14px;
+line-height:1.4;
+}
+
+.commentComposer{
+padding:10px;
+
+border-top:1px solid #292929;
+
+display:flex;
+gap:8px;
+align-items:center;
+}
+
+.commentInput{
+flex:1;
+
+background:#1c1c1c;
+color:#fff;
+
+border:1px solid #292929;
+border-radius:22px;
+
+padding:12px 15px;
+
+outline:none;
+}
+
+.micButton,
+.sendButton{
+width:43px;
+height:43px;
+
+border-radius:50%;
+
+background:#222;
+color:#fff;
+}
+
+.sendButton{
+background:var(--red);
+color:#000;
+}
+
+.recording{
+background:var(--red)!important;
+color:#000!important;
+}
+
+.recordingStatus{
+padding:7px 15px;
+
+color:#ff4444;
+font-size:12px;
+
+display:none;
+}
+
+.recordingStatus.show{
+display:block;
+}
+
+/* ================= PROFILE ================= */
+
+.profilePanel{
+position:fixed;
+inset:0;
+
+z-index:250;
+
+background:#090909;
+
+transform:translateX(100%);
+transition:.25s ease;
+
+overflow:auto;
+}
+
+.profilePanel.open{
+transform:translateX(0);
+}
+
+.profileHeader{
+padding:18px;
+
+display:flex;
+justify-content:space-between;
+align-items:center;
+
+border-bottom:1px solid #222;
+}
+
+.profileTop{
+padding:30px 20px;
+text-align:center;
+}
+
+.bigAvatar{
+width:90px;
+height:90px;
+
+margin:auto;
+
+border-radius:50%;
+background:#fff;
+color:#000;
+
+display:flex;
+align-items:center;
+justify-content:center;
+
+font-size:38px;
+font-weight:bold;
+}
+
+.profileName{
+font-size:21px;
+font-weight:bold;
+margin-top:13px;
+}
+
+.profileUsername{
+color:#888;
+margin-top:4px;
+}
+
+.profileStats{
+display:flex;
+justify-content:center;
+
+gap:40px;
+margin-top:22px;
+}
+
+.stat strong{
+display:block;
+font-size:18px;
+}
+
+.stat span{
+color:#888;
+font-size:12px;
+}
+
+.profileActions{
+display:flex;
+justify-content:center;
+
+gap:10px;
+margin-top:25px;
+}
+
+.profileButton{
+padding:11px 22px;
+
+border-radius:10px;
+background:#222;
+color:#fff;
+}
+
+.profileButton.red{
+background:var(--red);
+color:#000;
+}
+
+.profileGrid{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+
+gap:2px;
+margin-top:20px;
+}
+
+.gridItem{
+aspect-ratio:1;
+
+background:#191919;
+
+display:flex;
+align-items:center;
+justify-content:center;
+
+font-size:30px;
+}
+
+.gridItem:nth-child(2){
+background:#250000;
+}
+
+.gridItem:nth-child(3){
+background:#222;
+}
+
+/* ================= CREATE ================= */
+
+.createPanel{
+position:fixed;
+inset:0;
+
+z-index:350;
+
+background:#090909;
+
+transform:translateY(100%);
+transition:.25s ease;
+
+padding:20px;
+}
+
+.createPanel.open{
+transform:translateY(0);
+}
+
+.createOptions{
+display:grid;
+
+grid-template-columns:1fr 1fr;
+
+gap:14px;
+margin-top:30px;
+}
+
+.createOption{
+background:#191919;
+
+border:1px solid #292929;
+
+border-radius:18px;
+
+padding:30px 15px;
+
+color:#fff;
+text-align:center;
+}
+
+.createOption div{
+font-size:38px;
+margin-bottom:10px;
+}
+
+.createOption p{
+color:#888;
+margin-top:6px;
+font-size:12px;
+}
+
+/* ================= TOAST ================= */
+
+.toast{
+position:fixed;
+
+left:50%;
+bottom:85px;
+
+transform:
+translateX(-50%)
+translateY(20px);
+
+background:#fff;
+color:#000;
+
+padding:11px 17px;
+
+border-radius:20px;
+
+z-index:1000;
+
+opacity:0;
+pointer-events:none;
+
+transition:.2s;
+
+font-size:13px;
+}
+
+.toast.show{
+opacity:1;
+
+transform:
+translateX(-50%)
+translateY(0);
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media(max-width:600px){
+
+.feedTabs{
+gap:12px;
+}
+
+.feedTabs button{
+font-size:12px;
+}
+
+.topLogo{
+font-size:25px;
+}
+
+.postContent{
+bottom:72px;
+}
+
+.actions{
+bottom:85px;
+}
+
+.authBox{
+padding:25px 20px;
+}
+
+}

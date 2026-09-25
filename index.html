@@ -1341,4 +1341,1230 @@ button{
 
           <span>
             21.3K
-          </spa
+          </span>
+
+</button>
+
+<button
+  class="action"
+  onclick="openComments()">
+
+  <div class="actionIcon">
+    💬
+  </div>
+
+  <span>
+    1.2K
+  </span>
+
+</button>
+
+<button
+  class="action"
+  onclick="sharePost()">
+
+  <div class="actionIcon">
+    ↗
+  </div>
+
+  <span>
+    Share
+  </span>
+
+</button>
+
+<button
+  class="action"
+  onclick="savePost(this)">
+
+  <div class="actionIcon">
+    🔖
+  </div>
+
+  <span>
+    Save
+  </span>
+
+</button>
+
+</div>
+
+<div class="postContent">
+
+  <div class="postInfo">
+
+    <div class="username">
+      @OTAcommunity
+
+      <span class="verified">
+        ✓
+      </span>
+    </div>
+
+    <div class="caption">
+      Africa has a voice. OTA X is built for creators, communities and everyone.
+    </div>
+
+    <div class="sound">
+      🎵 Original sound · OTA Community
+    </div>
+
+  </div>
+
+</div>
+
+</article>
+
+
+<!-- ================= BOTTOM NAV ================= -->
+
+<nav class="bottomNav">
+
+  <button
+    class="navButton active"
+    onclick="goHome()">
+
+    <span class="navIcon">
+      ⌂
+    </span>
+
+    Home
+
+  </button>
+
+  <button
+    class="navButton"
+    onclick="openSearch()">
+
+    <span class="navIcon">
+      ⌕
+    </span>
+
+    Search
+
+  </button>
+
+  <button
+    class="navButton"
+    onclick="openCreate()">
+
+    <span class="createNav">
+      +
+    </span>
+
+    Create
+
+  </button>
+
+  <button
+    class="navButton"
+    onclick="openInbox()">
+
+    <span class="navIcon">
+      ♡
+    </span>
+
+    Inbox
+
+  </button>
+
+  <button
+    class="navButton"
+    onclick="openProfile()">
+
+    <span class="navIcon">
+      ♙
+    </span>
+
+    Profile
+
+  </button>
+
+</nav>
+
+
+<!-- ================= SEARCH ================= -->
+
+<section
+  id="searchPanel"
+  class="overlayPanel">
+
+  <div class="panelHeader">
+
+    <button
+      class="closeButton"
+      onclick="closeSearch()">
+      ←
+    </button>
+
+    <input
+      id="searchInput"
+      class="searchInput"
+      placeholder="Search OTA X..."
+      oninput="performSearch()">
+
+  </div>
+
+  <div class="panelBody">
+
+    <div class="sectionTitle">
+      Trending
+    </div>
+
+    <div class="trend">
+      <strong>#OTAX</strong>
+      <span>Trending on OTA X</span>
+    </div>
+
+    <div class="trend">
+      <strong>#Africa</strong>
+      <span>Popular in Africa</span>
+    </div>
+
+    <div class="trend">
+      <strong>#Football</strong>
+      <span>Sports creators</span>
+    </div>
+
+    <div class="trend">
+      <strong>#Music</strong>
+      <span>Popular sounds</span>
+    </div>
+
+    <div class="trend">
+      <strong>#Creators</strong>
+      <span>Creator community</span>
+    </div>
+
+    <div
+      id="searchResults"
+      style="margin-top:25px;color:#aaa;">
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- ================= COMMENTS ================= -->
+
+<section
+  id="commentsPanel"
+  class="commentsPanel">
+
+  <div class="commentsHeader">
+
+    Comments
+
+    <button
+      class="commentsClose"
+      onclick="closeComments()">
+      ×
+    </button>
+
+  </div>
+
+  <div
+    id="commentsList"
+    class="commentsList">
+
+    <div class="comment">
+
+      <div class="commentAvatar">
+        J
+      </div>
+
+      <div class="commentBody">
+
+        <div class="commentName">
+          @james
+        </div>
+
+        <div class="commentText">
+          OTA X is looking really good 🔥
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="comment">
+
+      <div class="commentAvatar">
+        M
+      </div>
+
+      <div class="commentBody">
+
+        <div class="commentName">
+          @maria
+        </div>
+
+        <div class="commentText">
+          Can't wait to see more creators here.
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <div
+    id="recordingStatus"
+    class="recordingStatus">
+    Recording voice note... Tap the microphone again to stop.
+  </div>
+
+  <div class="commentComposer">
+
+    <input
+      id="commentInput"
+      class="commentInput"
+      placeholder="Add a comment...">
+
+    <button
+      id="micButton"
+      class="micButton"
+      onclick="toggleVoiceRecording()">
+      🎙
+    </button>
+
+    <button
+      class="sendButton"
+      onclick="sendComment()">
+      ➤
+    </button>
+
+  </div>
+
+</section>
+
+
+<!-- ================= CREATE ================= -->
+
+<section
+  id="createPanel"
+  class="createPanel">
+
+  <div class="panelHeader">
+
+    <button
+      class="closeButton"
+      onclick="closeCreate()">
+      ×
+    </button>
+
+    <strong>
+      Create
+    </strong>
+
+  </div>
+
+  <div class="createOptions">
+
+    <button
+      class="createOption"
+      onclick="createComingSoon('Video')">
+
+      <div>▶</div>
+      Video
+
+    </button>
+
+    <button
+      class="createOption"
+      onclick="createComingSoon('Photo')">
+
+      <div>◉</div>
+      Photo
+
+    </button>
+
+    <button
+      class="createOption"
+      onclick="createComingSoon('Story')">
+
+      <div>◎</div>
+      Story
+
+    </button>
+
+    <button
+      class="createOption"
+      onclick="createComingSoon('Community')">
+
+      <div>♧</div>
+      Community
+
+    </button>
+
+  </div>
+
+</section>
+
+
+<!-- ================= PROFILE ================= -->
+
+<section
+  id="profilePanel"
+  class="profilePanel">
+
+  <div class="profileHeader">
+
+    <button
+      class="closeButton"
+      onclick="closeProfile()">
+      ←
+    </button>
+
+    <strong>
+      Profile
+    </strong>
+
+    <button
+      class="closeButton"
+      onclick="logoutUser()">
+      ⇥
+    </button>
+
+  </div>
+
+  <div class="profileTop">
+
+    <div
+      id="profileAvatar"
+      class="bigAvatar">
+      O
+    </div>
+
+    <div
+      id="profileName"
+      class="profileName">
+      OTA Creator
+    </div>
+
+    <div
+      id="profileUsername"
+      class="profileUsername">
+      @creator
+    </div>
+
+    <div class="profileStats">
+
+      <div class="stat">
+        <strong>0</strong>
+        <span>Following</span>
+      </div>
+
+      <div class="stat">
+        <strong>0</strong>
+        <span>Followers</span>
+      </div>
+
+      <div class="stat">
+        <strong>0</strong>
+        <span>Likes</span>
+      </div>
+
+    </div>
+
+    <div class="profileActions">
+
+      <button
+        class="profileButton red"
+        onclick="showToast('Edit profile coming soon')">
+        Edit Profile
+      </button>
+
+      <button
+        class="profileButton"
+        onclick="showToast('Settings coming soon')">
+        Settings
+      </button>
+
+    </div>
+
+  </div>
+
+  <div class="profileGrid">
+
+    <div class="gridItem">+</div>
+    <div class="gridItem">▶</div>
+    <div class="gridItem">◎</div>
+    <div class="gridItem">◉</div>
+    <div class="gridItem">OTA</div>
+    <div class="gridItem">X</div>
+
+  </div>
+
+</section>
+
+
+<!-- ================= TOAST ================= -->
+
+<div
+  id="toast"
+  class="toast">
+</div>
+
+</div>
+
+
+<script>
+
+const API_URL = "https://ota-x-backend.onrender.com";
+
+let mediaRecorder = null;
+let audioChunks = [];
+let isRecording = false;
+
+
+function showAuth(type){
+
+  const loginForm =
+    document.getElementById("loginForm");
+
+  const signupForm =
+    document.getElementById("signupForm");
+
+  const loginTab =
+    document.getElementById("loginTab");
+
+  const signupTab =
+    document.getElementById("signupTab");
+
+  document.getElementById("authMessage").textContent = "";
+
+  if(type === "login"){
+
+    loginForm.classList.add("active");
+    signupForm.classList.remove("active");
+
+    loginTab.classList.add("active");
+    signupTab.classList.remove("active");
+
+  }else{
+
+    signupForm.classList.add("active");
+    loginForm.classList.remove("active");
+
+    signupTab.classList.add("active");
+    loginTab.classList.remove("active");
+
+  }
+
+}
+
+
+async function registerUser(event){
+
+  event.preventDefault();
+
+  const username =
+    document.getElementById("signupUsername").value.trim();
+
+  const email =
+    document.getElementById("signupEmail").value.trim();
+
+  const password =
+    document.getElementById("signupPassword").value;
+
+  const message =
+    document.getElementById("authMessage");
+
+  message.textContent = "Creating account...";
+
+  try{
+
+    const response =
+      await fetch(`${API_URL}/api/auth/register`,{
+
+        method:"POST",
+
+        headers:{
+          "Content-Type":"application/json"
+        },
+
+        body:JSON.stringify({
+          username,
+          email,
+          password
+        })
+
+      });
+
+    const data = await response.json();
+
+    if(!response.ok){
+
+      message.textContent =
+        data.error ||
+        data.message ||
+        "Registration failed.";
+
+      return;
+
+    }
+
+    message.style.color = "#55ff88";
+
+    message.textContent =
+      "Account created. You can now log in.";
+
+    document.getElementById("signupForm").reset();
+
+    setTimeout(()=>{
+      showAuth("login");
+    },1000);
+
+  }catch(error){
+
+    console.error(error);
+
+    message.textContent =
+      "Could not connect to OTA X server.";
+
+  }
+
+}
+
+
+async function loginUser(event){
+
+  event.preventDefault();
+
+  const email =
+    document.getElementById("loginEmail").value.trim();
+
+  const password =
+    document.getElementById("loginPassword").value;
+
+  const message =
+    document.getElementById("authMessage");
+
+  message.textContent = "Logging in...";
+
+  try{
+
+    const response =
+      await fetch(`${API_URL}/api/auth/login`,{
+
+        method:"POST",
+
+        headers:{
+          "Content-Type":"application/json"
+        },
+
+        body:JSON.stringify({
+          email,
+          password
+        })
+
+      });
+
+    const data = await response.json();
+
+    if(!response.ok){
+
+      message.textContent =
+        data.error ||
+        data.message ||
+        "Login failed.";
+
+      return;
+
+    }
+
+    localStorage.setItem(
+      "ota_token",
+      data.token
+    );
+
+    localStorage.setItem(
+      "ota_user",
+      JSON.stringify(data.user)
+    );
+
+    showApp();
+
+  }catch(error){
+
+    console.error(error);
+
+    message.textContent =
+      "Could not connect to OTA X server.";
+
+  }
+
+}
+
+
+function showApp(){
+
+  document
+    .getElementById("authScreen")
+    .classList.add("hidden");
+
+  document
+    .getElementById("app")
+    .classList.remove("hidden");
+
+  loadProfile();
+
+}
+
+
+function checkExistingLogin(){
+
+  if(localStorage.getItem("ota_token")){
+    showApp();
+  }
+
+}
+
+
+function logoutUser(){
+
+  localStorage.removeItem("ota_token");
+  localStorage.removeItem("ota_user");
+
+  document
+    .getElementById("app")
+    .classList.add("hidden");
+
+  document
+    .getElementById("authScreen")
+    .classList.remove("hidden");
+
+  closeProfile();
+
+}
+
+
+function loadProfile(){
+
+  const userJSON =
+    localStorage.getItem("ota_user");
+
+  if(!userJSON) return;
+
+  try{
+
+    const user =
+      JSON.parse(userJSON);
+
+    const username =
+      user.username || "OTA User";
+
+    document.getElementById("profileName")
+      .textContent = username;
+
+    document.getElementById("profileUsername")
+      .textContent = "@" + username;
+
+    document.getElementById("profileAvatar")
+      .textContent =
+        username.charAt(0).toUpperCase();
+
+  }catch(error){
+
+    console.error(error);
+
+  }
+
+}
+
+
+function switchFeed(type){
+
+  const following =
+    document.getElementById("followingTab");
+
+  const forYou =
+    document.getElementById("forYouTab");
+
+  if(type === "following"){
+
+    following.classList.add("active");
+    forYou.classList.remove("active");
+
+    showToast("Following feed selected");
+
+  }else{
+
+    forYou.classList.add("active");
+    following.classList.remove("active");
+
+  }
+
+}
+
+
+function goHome(){
+
+  closeSearch();
+  closeComments();
+  closeProfile();
+  closeCreate();
+
+  document
+    .getElementById("feed")
+    .scrollTo({
+      top:0,
+      behavior:"smooth"
+    });
+
+}
+
+
+function toggleLike(button){
+
+  button.classList.toggle("liked");
+
+  const icon =
+    button.querySelector(".actionIcon");
+
+  icon.textContent =
+    button.classList.contains("liked")
+    ? "♥"
+    : "♡";
+
+}
+
+
+function savePost(button){
+
+  button.classList.toggle("saved");
+
+  showToast(
+    button.classList.contains("saved")
+    ? "Post saved"
+    : "Post removed from saved"
+  );
+
+}
+
+
+async function sharePost(){
+
+  try{
+
+    if(navigator.share){
+
+      await navigator.share({
+        title:"OTA X",
+        text:"Check this post on OTA X"
+      });
+
+    }else{
+
+      await navigator.clipboard.writeText(
+        window.location.href
+      );
+
+      showToast("Link copied");
+
+    }
+
+  }catch(error){
+
+    console.log(error);
+
+  }
+
+}
+
+
+function openSearch(){
+
+  document
+    .getElementById("searchPanel")
+    .classList.add("open");
+
+}
+
+
+function closeSearch(){
+
+  document
+    .getElementById("searchPanel")
+    .classList.remove("open");
+
+}
+
+
+function performSearch(){
+
+  const value =
+    document.getElementById("searchInput")
+      .value.trim();
+
+  const results =
+    document.getElementById("searchResults");
+
+  if(!value){
+
+    results.innerHTML = "";
+
+    return;
+
+  }
+
+  results.innerHTML =
+    "Searching OTA X for <strong>" +
+    escapeHTML(value) +
+    "</strong>...";
+
+}
+
+
+function openComments(){
+
+  document
+    .getElementById("commentsPanel")
+    .classList.add("open");
+
+}
+
+
+function closeComments(){
+
+  document
+    .getElementById("commentsPanel")
+    .classList.remove("open");
+
+}
+
+
+function sendComment(){
+
+  const input =
+    document.getElementById("commentInput");
+
+  const text =
+    input.value.trim();
+
+  if(!text) return;
+
+  const list =
+    document.getElementById("commentsList");
+
+  const comment =
+    document.createElement("div");
+
+  comment.className = "comment";
+
+  comment.innerHTML = `
+
+    <div class="commentAvatar">
+      Y
+    </div>
+
+    <div class="commentBody">
+
+      <div class="commentName">
+        @You
+      </div>
+
+      <div class="commentText">
+        ${escapeHTML(text)}
+      </div>
+
+    </div>
+
+  `;
+
+  list.appendChild(comment);
+
+  input.value = "";
+
+  list.scrollTop = list.scrollHeight;
+
+}
+
+
+async function toggleVoiceRecording(){
+
+  if(isRecording){
+
+    stopVoiceRecording();
+
+  }else{
+
+    await startVoiceRecording();
+
+  }
+
+}
+
+
+async function startVoiceRecording(){
+
+  try{
+
+    const stream =
+      await navigator.mediaDevices.getUserMedia({
+        audio:true
+      });
+
+    audioChunks = [];
+
+    mediaRecorder =
+      new MediaRecorder(stream);
+
+    mediaRecorder.ondataavailable =
+      event => {
+
+        if(event.data.size > 0){
+          audioChunks.push(event.data);
+        }
+
+      };
+
+    mediaRecorder.onstop =
+      () => {
+
+        const audioBlob =
+          new Blob(audioChunks,{
+            type:"audio/webm"
+          });
+
+        const audioURL =
+          URL.createObjectURL(audioBlob);
+
+        addVoiceComment(audioURL);
+
+        stream
+          .getTracks()
+          .forEach(track=>track.stop());
+
+      };
+
+    mediaRecorder.start();
+
+    isRecording = true;
+
+    document
+      .getElementById("micButton")
+      .classList.add("recording");
+
+    document
+      .getElementById("recordingStatus")
+      .classList.add("show");
+
+  }catch(error){
+
+    console.error(error);
+
+    showToast(
+      "Microphone permission was not allowed."
+    );
+
+  }
+
+}
+
+
+function stopVoiceRecording(){
+
+  if(
+    mediaRecorder &&
+    mediaRecorder.state !== "inactive"
+  ){
+
+    mediaRecorder.stop();
+
+  }
+
+  isRecording = false;
+
+  document
+    .getElementById("micButton")
+    .classList.remove("recording");
+
+  document
+    .getElementById("recordingStatus")
+    .classList.remove("show");
+
+}
+
+
+function addVoiceComment(audioURL){
+
+  const list =
+    document.getElementById("commentsList");
+
+  const comment =
+    document.createElement("div");
+
+  comment.className = "comment";
+
+  comment.innerHTML = `
+
+    <div class="commentAvatar">
+      Y
+    </div>
+
+    <div class="commentBody">
+
+      <div class="commentName">
+        @You
+      </div>
+
+      <div class="voiceComment">
+
+        <button
+          class="voicePlay"
+          onclick="playVoice(this)">
+          ▶
+        </button>
+
+        <div class="voiceLabel">
+          Voice note
+        </div>
+
+        <audio
+          class="voiceAudio"
+          src="${audioURL}">
+        </audio>
+
+      </div>
+
+    </div>
+
+  `;
+
+  list.appendChild(comment);
+
+  list.scrollTop =
+    list.scrollHeight;
+
+}
+
+
+function playVoice(button){
+
+  const audio =
+    button.parentElement
+      .querySelector(".voiceAudio");
+
+  if(audio.paused){
+
+    audio.play();
+
+    button.textContent = "❚❚";
+
+    audio.onended =
+      () => {
+        button.textContent = "▶";
+      };
+
+  }else{
+
+    audio.pause();
+
+    button.textContent = "▶";
+
+  }
+
+}
+
+
+function openCreate(){
+
+  document
+    .getElementById("createPanel")
+    .classList.add("open");
+
+}
+
+
+function closeCreate(){
+
+  document
+    .getElementById("createPanel")
+    .classList.remove("open");
+
+}
+
+
+function createComingSoon(type){
+
+  showToast(
+    type + " upload will be connected next."
+  );
+
+}
+
+
+function openInbox(){
+
+  showToast(
+    "Inbox and messaging are coming next."
+  );
+
+}
+
+
+function openProfile(){
+
+  loadProfile();
+
+  document
+    .getElementById("profilePanel")
+    .classList.add("open");
+
+}
+
+
+function closeProfile(){
+
+  document
+    .getElementById("profilePanel")
+    .classList.remove("open");
+
+}
+
+
+let toastTimer;
+
+function showToast(message){
+
+  const toast =
+    document.getElementById("toast");
+
+  toast.textContent = message;
+
+  toast.classList.add("show");
+
+  clearTimeout(toastTimer);
+
+  toastTimer =
+    setTimeout(()=>{
+
+      toast.classList.remove("show");
+
+    },2200);
+
+}
+
+
+function escapeHTML(value){
+
+  return String(value)
+    .replace(/&/g,"&amp;")
+    .replace(/</g,"&lt;")
+    .replace(/>/g,"&gt;")
+    .replace(/"/g,"&quot;")
+    .replace(/'/g,"&#039;");
+
+}
+
+
+checkExistingLogin();
+
+</script>
+
+</body>
+  </html>

@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>OTA X</title>
 
   <style>
@@ -12,8 +12,7 @@
       padding: 0;
     }
 
-    html,
-    body {
+    html, body {
       width: 100%;
       height: 100%;
       overflow: hidden;
@@ -22,8 +21,7 @@
       color: #fff;
     }
 
-    button,
-    input {
+    button, input {
       font: inherit;
     }
 
@@ -33,7 +31,7 @@
     }
 
     /* =========================
-       AUTH SCREEN
+       AUTH
     ========================= */
 
     #authScreen {
@@ -134,11 +132,10 @@
       min-height: 22px;
       margin-top: 15px;
       font-size: 13px;
-      color: #ff4d4d;
     }
 
     /* =========================
-       MAIN APP
+       APP
     ========================= */
 
     #app {
@@ -293,7 +290,7 @@
     }
 
     /* =========================
-       RIGHT ACTIONS
+       ACTIONS
     ========================= */
 
     .actions {
@@ -343,6 +340,10 @@
       border: 2px solid #fff;
     }
 
+    .avatarWrap {
+      position: relative;
+    }
+
     .followPlus {
       position: absolute;
       bottom: -7px;
@@ -355,10 +356,6 @@
       align-items: center;
       justify-content: center;
       font-size: 15px;
-    }
-
-    .avatarWrap {
-      position: relative;
     }
 
     /* =========================
@@ -452,7 +449,7 @@
     }
 
     /* =========================
-       SEARCH PANEL
+       SEARCH
     ========================= */
 
     .panel {
@@ -525,7 +522,7 @@
       left: 0;
       right: 0;
       bottom: 0;
-      height: 65%;
+      height: 70%;
       z-index: 700;
       background: #111;
       border-radius: 20px 20px 0 0;
@@ -577,6 +574,7 @@
 
     .commentText {
       font-size: 13px;
+      line-height: 1.4;
     }
 
     .commentText span {
@@ -584,6 +582,124 @@
       color: #777;
       font-size: 11px;
       margin-top: 4px;
+    }
+
+    /* VOICE COMMENT */
+
+    .voiceComment {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 8px;
+      background: #1c1c1c;
+      border-radius: 18px;
+      padding: 8px 12px;
+      width: 210px;
+    }
+
+    .voicePlay {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: #e50914;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      flex-shrink: 0;
+    }
+
+    .voiceWave {
+      flex: 1;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      gap: 3px;
+    }
+
+    .voiceWave i {
+      width: 3px;
+      border-radius: 5px;
+      background: #aaa;
+      display: block;
+    }
+
+    .voiceTime {
+      font-size: 10px;
+      color: #aaa;
+    }
+
+    .commentComposer {
+      border-top: 1px solid #292929;
+      padding: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: #111;
+    }
+
+    .commentInput {
+      flex: 1;
+      min-width: 0;
+      padding: 12px;
+      border-radius: 22px;
+      border: 1px solid #303030;
+      background: #1b1b1b;
+      color: #fff;
+      outline: none;
+    }
+
+    .voiceRecordButton,
+    .sendCommentButton {
+      width: 43px;
+      height: 43px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .voiceRecordButton {
+      background: #252525;
+      color: #fff;
+      font-size: 19px;
+    }
+
+    .voiceRecordButton.recording {
+      background: #e50914;
+      animation: pulse 1s infinite;
+    }
+
+    .sendCommentButton {
+      background: #e50914;
+      color: #fff;
+      font-size: 17px;
+    }
+
+    .recordingStatus {
+      position: absolute;
+      left: 15px;
+      bottom: 66px;
+      right: 15px;
+      display: none;
+      background: #e50914;
+      border-radius: 10px;
+      padding: 9px;
+      text-align: center;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .recordingStatus.active {
+      display: block;
+    }
+
+    @keyframes pulse {
+      50% {
+        transform: scale(1.08);
+      }
     }
 
     /* =========================
@@ -607,6 +723,7 @@
       padding: 65px 20px 20px;
       text-align: center;
       border-bottom: 1px solid #222;
+      position: relative;
     }
 
     .profileBigAvatar {
@@ -649,6 +766,15 @@
     .stat span {
       color: #888;
       font-size: 11px;
+    }
+
+    .logoutButton {
+      margin-top: 20px;
+      padding: 10px 22px;
+      border-radius: 8px;
+      background: #1c1c1c;
+      color: #fff;
+      border: 1px solid #333;
     }
 
     .profileGrid {
@@ -700,6 +826,7 @@
       font-weight: 700;
       z-index: 99999;
       display: none;
+      white-space: nowrap;
     }
   </style>
 </head>
@@ -723,6 +850,7 @@
       </div>
 
       <div class="authTabs">
+
         <button
           id="loginTab"
           class="authTab active"
@@ -736,6 +864,7 @@
           onclick="showAuthForm('signup')">
           Sign Up
         </button>
+
       </div>
 
       <!-- LOGIN -->
@@ -751,7 +880,7 @@
           type="email"
           placeholder="Email"
           autocomplete="email"
-          required />
+          required>
 
         <input
           id="loginPassword"
@@ -759,7 +888,7 @@
           type="password"
           placeholder="Password"
           autocomplete="current-password"
-          required />
+          required>
 
         <button
           id="loginButton"
@@ -783,7 +912,7 @@
           type="text"
           placeholder="Username"
           autocomplete="username"
-          required />
+          required>
 
         <input
           id="signupEmail"
@@ -791,7 +920,7 @@
           type="email"
           placeholder="Email"
           autocomplete="email"
-          required />
+          required>
 
         <input
           id="signupPassword"
@@ -799,7 +928,7 @@
           type="password"
           placeholder="Password"
           autocomplete="new-password"
-          required />
+          required>
 
         <button
           id="signupButton"
@@ -818,7 +947,7 @@
 
 
   <!-- =========================
-       MAIN OTA X APP
+       MAIN APP
   ========================= -->
 
   <main id="app">
@@ -856,7 +985,9 @@
     </header>
 
 
-    <!-- FEED -->
+    <!-- =========================
+         FEED
+    ========================= -->
 
     <section class="feed">
 
@@ -938,109 +1069,4 @@
 
         <div class="videoCenter">
           <div class="play">▶</div>
-          <p>Create something original</p>
-        </div>
-
-        <div class="darkOverlay"></div>
-
-        <div class="actions">
-
-          <div class="avatarWrap">
-            <div class="avatar">A</div>
-            <div class="followPlus">+</div>
-          </div>
-
-          <button
-            class="action likeButton"
-            onclick="toggleLike(this)">
-            <div class="actionIcon">♡</div>
-            <div class="likeCount">8.7K</div>
-          </button>
-
-          <button
-            class="action"
-            onclick="openComments()">
-            <div class="actionIcon">💬</div>
-            <div>421</div>
-          </button>
-
-          <button
-            class="action"
-            onclick="sharePost()">
-            <div class="actionIcon">↗</div>
-            <div>Share</div>
-          </button>
-
-          <button
-            class="action"
-            onclick="savePost(this)">
-            <div class="actionIcon">🔖</div>
-            <div>Save</div>
-          </button>
-
-        </div>
-
-        <div class="postInfo">
-
-          <div class="username">
-            @OTAx3
-            <span class="verified">✓</span>
-          </div>
-
-          <div class="caption">
-            Your world. Your creativity. Your community.
-          </div>
-
-          <div class="sound">
-            ♪ Original sound
-          </div>
-
-        </div>
-
-      </article>
-
-
-      <!-- POST 3 -->
-
-      <article class="post">
-
-        <div class="videoBg three"></div>
-
-        <div class="videoCenter">
-          <div class="play">▶</div>
-          <p>Discover OTA X</p>
-        </div>
-
-        <div class="darkOverlay"></div>
-
-        <div class="actions">
-
-          <div class="avatarWrap">
-            <div class="avatar">X</div>
-            <div class="followPlus">+</div>
-          </div>
-
-          <button
-            class="action likeButton"
-            onclick="toggleLike(this)">
-            <div class="actionIcon">♡</div>
-            <div class="likeCount">5.2K</div>
-          </button>
-
-          <button
-            class="action"
-            onclick="openComments()">
-            <div class="actionIcon">💬</div>
-            <div>190</div>
-          </button>
-
-          <button
-            class="action"
-            onclick="sharePost()">
-            <div class="actionIcon">↗</div>
-            <div>Share</div>
-          </button>
-
-          <button
-            class="action"
-  
+          <p>Create s

@@ -1,1079 +1,1054 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>OTA X</title>
-
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    html, body {
-      width: 100%;
-      height: 100%;
-      overflow: hidden;
-      font-family: Arial, Helvetica, sans-serif;
-      background: #000;
-      color: #fff;
-    }
-
-    button,
-    input {
-      font: inherit;
-    }
-
-    button {
-      border: none;
-      cursor: pointer;
-    }
-
-    /* =========================
-       AUTH
-    ========================= */
-
-    #authScreen {
-      position: fixed;
-      inset: 0;
-      z-index: 9999;
-      background: #000;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 25px;
-      overflow-y: auto;
-    }
-
-    .authBox {
-      width: 100%;
-      max-width: 390px;
-      text-align: center;
-    }
-
-    .authLogo {
-      font-size: 48px;
-      font-weight: 900;
-      letter-spacing: -4px;
-      margin-bottom: 8px;
-    }
-
-    .authLogo span {
-      color: #e50914;
-    }
-
-    .authSubtitle {
-      color: #aaa;
-      font-size: 14px;
-      margin-bottom: 30px;
-    }
-
-    .authTabs {
-      display: flex;
-      background: #151515;
-      border-radius: 12px;
-      padding: 4px;
-      margin-bottom: 20px;
-    }
-
-    .authTab {
-      flex: 1;
-      padding: 12px;
-      background: transparent;
-      color: #aaa;
-      border-radius: 9px;
-      font-weight: 700;
-    }
-
-    .authTab.active {
-      background: #e50914;
-      color: #fff;
-    }
-
-    .authForm {
-      display: none;
-    }
-
-    .authForm.active {
-      display: block;
-    }
-
-    .authInput {
-      width: 100%;
-      padding: 15px;
-      margin-bottom: 12px;
-      border: 1px solid #292929;
-      border-radius: 10px;
-      background: #111;
-      color: #fff;
-      outline: none;
-    }
-
-    .authInput:focus {
-      border-color: #e50914;
-    }
-
-    .authButton {
-      width: 100%;
-      padding: 15px;
-      border-radius: 10px;
-      background: #e50914;
-      color: #fff;
-      font-weight: 800;
-      margin-top: 5px;
-    }
-
-    .authButton:disabled {
-      opacity: .6;
-    }
-
-    #authMessage {
-      min-height: 22px;
-      margin-top: 15px;
-      font-size: 13px;
-    }
-
-    /* =========================
-       APP
-    ========================= */
-
-    #app {
-      display: none;
-      width: 100%;
-      height: 100%;
-      position: relative;
-      background: #000;
-    }
-
-    .topBar {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 65px;
-      z-index: 100;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 16px;
-      background: linear-gradient(
-        to bottom,
-        rgba(0,0,0,.8),
-        transparent
-      );
-    }
-
-    .logo {
-      font-size: 25px;
-      font-weight: 900;
-      letter-spacing: -2px;
-    }
-
-    .logo span {
-      color: #e50914;
-    }
-
-    .feedTabs {
-      display: flex;
-      gap: 20px;
-      position: absolute;
-      left: 50%;
-      transform: translateX(-50%);
-    }
-
-    .feedTab {
-      background: none;
-      color: #aaa;
-      font-weight: 700;
-      font-size: 14px;
-    }
-
-    .feedTab.active {
-      color: #fff;
-    }
-
-    .searchTop {
-      background: rgba(255,255,255,.12);
-      color: #fff;
-      width: 38px;
-      height: 38px;
-      border-radius: 50%;
-      font-size: 19px;
-    }
-
-    /* =========================
-       FEED
-    ========================= */
-
-    .feed {
-      width: 100%;
-      height: 100%;
-      overflow-y: auto;
-      scroll-snap-type: y mandatory;
-      scrollbar-width: none;
-    }
-
-    .feed::-webkit-scrollbar {
-      display: none;
-    }
-
-    .post {
-      width: 100%;
-      height: 100vh;
-      position: relative;
-      scroll-snap-align: start;
-      overflow: hidden;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .videoBg {
-      position: absolute;
-      inset: 0;
-      background:
-        radial-gradient(circle at 20% 20%, #e50914, transparent 30%),
-        radial-gradient(circle at 80% 70%, #450008, transparent 35%),
-        linear-gradient(135deg, #080808, #260000);
-    }
-
-    .videoBg.two {
-      background:
-        radial-gradient(circle at 80% 20%, #ff3340, transparent 25%),
-        radial-gradient(circle at 20% 80%, #300006, transparent 40%),
-        linear-gradient(135deg, #000, #170000);
-    }
-
-    .videoBg.three {
-      background:
-        radial-gradient(circle at 50% 20%, #a0000b, transparent 30%),
-        radial-gradient(circle at 50% 80%, #1d1d1d, transparent 40%),
-        linear-gradient(135deg, #050505, #120000);
-    }
-
-    .videoCenter {
-      position: relative;
-      z-index: 1;
-      text-align: center;
-      opacity: .9;
-    }
-
-    .videoCenter .play {
-      width: 75px;
-      height: 75px;
-      border: 2px solid rgba(255,255,255,.8);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: auto;
-      font-size: 30px;
-      padding-left: 4px;
-    }
-
-    .videoCenter p {
-      margin-top: 12px;
-      font-size: 12px;
-      color: #ddd;
-    }
-
-    .darkOverlay {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(
-        to top,
-        rgba(0,0,0,.9),
-        transparent 45%,
-        rgba(0,0,0,.25)
-      );
-    }
-
-    /* =========================
-       ACTIONS
-    ========================= */
-
-    .actions {
-      position: absolute;
-      right: 12px;
-      bottom: 115px;
-      z-index: 20;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 18px;
-    }
-
-    .action {
-      background: none;
-      color: #fff;
-      text-align: center;
-      font-size: 12px;
-      font-weight: 700;
-    }
-
-    .actionIcon {
-      width: 45px;
-      height: 45px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 50%;
-      background: rgba(0,0,0,.3);
-      font-size: 24px;
-      margin-bottom: 4px;
-    }
-
-    .likeButton.liked .actionIcon {
-      color: #e50914;
-    }
-
-    .avatar {
-      width: 45px;
-      height: 45px;
-      border-radius: 50%;
-      background: #e50914;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 900;
-      border: 2px solid #fff;
-    }
-
-    .avatarWrap {
-      position: relative;
-    }
-
-    .followPlus {
-      position: absolute;
-      bottom: -7px;
-      right: -4px;
-      background: #e50914;
-      width: 19px;
-      height: 19px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 15px;
-    }
-
-    /* =========================
-       POST INFO
-    ========================= */
-
-    .postInfo {
-      position: absolute;
-      left: 15px;
-      right: 75px;
-      bottom: 92px;
-      z-index: 10;
-    }
-
-    .username {
-      font-weight: 900;
-      font-size: 16px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      margin-bottom: 8px;
-    }
-
-    .verified {
-      width: 18px;
-      height: 18px;
-      border-radius: 50%;
-      background: #e50914;
-      color: #000;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 11px;
-      font-weight: 900;
-    }
-
-    .caption {
-      font-size: 14px;
-      line-height: 1.4;
-      margin-bottom: 8px;
-    }
-
-    .sound {
-      font-size: 12px;
-      color: #ddd;
-    }
-
-    /* =========================
-       BOTTOM NAV
-    ========================= */
-
-    .bottomNav {
-      position: fixed;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      height: 65px;
-      z-index: 200;
-      display: flex;
-      justify-content: space-around;
-      align-items: center;
-      background: rgba(0,0,0,.88);
-      border-top: 1px solid #202020;
-    }
-
-    .navItem {
-      background: none;
-      color: #aaa;
-      font-size: 10px;
-      min-width: 55px;
-    }
-
-    .navItem .navIcon {
-      font-size: 21px;
-      display: block;
-      margin-bottom: 3px;
-    }
-
-    .navItem.active {
-      color: #fff;
-    }
-
-    .createButton {
-      width: 48px;
-      height: 32px;
-      border-radius: 9px;
-      background: #fff;
-      color: #000;
-      font-size: 25px;
-      line-height: 25px;
-    }
-
-    /* =========================
-       SEARCH
-    ========================= */
-
-    .panel {
-      position: fixed;
-      inset: 0;
-      z-index: 500;
-      background: #050505;
-      display: none;
-      overflow-y: auto;
-    }
-
-    .panel.active {
-      display: block;
-    }
-
-    .panelHeader {
-      height: 65px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 0 15px;
-      border-bottom: 1px solid #222;
-    }
-
-    .backButton {
-      background: none;
-      color: #fff;
-      font-size: 25px;
-    }
-
-    .searchInput {
-      flex: 1;
-      background: #151515;
-      border: 1px solid #252525;
-      color: #fff;
-      border-radius: 10px;
-      padding: 12px;
-      outline: none;
-    }
-
-    .panelContent {
-      padding: 20px;
-    }
-
-    .panelContent h2 {
-      margin-bottom: 18px;
-    }
-
-    .trend {
-      padding: 15px 0;
-      border-bottom: 1px solid #1e1e1e;
-    }
-
-    .trend strong {
-      display: block;
-      margin-bottom: 5px;
-    }
-
-    .trend span {
-      color: #888;
-      font-size: 12px;
-    } 
-        
-    /* =========================
-       COMMENTS
-    ========================= */
-
-    .commentsSheet {
-      position: fixed;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      height: 70%;
-      z-index: 700;
-      background: #111;
-      border-radius: 20px 20px 0 0;
-      display: none;
-      flex-direction: column;
-    }
-
-    .commentsSheet.active {
-      display: flex;
-    }
-
-    .sheetTop {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 17px;
-      border-bottom: 1px solid #292929;
-    }
-
-    .closeSheet {
-      background: none;
-      color: #fff;
-      font-size: 22px;
-    }
-
-    .commentsList {
-      flex: 1;
-      overflow-y: auto;
-      padding: 15px;
-    }
-
-    .comment {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 20px;
-    }
-
-    .commentAvatar {
-      width: 36px;
-      height: 36px;
-      flex-shrink: 0;
-      border-radius: 50%;
-      background: #e50914;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-weight: 800;
-    }
-
-    .commentBody {
-      flex: 1;
-      min-width: 0;
-    }
-
-    .commentName {
-      font-weight: 800;
-      font-size: 13px;
-      margin-bottom: 4px;
-    }
-
-    .commentText {
-      font-size: 13px;
-      line-height: 1.4;
-    }
-
-    .commentMeta {
-      display: block;
-      color: #777;
-      font-size: 11px;
-      margin-top: 4px;
-    }
-
-    /* =========================
-       VOICE COMMENTS
-    ========================= */
-
-    .voiceComment {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-top: 8px;
-      background: #1c1c1c;
-      border-radius: 18px;
-      padding: 8px 12px;
-      width: 210px;
-      max-width: 100%;
-    }
-
-    .voicePlay {
-      width: 34px;
-      height: 34px;
-      border-radius: 50%;
-      background: #e50914;
-      color: #fff;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 14px;
-      flex-shrink: 0;
-    }
-
-    .voiceWave {
-      flex: 1;
-      height: 24px;
-      display: flex;
-      align-items: center;
-      gap: 3px;
-      overflow: hidden;
-    }
-
-    .voiceWave i {
-      width: 3px;
-      min-width: 3px;
-      border-radius: 5px;
-      background: #aaa;
-      display: block;
-    }
-
-    .voiceTime {
-      font-size: 10px;
-      color: #aaa;
-      white-space: nowrap;
-    }
-
-    .commentComposer {
-      position: relative;
-      border-top: 1px solid #292929;
-      padding: 10px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      background: #111;
-    }
-
-    .commentInput {
-      flex: 1;
-      min-width: 0;
-      padding: 12px;
-      border-radius: 22px;
-      border: 1px solid #303030;
-      background: #1b1b1b;
-      color: #fff;
-      outline: none;
-    }
-
-    .commentInput::placeholder {
-      color: #777;
-    }
-
-    .voiceRecordButton,
-    .sendCommentButton {
-      width: 43px;
-      height: 43px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-    }
-
-    .voiceRecordButton {
-      background: #252525;
-      color: #fff;
-      font-size: 19px;
-    }
-
-    .voiceRecordButton.recording {
-      background: #e50914;
-      animation: pulse 1s infinite;
-    }
-
-    .sendCommentButton {
-      background: #e50914;
-      color: #fff;
-      font-size: 17px;
-    }
-
-    .recordingStatus {
-      position: absolute;
-      left: 15px;
-      right: 15px;
-      bottom: 66px;
-      display: none;
-      background: #e50914;
-      border-radius: 10px;
-      padding: 9px;
-      text-align: center;
-      font-size: 12px;
-      font-weight: 700;
-    }
-
-    .recordingStatus.active {
-      display: block;
-    }
-
-    @keyframes pulse {
-      50% {
-        transform: scale(1.08);
-      }
-    }
-
-    /* =========================
-       PROFILE
-    ========================= */
-
-    .profilePanel {
-      position: fixed;
-      inset: 0;
-      z-index: 600;
-      background: #000;
-      display: none;
-      overflow-y: auto;
-    }
-
-    .profilePanel.active {
-      display: block;
-    }
-
-    .profileHeader {
-      padding: 65px 20px 20px;
-      text-align: center;
-      border-bottom: 1px solid #222;
-      position: relative;
-    }
-
-    .profileClose {
-      position: absolute;
-      top: 18px;
-      left: 15px;
-      background: none;
-      color: #fff;
-      font-size: 25px;
-    }
-
-    .profileBigAvatar {
-      width: 90px;
-      height: 90px;
-      margin: auto;
-      border-radius: 50%;
-      background: #e50914;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 30px;
-      font-weight: 900;
-      border: 3px solid #fff;
-    }
-
-    .profileName {
-      font-size: 20px;
-      font-weight: 900;
-      margin-top: 12px;
-    }
-
-    .profileUsername {
-      color: #888;
-      margin-top: 4px;
-    }
-
-    .profileStats {
-      display: flex;
-      justify-content: center;
-      gap: 35px;
-      margin-top: 20px;
-    }
-
-    .stat {
-      text-align: center;
-    }
-
-    .stat strong {
-      display: block;
-      font-size: 18px;
-    }
-
-    .stat span {
-      color: #888;
-      font-size: 11px;
-    }
-
-    .logoutButton {
-      margin-top: 20px;
-      padding: 10px 22px;
-      border-radius: 8px;
-      background: #1c1c1c;
-      color: #fff;
-      border: 1px solid #333;
-    }
-
-    .profileGrid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 2px;
-      padding-top: 2px;
-    }
-
-    .gridItem {
-      aspect-ratio: 1;
-      background: linear-gradient(
-        135deg,
-        #190000,
-        #e50914
-      );
-    }
-
-    .gridItem:nth-child(2) {
-      background: linear-gradient(
-        135deg,
-        #111,
-        #65000a
-      );
-    }
-
-    .gridItem:nth-child(3) {
-      background: linear-gradient(
-        135deg,
-        #300006,
-        #111
-      );
-    }
-
-    .gridItem:nth-child(4) {
-      background: linear-gradient(
-        135deg,
-        #111,
-        #e50914
-      );
-    }
-
-    .gridItem:nth-child(5) {
-      background: linear-gradient(
-        135deg,
-        #4a0005,
-        #000
-      );
-    }
-
-    .gridItem:nth-child(6) {
-      background: linear-gradient(
-        135deg,
-        #000,
-        #9e0009
-      );
-    }
-
-    /* =========================
-       TOAST
-    ========================= */
-
-    #toast {
-      position: fixed;
-      left: 50%;
-      bottom: 85px;
-      transform: translateX(-50%);
-      background: rgba(255,255,255,.95);
-      color: #000;
-      padding: 10px 16px;
-      border-radius: 20px;
-      font-size: 12px;
-      font-weight: 700;
-      z-index: 99999;
-      display: none;
-      white-space: nowrap;
-    }
-
-    /* =========================
-       MOBILE
-    ========================= */
-
-    @media (max-width: 500px) {
-
-      .feedTabs {
-        gap: 14px;
-      }
-
-      .feedTab {
-        font-size: 13px;
-      }
-
-      .actions {
-        right: 9px;
-        gap: 15px;
-      }
-
-      .actionIcon {
-        width: 43px;
-        height: 43px;
-        font-size: 22px;
-      }
-
-      .postInfo {
-        left: 12px;
-        right: 70px;
-      }
-
-      .commentsSheet {
-        height: 75%;
-      }
-
-      .profileStats {
-        gap: 25px;
-      }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OTA X</title>
+
+<style>
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+
+:root{
+  --red:#e00000;
+  --black:#050505;
+  --dark:#101010;
+  --card:#171717;
+  --white:#fff;
+  --gray:#999;
+  --line:#292929;
+}
+
+body{
+  font-family:Arial,Helvetica,sans-serif;
+  background:#000;
+  color:#fff;
+  overflow:hidden;
+}
+
+button,
+input{
+  font:inherit;
+}
+
+button{
+  border:0;
+  cursor:pointer;
+}
+
+.hidden{
+  display:none!important;
+}
+
+/* ================= AUTH ================= */
+
+#authScreen{
+  position:fixed;
+  inset:0;
+  z-index:1000;
+  background:
+    radial-gradient(circle at top right,#420000 0,transparent 35%),
+    #050505;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  padding:20px;
+}
+
+.authBox{
+  width:100%;
+  max-width:420px;
+  background:#111;
+  border:1px solid #292929;
+  border-radius:24px;
+  padding:30px 24px;
+  box-shadow:0 20px 70px rgba(0,0,0,.7);
+}
+
+.logo{
+  text-align:center;
+  font-size:44px;
+  font-weight:900;
+  letter-spacing:-3px;
+  color:#fff;
+  margin-bottom:5px;
+}
+
+.logo span{
+  color:var(--red);
+}
+
+.authSubtitle{
+  text-align:center;
+  color:#888;
+  margin-bottom:28px;
+}
+
+.authTabs{
+  display:flex;
+  background:#1a1a1a;
+  border-radius:12px;
+  padding:4px;
+  margin-bottom:22px;
+}
+
+.authTabs button{
+  width:50%;
+  padding:11px;
+  border-radius:9px;
+  background:transparent;
+  color:#888;
+}
+
+.authTabs button.active{
+  background:#fff;
+  color:#000;
+  font-weight:bold;
+}
+
+.authForm{
+  display:none;
+}
+
+.authForm.active{
+  display:block;
+}
+
+.inputGroup{
+  margin-bottom:15px;
+}
+
+.inputGroup label{
+  display:block;
+  color:#aaa;
+  font-size:13px;
+  margin-bottom:7px;
+}
+
+.inputGroup input{
+  width:100%;
+  padding:14px;
+  background:#1a1a1a;
+  border:1px solid #303030;
+  color:#fff;
+  border-radius:12px;
+  outline:none;
+}
+
+.inputGroup input:focus{
+  border-color:var(--red);
+}
+
+.authButton{
+  width:100%;
+  padding:14px;
+  background:var(--red);
+  color:#fff;
+  border-radius:12px;
+  font-weight:bold;
+  margin-top:5px;
+}
+
+.authButton:active{
+  transform:scale(.98);
+}
+
+.authMessage{
+  min-height:20px;
+  text-align:center;
+  color:#ff5555;
+  font-size:13px;
+  margin-top:14px;
+}
+
+/* ================= APP ================= */
+
+#app{
+  height:100vh;
+  width:100%;
+  position:relative;
+  background:#000;
+}
+
+.topBar{
+  position:fixed;
+  top:0;
+  left:0;
+  right:0;
+  height:60px;
+  z-index:50;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 18px;
+  background:linear-gradient(to bottom,rgba(0,0,0,.9),transparent);
+}
+
+.topLogo{
+  font-size:28px;
+  font-weight:900;
+  letter-spacing:-2px;
+}
+
+.topLogo span{
+  color:var(--red);
+}
+
+.topRight{
+  display:flex;
+  align-items:center;
+  gap:14px;
+}
+
+.searchTop{
+  width:38px;
+  height:38px;
+  border-radius:50%;
+  background:rgba(255,255,255,.12);
+  color:#fff;
+  font-size:20px;
+}
+
+.feedTabs{
+  position:fixed;
+  top:15px;
+  left:50%;
+  transform:translateX(-50%);
+  z-index:55;
+  display:flex;
+  gap:20px;
+}
+
+.feedTabs button{
+  background:none;
+  color:#888;
+  font-weight:bold;
+  padding-bottom:6px;
+}
+
+.feedTabs button.active{
+  color:#fff;
+  border-bottom:2px solid var(--red);
+}
+
+/* ================= FEED ================= */
+
+.feed{
+  height:100vh;
+  overflow-y:auto;
+  scroll-snap-type:y mandatory;
+  scrollbar-width:none;
+}
+
+.feed::-webkit-scrollbar{
+  display:none;
+}
+
+.post{
+  position:relative;
+  height:100vh;
+  min-height:600px;
+  scroll-snap-align:start;
+  overflow:hidden;
+  background:#111;
+}
+
+.videoBackground{
+  position:absolute;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+}
+
+.videoBackground.one{
+  background:
+    radial-gradient(circle at 70% 20%,#ff4444,transparent 22%),
+    linear-gradient(135deg,#180000,#090909 50%,#400000);
+}
+
+.videoBackground.two{
+  background:
+    radial-gradient(circle at 25% 30%,#8b0000,transparent 25%),
+    linear-gradient(135deg,#050505,#260000 60%,#090909);
+}
+
+.videoBackground.three{
+  background:
+    radial-gradient(circle at 65% 45%,#555,transparent 20%),
+    linear-gradient(135deg,#111,#050505 60%,#330000);
+}
+
+.videoText{
+  font-size:80px;
+  font-weight:900;
+  opacity:.08;
+  transform:rotate(-15deg);
+}
+
+.videoOverlay{
+  position:absolute;
+  inset:0;
+  background:linear-gradient(
+    to bottom,
+    rgba(0,0,0,.25),
+    transparent 35%,
+    rgba(0,0,0,.05) 50%,
+    rgba(0,0,0,.9)
+  );
+}
+
+.watermark{
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%) rotate(-15deg);
+  font-size:60px;
+  font-weight:900;
+  opacity:.05;
+}
+
+.watermark span{
+  color:var(--red);
+}
+
+.postContent{
+  position:absolute;
+  left:0;
+  right:0;
+  bottom:78px;
+  padding:20px;
+  z-index:5;
+}
+
+.postInfo{
+  max-width:calc(100% - 75px);
+}
+
+.username{
+  font-weight:bold;
+  font-size:16px;
+  margin-bottom:8px;
+}
+
+.verified{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:18px;
+  height:18px;
+  background:var(--red);
+  color:#000;
+  border-radius:50%;
+  font-size:11px;
+  margin-left:4px;
+}
+
+.caption{
+  font-size:15px;
+  line-height:1.4;
+  margin-bottom:10px;
+}
+
+.sound{
+  color:#ddd;
+  font-size:13px;
+}
+
+.actions{
+  position:absolute;
+  right:14px;
+  bottom:92px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:16px;
+  z-index:10;
+}
+
+.avatarWrap{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  margin-bottom:3px;
+}
+
+.avatar{
+  width:48px;
+  height:48px;
+  border-radius:50%;
+  background:#fff;
+  color:#000;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:21px;
+  font-weight:bold;
+  border:2px solid #fff;
+}
+
+.followPlus{
+  margin-top:-8px;
+  width:22px;
+  height:22px;
+  border-radius:50%;
+  background:var(--red);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:bold;
+  border:2px solid #000;
+}
+
+.action{
+  background:none;
+  color:#fff;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:4px;
+}
+
+.actionIcon{
+  width:42px;
+  height:42px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:50%;
+  background:rgba(0,0,0,.35);
+  font-size:22px;
+}
+
+.action span{
+  font-size:11px;
+  color:#fff;
+}
+
+.action.liked .actionIcon{
+  color:var(--red);
+}
+
+.action.saved .actionIcon{
+  color:var(--red);
+}
+
+/* ================= BOTTOM NAV ================= */
+
+.bottomNav{
+  position:fixed;
+  bottom:0;
+  left:0;
+  right:0;
+  height:65px;
+  z-index:100;
+  background:rgba(0,0,0,.92);
+  border-top:1px solid #222;
+  display:flex;
+  justify-content:space-around;
+  align-items:center;
+}
+
+.navButton{
+  background:none;
+  color:#888;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:3px;
+  font-size:11px;
+}
+
+.navButton .navIcon{
+  font-size:21px;
+}
+
+.navButton.active{
+  color:#fff;
+}
+
+.createNav{
+  width:48px;
+  height:34px;
+  border-radius:10px;
+  background:#fff;
+  color:#000;
+  font-size:25px;
+  line-height:30px;
+}
+
+/* ================= SEARCH ================= */
+
+.overlayPanel{
+  position:fixed;
+  inset:0;
+  z-index:200;
+  background:#090909;
+  transform:translateY(100%);
+  transition:.25s ease;
+  display:flex;
+  flex-direction:column;
+}
+
+.overlayPanel.open{
+  transform:translateY(0);
+}
+
+.panelHeader{
+  height:65px;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:0 16px;
+  border-bottom:1px solid #222;
+}
+
+.closeButton{
+  width:38px;
+  height:38px;
+  border-radius:50%;
+  background:#1b1b1b;
+  color:#fff;
+  font-size:20px;
+}
+
+.searchInput{
+  flex:1;
+  padding:13px 15px;
+  background:#1b1b1b;
+  color:#fff;
+  border:1px solid #292929;
+  border-radius:12px;
+  outline:none;
+}
+
+.panelBody{
+  padding:20px;
+  overflow:auto;
+}
+
+.sectionTitle{
+  font-size:18px;
+  font-weight:bold;
+  margin-bottom:16px;
+}
+
+.trend{
+  padding:15px 0;
+  border-bottom:1px solid #222;
+}
+
+.trend strong{
+  display:block;
+  margin-bottom:4px;
+}
+
+.trend span{
+  color:#888;
+  font-size:12px;
+}
+
+/* ================= COMMENTS ================= */
+
+.commentsPanel{
+  position:fixed;
+  left:0;
+  right:0;
+  bottom:0;
+  height:75vh;
+  z-index:300;
+  background:#111;
+  border-radius:22px 22px 0 0;
+  transform:translateY(100%);
+  transition:.25s ease;
+  display:flex;
+  flex-direction:column;
+}
+
+.commentsPanel.open{
+  transform:translateY(0);
+}
+
+.commentsHeader{
+  padding:17px;
+  border-bottom:1px solid #292929;
+  text-align:center;
+  position:relative;
+  font-weight:bold;
+}
+
+.commentsClose{
+  position:absolute;
+  right:15px;
+  top:13px;
+  width:34px;
+  height:34px;
+  background:#222;
+  color:#fff;
+  border-radius:50%;
+}
+
+.commentsList{
+  flex:1;
+  overflow:auto;
+  padding:15px;
+}
+
+.comment{
+  display:flex;
+  gap:10px;
+  margin-bottom:18px;
+}
+
+.commentAvatar{
+  flex:none;
+  width:38px;
+  height:38px;
+  border-radius:50%;
+  background:#fff;
+  color:#000;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:bold;
+}
+
+.commentBody{
+  flex:1;
+}
+
+.commentName{
+  font-weight:bold;
+  font-size:14px;
+  margin-bottom:4px;
+}
+
+.commentText{
+  color:#ddd;
+  font-size:14px;
+  line-height:1.4;
+}
+
+.voiceComment{
+  background:#1d1d1d;
+  border-radius:15px;
+  padding:10px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+
+.voicePlay{
+  width:38px;
+  height:38px;
+  border-radius:50%;
+  background:var(--red);
+  color:#000;
+}
+
+.voiceLabel{
+  color:#aaa;
+  font-size:13px;
+}
+
+.commentComposer{
+  padding:10px;
+  border-top:1px solid #292929;
+  display:flex;
+  gap:8px;
+  align-items:center;
+}
+
+.commentInput{
+  flex:1;
+  background:#1c1c1c;
+  color:#fff;
+  border:1px solid #292929;
+  border-radius:22px;
+  padding:12px 15px;
+  outline:none;
+}
+
+.micButton,
+.sendButton{
+  width:43px;
+  height:43px;
+  border-radius:50%;
+  background:#222;
+  color:#fff;
+}
+
+.sendButton{
+  background:var(--red);
+  color:#000;
+}
+
+.recording{
+  background:var(--red)!important;
+  color:#000!important;
+}
+
+.recordingStatus{
+  padding:7px 15px;
+  color:#ff4444;
+  font-size:12px;
+  display:none;
+}
+
+.recordingStatus.show{
+  display:block;
+}
+
+/* ================= PROFILE ================= */
+
+.profilePanel{
+  position:fixed;
+  inset:0;
+  z-index:250;
+  background:#090909;
+  transform:translateX(100%);
+  transition:.25s ease;
+  overflow:auto;
+}
+
+.profilePanel.open{
+  transform:translateX(0);
+}
+
+.profileHeader{
+  padding:18px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  border-bottom:1px solid #222;
+}
+
+.profileTop{
+  padding:30px 20px;
+  text-align:center;
+}
+
+.bigAvatar{
+  width:90px;
+  height:90px;
+  margin:auto;
+  border-radius:50%;
+  background:#fff;
+  color:#000;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:38px;
+  font-weight:bold;
+}
+
+.profileName{
+  font-size:21px;
+  font-weight:bold;
+  margin-top:13px;
+}
+
+.profileUsername{
+  color:#888;
+  margin-top:4px;
+}
+
+.profileStats{
+  display:flex;
+  justify-content:center;
+  gap:40px;
+  margin-top:22px;
+}
+
+.stat strong{
+  display:block;
+  font-size:18px;
+}
+
+.stat span{
+  color:#888;
+  font-size:12px;
+}
+
+.profileActions{
+  display:flex;
+  justify-content:center;
+  gap:10px;
+  margin-top:25px;
+}
+
+.profileButton{
+  padding:11px 22px;
+  border-radius:10px;
+  background:#222;
+  color:#fff;
+}
+
+.profileButton.red{
+  background:var(--red);
+  color:#000;
+}
+
+.profileGrid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:2px;
+  margin-top:20px;
+}
+
+.gridItem{
+  aspect-ratio:1;
+  background:#191919;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:30px;
+}
+
+.gridItem:nth-child(2){
+  background:#250000;
+}
+
+.gridItem:nth-child(3){
+  background:#222;
+}
+
+/* ================= CREATE ================= */
+
+.createPanel{
+  position:fixed;
+  inset:0;
+  z-index:350;
+  background:#090909;
+  transform:translateY(100%);
+  transition:.25s ease;
+  padding:20px;
+}
+
+.createPanel.open{
+  transform:translateY(0);
+}
+
+.createOptions{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:14px;
+  margin-top:30px;
+}
+
+.createOption{
+  background:#191919;
+  border:1px solid #292929;
+  border-radius:18px;
+  padding:30px 15px;
+  color:#fff;
+  text-align:center;
+}
+
+.createOption div{
+  font-size:38px;
+  margin-bottom:10px;
+}
+
+/* ================= TOAST ================= */
+
+.toast{
+  position:fixed;
+  left:50%;
+  bottom:85px;
+  transform:translateX(-50%) translateY(20px);
+  background:#fff;
+  color:#000;
+  padding:11px 17px;
+  border-radius:20px;
+  z-index:1000;
+  opacity:0;
+  pointer-events:none;
+  transition:.2s;
+  font-size:13px;
+}
+
+.toast.show{
+  opacity:1;
+  transform:translateX(-50%) translateY(0);
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media(max-width:600px){
+
+  .feedTabs{
+    gap:12px;
+  }
+
+  .feedTabs button{
+    font-size:12px;
+  }
+
+  .topLogo{
+    font-size:25px;
+  }
+
+  .postContent{
+    bottom:72px;
+  }
+
+  .actions{
+    bottom:85px;
+  }
+}
+</style>
 </head>
 
 <body>
 
-  <!-- =========================
-       LOGIN / SIGN UP
-  ========================= -->
+<!-- ================= AUTH ================= -->
 
-  <section id="authScreen">
+<div id="authScreen">
 
-    <div class="authBox">
+  <div class="authBox">
 
-      <div class="authLogo">
-        OTA<span>X</span>
-      </div>
+    <div class="logo">OTA<span>X</span></div>
 
-      <div class="authSubtitle">
-        Connect. Create. Share your world.
-      </div>
+    <div class="authSubtitle">
+      Connect. Create. Share your world.
+    </div>
 
-      <div class="authTabs">
+    <div class="authTabs">
+      <button
+        id="loginTab"
+        class="active"
+        onclick="showAuth('login')">
+        Login
+      </button>
 
-        <button
-          id="loginTab"
-          class="authTab active"
-          onclick="showAuthForm('login')">
-          Login
-        </button>
+      <button
+        id="signupTab"
+        onclick="showAuth('signup')">
+        Sign Up
+      </button>
+    </div>
 
-        <button
-          id="signupTab"
-          class="authTab"
-          onclick="showAuthForm('signup')">
-          Sign Up
-        </button>
+    <!-- LOGIN -->
 
-      </div>
+    <form
+      id="loginForm"
+      class="authForm active"
+      onsubmit="loginUser(event)">
 
-      <!-- LOGIN -->
-
-      <form
-        id="loginForm"
-        class="authForm active"
-        onsubmit="loginUser(event)">
+      <div class="inputGroup">
+        <label>Email</label>
 
         <input
           id="loginEmail"
-          class="authInput"
           type="email"
-          placeholder="Email"
-          autocomplete="email"
+          placeholder="Enter your email"
           required>
+      </div>
+
+      <div class="inputGroup">
+        <label>Password</label>
 
         <input
           id="loginPassword"
-          class="authInput"
           type="password"
-          placeholder="Password"
-          autocomplete="current-password"
+          placeholder="Enter your password"
           required>
+      </div>
 
-        <button
-          id="loginButton"
-          class="authButton"
-          type="submit">
-          Login
-        </button>
+      <button class="authButton">
+        Login
+      </button>
 
-      </form>
+    </form>
 
-      <!-- SIGN UP -->
+    <!-- SIGN UP -->
 
-      <form
-        id="signupForm"
-        class="authForm"
-        onsubmit="registerUser(event)">
+    <form
+      id="signupForm"
+      class="authForm"
+      onsubmit="registerUser(event)">
+
+      <div class="inputGroup">
+        <label>Username</label>
 
         <input
           id="signupUsername"
-          class="authInput"
           type="text"
-          placeholder="Username"
-          autocomplete="username"
+          placeholder="Choose a username"
           required>
+      </div>
+
+      <div class="inputGroup">
+        <label>Email</label>
 
         <input
           id="signupEmail"
-          class="authInput"
           type="email"
-          placeholder="Email"
-          autocomplete="email"
+          placeholder="Enter your email"
           required>
+      </div>
+
+      <div class="inputGroup">
+        <label>Password</label>
 
         <input
           id="signupPassword"
-          class="authInput"
           type="password"
-          placeholder="Password"
-          autocomplete="new-password"
+          placeholder="Create a password"
           required>
+      </div>
 
-        <button
-          id="signupButton"
-          class="authButton"
-          type="submit">
-          Create Account
-        </button>
+      <button class="authButton">
+        Create Account
+      </button>
 
-      </form>
+    </form>
 
-      <div id="authMessage"></div>
+    <div
+      id="authMessage"
+      class="authMessage">
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- ================= MAIN APP ================= -->
+
+<div id="app" class="hidden">
+
+  <!-- TOP BAR -->
+
+  <div class="topBar">
+
+    <div class="topLogo">
+      OTA<span>X</span>
+    </div>
+
+    <div class="feedTabs">
+
+      <button
+        id="followingTab"
+        onclick="switchFeed('following')">
+        Following
+      </button>
+
+      <button
+        id="forYouTab"
+        class="active"
+        onclick="switchFeed('foryou')">
+        For You
+      </button>
 
     </div>
 
-  </section>
-
-
-  <!-- =========================
-       MAIN APP
-  ========================= -->
-
-  <main id="app">
-
-    <!-- TOP BAR -->
-
-    <header class="topBar">
-
-      <div class="logo">
-        OTA<span>X</span>
-      </div>
-
-      <div class="feedTabs">
-
-        <button
-          class="feedTab"
-          onclick="setFeedTab(this)">
-          Following
-        </button>
-
-        <button
-          class="feedTab active"
-          onclick="setFeedTab(this)">
-          For You
-        </button>
-
-      </div>
+    <div class="topRight">
 
       <button
         class="searchTop"
@@ -1081,76 +1056,115 @@
         ⌕
       </button>
 
-    </header>
+    </div>
+
+  </div>
 
 
-    <!-- =========================
-         FEED
-    ========================= -->
+  <!-- ================= FEED ================= -->
 
-    <section class="feed">
+  <main class="feed" id="feed">
 
-      <!-- POST 1 -->
+    <!-- POST 1 -->
 
-      <article class="post">
+    <article class="post">
 
-        <div class="videoBg"></div>
+      <div class="videoBackground one">
 
-        <div class="videoCenter">
-          <div class="play">▶</div>
-          <p>OTA X video</p>
+        <div class="videoText">
+          OTA X
         </div>
 
-        <div class="darkOverlay"></div>
+        <div class="watermark">
+          OTA<span>X</span>
+        </div>
 
-        <div class="actions">
+      </div>
 
-          <div class="avatarWrap">
-            <div class="avatar">O</div
+      <div class="videoOverlay"></div>
 
-          <button
-            class="action likeButton"
-            onclick="toggleLike(this)">
+      <div class="actions">
 
-            <div class="actionIcon">♡</div>
-            <div class="likeCount">12.4K</div>
+        <div class="avatarWrap">
 
-          </button>
+          <div class="avatar">
+            O
+          </div>
 
-          <button
-            class="action"
-            onclick="openComments()">
-
-            <div class="actionIcon">💬</div>
-            <div>840</div>
-
-          </button>
-
-          <button
-            class="action"
-            onclick="sharePost()">
-
-            <div class="actionIcon">↗</div>
-            <div>Share</div>
-
-          </button>
-
-          <button
-            class="action"
-            onclick="savePost(this)">
-
-            <div class="actionIcon">🔖</div>
-            <div>Save</div>
-
-          </button>
+          <div class="followPlus">
+            +
+          </div>
 
         </div>
+
+        <button
+          class="action likeButton"
+          onclick="toggleLike(this)">
+
+          <div class="actionIcon">
+            ♡
+          </div>
+
+          <span>
+            12.4K
+          </span>
+
+        </button>
+
+        <button
+          class="action"
+          onclick="openComments()">
+
+          <div class="actionIcon">
+            💬
+          </div>
+
+          <span>
+            840
+          </span>
+
+        </button>
+
+        <button
+          class="action"
+          onclick="sharePost()">
+
+          <div class="actionIcon">
+            ↗
+          </div>
+
+          <span>
+            Share
+          </span>
+
+        </button>
+
+        <button
+          class="action"
+          onclick="savePost(this)">
+
+          <div class="actionIcon">
+            🔖
+          </div>
+
+          <span>
+            Save
+          </span>
+
+        </button>
+
+      </div>
+
+      <div class="postContent">
 
         <div class="postInfo">
 
           <div class="username">
             @OTAcreator
-            <span class="verified">✓</span>
+
+            <span class="verified">
+              ✓
+            </span>
           </div>
 
           <div class="caption">
@@ -1158,498 +1172,173 @@
           </div>
 
           <div class="sound">
-            ♪ Original sound — OTA X
+            🎵 Original sound · OTA X
           </div>
 
-        </div>
-
-      </article>
-
-
-      <!-- POST 2 -->
-
-      <article class="post">
-
-        <div class="videoBg two"></div>
-
-        <div class="videoCenter">
-          <div class="play">▶</div>
-          <p>Create something amazing on OTA X</p>
-        </div>
-
-        <div class="darkOverlay"></div>
-
-        <div class="actions">
-
-          <div class="avatarWrap">
-            <div class="avatar">A</div>
-            <div class="followPlus">+</div>
-          </div>
-
-          <button
-            class="action likeButton"
-            onclick="toggleLike(this)">
-
-            <div class="actionIcon">♡</div>
-            <div class="likeCount">8.7K</div>
-
-          </button>
-
-          <button
-            class="action"
-            onclick="openComments()">
-
-            <div class="actionIcon">💬</div>
-            <div>426</div>
-
-          </button>
-
-          <button
-            class="action"
-            onclick="sharePost()">
-
-            <div class="actionIcon">↗</div>
-            <div>Share</div>
-
-          </button>
-
-          <button
-            class="action"
-            onclick="savePost(this)">
-
-            <div class="actionIcon">🔖</div>
-            <div>Save</div>
-
-          </button>
-
-        </div>
-
-        <div class="postInfo">
-
-          <div class="username">
-            @africa_creator
-          </div>
-
-          <div class="caption">
-            Your ideas. Your voice. Your world. This is OTA X.
-          </div>
-
-          <div class="sound">
-            ♪ Original sound — Africa Creator
-          </div>
-
-        </div>
-
-      </article>
-
-
-      <!-- POST 3 -->
-
-      <article class="post">
-
-        <div class="videoBg three"></div>
-
-        <div class="videoCenter">
-          <div class="play">▶</div>
-          <p>Share your world with OTA X</p>
-        </div>
-
-        <div class="darkOverlay"></div>
-
-        <div class="actions">
-
-          <div class="avatarWrap">
-            <div class="avatar">X</div>
-            <div class="followPlus">+</div>
-          </div>
-
-          <button
-            class="action likeButton"
-            onclick="toggleLike(this)">
-
-            <div class="actionIcon">♡</div>
-            <div class="likeCount">15.2K</div>
-
-          </button>
-
-          <button
-            class="action"
-            onclick="openComments()">
-
-            <div class="actionIcon">💬</div>
-            <div>1.1K</div>
-
-          </button>
-
-          <button
-            class="action"
-            onclick="sharePost()">
-
-            <div class="actionIcon">↗</div>
-            <div>Share</div>
-
-          </button>
-
-          <button
-            class="action"
-            onclick="savePost(this)">
-
-            <div class="actionIcon">🔖</div>
-            <div>Save</div>
-
-          </button>
-
-        </div>
-
-        <div class="postInfo">
-
-          <div class="username">
-            @creatorx
-            <span class="verified">✓</span>
-          </div>
-
-          <div class="caption">
-            Discover people, communities and stories from everywhere.
-          </div>
-
-          <div class="sound">
-            ♪ Original sound — Creator X
-          </div>
-
-        </div>
-
-      </article>
-
-    </section>
-          <!-- =========================
-         BOTTOM NAVIGATION
-    ========================= -->
-
-    <nav class="bottomNav">
-
-      <button
-        class="navItem active"
-        onclick="goHome()">
-        <span class="navIcon">⌂</span>
-        Home
-      </button>
-
-      <button
-        class="navItem"
-        onclick="openSearch()">
-        <span class="navIcon">⌕</span>
-        Search
-      </button>
-
-      <button
-        class="navItem"
-        onclick="openCreate()">
-        <span class="createButton">+</span>
-        Create
-      </button>
-
-      <button
-        class="navItem"
-        onclick="openInbox()">
-        <span class="navIcon">✉</span>
-        Inbox
-      </button>
-
-      <button
-        class="navItem"
-        onclick="openProfile()">
-        <span class="navIcon">♙</span>
-        Profile
-      </button>
-
-    </nav>
-
-
-    <!-- =========================
-         SEARCH PANEL
-    ========================= -->
-
-    <section
-      id="searchPanel"
-      class="panel">
-
-      <div class="panelHeader">
-
-        <button
-          class="backButton"
-          onclick="closeSearch()">
-          ←
-        </button>
-
-        <input
-          id="searchInput"
-          class="searchInput"
-          type="search"
-          placeholder="Search OTA X">
-
-      </div>
-
-      <div class="panelContent">
-
-        <h2>Discover</h2>
-
-        <div class="trend">
-          <strong>#OTAX</strong>
-          <span>12.4M posts</span>
-        </div>
-
-        <div class="trend">
-          <strong>#Africa</strong>
-          <span>8.7M posts</span>
-        </div>
-
-        <div class="trend">
-          <strong>#Football</strong>
-          <span>6.2M posts</span>
-        </div>
-
-        <div class="trend">
-          <strong>#Music</strong>
-          <span>5.8M posts</span>
-        </div>
-
-        <div class="trend">
-          <strong>#Creators</strong>
-          <span>3.9M posts</span>
         </div>
 
       </div>
 
-    </section>
+    </article>
 
 
-    <!-- =========================
-         COMMENTS
-    ========================= -->
+    <!-- POST 2 -->
 
-    <section
-      id="commentsSheet"
-      class="commentsSheet">
+    <article class="post">
 
-      <div class="sheetTop">
+      <div class="videoBackground two">
 
-        <strong>Comments</strong>
+        <div class="videoText">
+          CREATE
+        </div>
 
-        <button
-          class="closeSheet"
-          onclick="closeComments()">
-          ×
-        </button>
+        <div class="watermark">
+          OTA<span>X</span>
+        </div>
 
       </div>
 
+      <div class="videoOverlay"></div>
 
-      <div
-        id="commentsList"
-        class="commentsList">
+      <div class="actions">
 
-        <!-- COMMENT 1 -->
+        <div class="avatarWrap">
 
-        <div class="comment">
-
-          <div class="commentAvatar">
+          <div class="avatar">
             A
           </div>
 
-          <div class="commentBody">
+          <div class="followPlus">
+            +
+          </div>
 
-            <div class="commentName">
-              @africacreator
-            </div>
+        </div>
 
-            <div class="commentText">
-              OTA X is looking amazing!
-            </div>
+        <button
+          class="action likeButton"
+          onclick="toggleLike(this)">
 
-            <span class="commentMeta">
-              2m
+          <div class="actionIcon">
+            ♡
+          </div>
+
+          <span>
+            8.7K
+          </span>
+
+        </button>
+
+        <button
+          class="action"
+          onclick="openComments()">
+
+          <div class="actionIcon">
+            💬
+          </div>
+
+          <span>
+            421
+          </span>
+
+        </button>
+
+        <button
+          class="action"
+          onclick="sharePost()">
+
+          <div class="actionIcon">
+            ↗
+          </div>
+
+          <span>
+            Share
+          </span>
+
+        </button>
+
+        <button
+          class="action"
+          onclick="savePost(this)">
+
+          <div class="actionIcon">
+            🔖
+          </div>
+
+          <span>
+            Save
+          </span>
+
+        </button>
+
+      </div>
+
+      <div class="postContent">
+
+        <div class="postInfo">
+
+          <div class="username">
+            @AfricaCreators
+
+            <span class="verified">
+              ✓
             </span>
-
           </div>
 
-        </div>
-
-
-        <!-- COMMENT 2 -->
-
-        <div class="comment">
-
-          <div class="commentAvatar">
-            T
+          <div class="caption">
+            Your creativity belongs here. Create something original today.
           </div>
 
-          <div class="commentBody">
-
-            <div class="commentName">
-              @trendtalk
-            </div>
-
-            <div class="commentText">
-              Can't wait to see more creators here.
-            </div>
-
-            <span class="commentMeta">
-              5m
-            </span>
-
-          </div>
-
-        </div>
-
-
-        <!-- COMMENT 3 -->
-
-        <div class="comment">
-
-          <div class="commentAvatar">
-            O
-          </div>
-
-          <div class="commentBody">
-
-            <div class="commentName">
-              @otacreator
-            </div>
-
-            <div class="commentText">
-              Welcome to OTA X ❤️
-            </div>
-
-            <span class="commentMeta">
-              8m
-            </span>
-
+          <div class="sound">
+            🎵 Original sound · Africa Creators
           </div>
 
         </div>
 
       </div>
 
-
-      <!-- RECORDING STATUS -->
-
-      <div
-        id="recordingStatus"
-        class="recordingStatus">
-        Recording voice note... Tap the microphone to stop.
-      </div>
+    </article>
 
 
-      <!-- COMMENT COMPOSER -->
+    <!-- POST 3 -->
 
-      <div class="commentComposer">
+    <article class="post">
 
-        <input
-          id="commentInput"
-          class="commentInput"
-          type="text"
-          placeholder="Add a comment...">
+      <div class="videoBackground three">
 
-        <button
-          id="voiceRecordButton"
-          class="voiceRecordButton"
-          onclick="toggleVoiceRecording()"
-          title="Record voice note">
-          🎙
-        </button>
+        <div class="videoText">
+          AFRICA
+        </div>
 
-        <button
-          class="sendCommentButton"
-          onclick="sendComment()"
-          title="Send comment">
-          ➤
-        </button>
+        <div class="watermark">
+          OTA<span>X</span>
+        </div>
 
       </div>
 
-    </section>
+      <div class="videoOverlay"></div>
 
+      <div class="actions">
 
-    <!-- =========================
-         PROFILE
-    ========================= -->
+        <div class="avatarWrap">
 
-    <section
-      id="profilePanel"
-      class="profilePanel">
-
-      <div class="profileHeader">
-
-        <button
-          class="profileClose"
-          onclick="closeProfile()">
-          ←
-        </button>
-
-        <div
-          id="profileBigAvatar"
-          class="profileBigAvatar">
-          O
-        </div>
-
-        <div
-          id="profileName"
-          class="profileName">
-          OTA User
-        </div>
-
-        <div
-          id="profileUsername"
-          class="profileUsername">
-          @user
-        </div>
-
-        <div class="profileStats">
-
-          <div class="stat">
-            <strong>0</strong>
-            <span>Following</span>
+          <div class="avatar">
+            N
           </div>
 
-          <div class="stat">
-            <strong>0</strong>
-            <span>Followers</span>
-          </div>
-
-          <div class="stat">
-            <strong>0</strong>
-            <span>Likes</span>
+          <div class="followPlus">
+            +
           </div>
 
         </div>
 
         <button
-          class="logoutButton"
-          onclick="logoutUser()">
-          Log Out
-        </button>
+          class="action likeButton"
+          onclick="toggleLike(this)">
 
-      </div>
+          <div class="actionIcon">
+            ♡
+          </div>
 
-
-      <div class="profileGrid">
-
-        <div class="gridItem"></div>
-        <div class="gridItem"></div>
-        <div class="gridItem"></div>
-        <div class="gridItem"></div>
-        <div class="gridItem"></div>
-        <div class="gridItem"></div>
-
-      </div>
-
-    </section>
-
-
-    <!-- =========================
-         TOAST
-    ========================= -->
-
-    <div id="toast"></div>
-
-  </main>
+          <span>
+            21.3K
+          </spa

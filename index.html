@@ -1,2053 +1,1304 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>OTA X</title>
-<link rel="stylesheet" href="style.css">
-</head><body><!-- ================= AUTH ================= --><div id="authScreen">  <div class="authBox"><div class="logo">OTA<span>X</span></div>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OTA X</title>
+  <link rel="stylesheet" href="style.css">
+</head>
 
-<div class="authSubtitle">
-  Connect. Create. Share your world.
-</div>
+<body>
 
-<div class="authTabs">
-  <button id="loginTab" class="active" onclick="showAuth('login')">
-    Login
-  </button>
+<div id="authScreen" class="auth-screen">
 
-  <button id="signupTab" onclick="showAuth('signup')">
-    Sign Up
-  </button>
-</div>
-
-<form id="loginForm" class="authForm active" onsubmit="loginUser(event)">
-
-  <div class="inputGroup">
-    <label>Email</label>
-    <input id="loginEmail" type="email"
-           placeholder="Enter your email" required>
+  <div class="auth-logo">
+    OTA <span>X</span>
   </div>
 
-  <div class="inputGroup">
-    <label>Password</label>
-    <input id="loginPassword" type="password"
-           placeholder="Enter your password" required>
-  </div>
+  <p class="auth-tagline">
+    Connect. Create. Share your world.
+  </p>
 
-  <button class="authButton">
-    Login
-  </button>
+  <div id="loginBox" class="auth-box">
 
-</form>
+    <h2>Welcome back</h2>
+    <p>Log in to your OTA X account</p>
 
-<form id="signupForm" class="authForm" onsubmit="registerUser(event)">
+    <input
+      type="email"
+      id="loginEmail"
+      placeholder="Email"
+    >
 
-  <div class="inputGroup">
-    <label>Username</label>
-    <input id="signupUsername" type="text"
-           placeholder="Choose a username" required>
-  </div>
+    <input
+      type="password"
+      id="loginPassword"
+      placeholder="Password"
+    >
 
-  <div class="inputGroup">
-    <label>Email</label>
-    <input id="signupEmail" type="email"
-           placeholder="Enter your email" required>
-  </div>
+    <button onclick="loginUser()">
+      Log In
+    </button>
 
-  <div class="inputGroup">
-    <label>Password</label>
-    <input id="signupPassword" type="password"
-           placeholder="Create a password" required>
-  </div>
-
-  <button class="authButton">
-    Create Account
-  </button>
-
-</form>
-
-<div id="authMessage" class="authMessage"></div>
-
-  </div></div><!-- ================= MAIN APP ================= --><div id="app" class="hidden">  <div class="topBar"><div class="topLogo">
-  OTA<span>X</span>
-</div>
-
-<div class="feedTabs">
-
-  <button id="followingTab"
-          onclick="switchFeed('following')">
-    Following
-  </button>
-
-  <button id="forYouTab"
-          class="active"
-          onclick="switchFeed('foryou')">
-    For You
-  </button>
-
-</div>
-
-<div class="topRight">
-
-  <button class="searchTop"
-          onclick="openSearch()">
-    ⌕
-  </button>
-
-</div>
-
-  </div>  <!-- ================= FEED ================= -->  <main class="feed" id="feed"><!-- POST 1 -->
-
-<article class="post">
-
-  <div class="videoBackground one">
-
-    <div class="videoText">OTA X</div>
-
-    <div class="watermark">
-      OTA<span>X</span>
+    <div class="auth-switch">
+      Don't have an account?
+      <span onclick="showAuth('signup')">
+        Sign Up
+      </span>
     </div>
 
   </div>
 
-  <div class="videoOverlay"></div>
 
-  <div class="actions">
+  <div id="signupBox" class="auth-box hidden">
 
-    <div class="avatarWrap">
-      <div class="avatar">O</div>
-      <div class="followPlus">+</div>
+    <h2>Create account</h2>
+    <p>Join OTA X today</p>
+
+    <input
+      type="text"
+      id="signupUsername"
+      placeholder="Username"
+    >
+
+    <input
+      type="email"
+      id="signupEmail"
+      placeholder="Email"
+    >
+
+    <input
+      type="password"
+      id="signupPassword"
+      placeholder="Password"
+    >
+
+    <button onclick="registerUser()">
+      Sign Up
+    </button>
+
+    <div class="auth-switch">
+      Already have an account?
+      <span onclick="showAuth('login')">
+        Log In
+      </span>
     </div>
-
-    <button class="action likeButton"
-            onclick="toggleLike(this)">
-
-      <div class="actionIcon">♡</div>
-      <span>12.4K</span>
-
-    </button>
-
-    <button class="action"
-            onclick="openComments()">
-
-      <div class="actionIcon">💬</div>
-      <span>840</span>
-
-    </button>
-
-    <button class="action"
-            onclick="sharePost()">
-
-      <div class="actionIcon">↗</div>
-      <span>Share</span>
-
-    </button>
-
-    <button class="action"
-            onclick="savePost(this)">
-
-      <div class="actionIcon">🔖</div>
-      <span>Save</span>
-
-    </button>
 
   </div>
 
-  <div class="postContent">
+</div>
 
-    <div class="postInfo">
 
-      <div class="username">
-        @OTAcreator
-        <span class="verified">✓</span>
+<div id="app" class="app hidden">
+
+  <header class="top-bar">
+
+    <div class="logo">
+      OTA <span>X</span>
+    </div>
+
+    <div class="feed-tabs">
+
+      <button
+        id="followingTab"
+        onclick="switchFeed('following')"
+      >
+        Following
+      </button>
+
+      <button
+        id="forYouTab"
+        class="active"
+        onclick="switchFeed('foryou')"
+      >
+        For You
+      </button>
+
+    </div>
+
+    <button
+      class="search-top-btn"
+      onclick="openSearch()"
+    >
+      ⌕
+    </button>
+
+  </header>
+
+
+  <main id="feed" class="feed">
+
+    <article class="post">
+
+      <div class="post-media video-placeholder">
+
+        <div class="play-icon">
+          ▶
+        </div>
+
+        <div class="media-text">
+          OTA X
+        </div>
+
       </div>
 
-      <div class="caption">
-        Welcome to OTA X — connect, create and share your world.
+      <div class="post-info">
+
+        <div class="creator-row">
+
+          <div class="avatar">
+            O
+          </div>
+
+          <div>
+            <strong>
+              @OTAcreator
+              <span class="verified">✓</span>
+            </strong>
+
+            <small>
+              Welcome to OTA X
+            </small>
+          </div>
+
+          <button class="follow-btn">
+            Follow
+          </button>
+
+        </div>
+
+        <p class="caption">
+          Welcome to OTA X — connect, create and share your world.
+        </p>
+
       </div>
 
-      <div class="sound">
-        🎵 Original sound · OTA X
+
+      <div class="post-actions">
+
+        <button onclick="toggleLike(this)">
+          ♡
+          <span>12.4K</span>
+        </button>
+
+        <button onclick="openComments()">
+          ♡
+          <span>840</span>
+        </button>
+
+        <button onclick="sharePost()">
+          ↗
+          <span>Share</span>
+        </button>
+
+        <button onclick="savePost(this)">
+          🔖
+          <span>Save</span>
+        </button>
+
+      </div>
+
+    </article>
+
+
+    <article class="post">
+
+      <div class="post-media gradient-media">
+
+        <div class="play-icon">
+          ▶
+        </div>
+
+        <div class="media-text">
+          CREATE
+        </div>
+
+      </div>
+
+      <div class="post-info">
+
+        <div class="creator-row">
+
+          <div class="avatar">
+            A
+          </div>
+
+          <div>
+            <strong>
+              @AfricaCreator
+            </strong>
+
+            <small>
+              Creator
+            </small>
+          </div>
+
+          <button class="follow-btn">
+            Follow
+          </button>
+
+        </div>
+
+        <p class="caption">
+          Your creativity belongs here. Start creating on OTA X.
+        </p>
+
+      </div>
+
+
+      <div class="post-actions">
+
+        <button onclick="toggleLike(this)">
+          ♡
+          <span>8.2K</span>
+        </button>
+
+        <button onclick="openComments()">
+          ♡
+          <span>421</span>
+        </button>
+
+        <button onclick="sharePost()">
+          ↗
+          <span>Share</span>
+        </button>
+
+        <button onclick="savePost(this)">
+          🔖
+          <span>Save</span>
+        </button>
+
+      </div>
+
+    </article>
+
+
+    <article class="post">
+
+      <div class="post-media dark-media">
+
+        <div class="play-icon">
+          ▶
+        </div>
+
+        <div class="media-text">
+          OTA X
+        </div>
+
+      </div>
+
+      <div class="post-info">
+
+        <div class="creator-row">
+
+          <div class="avatar">
+            X
+          </div>
+
+          <div>
+            <strong>
+              @OTAX
+              <span class="verified">✓</span>
+            </strong>
+
+            <small>
+              Official
+            </small>
+          </div>
+
+          <button class="follow-btn">
+            Follow
+          </button>
+
+        </div>
+
+        <p class="caption">
+          One platform. Millions of voices. Your world starts here.
+        </p>
+
+      </div>
+
+
+      <div class="post-actions">
+
+        <button onclick="toggleLike(this)">
+          ♡
+          <span>20.1K</span>
+        </button>
+
+        <button onclick="openComments()">
+          ♡
+          <span>1.2K</span>
+        </button>
+
+        <button onclick="sharePost()">
+          ↗
+          <span>Share</span>
+        </button>
+
+        <button onclick="savePost(this)">
+          🔖
+          <span>Save</span>
+        </button>
+
+      </div>
+
+    </article>
+
+  </main>
+    <!-- SEARCH PANEL -->
+  <section id="searchPanel" class="side-panel">
+
+    <div class="panel-header">
+      <h2>Search</h2>
+
+      <button onclick="closeSearch()">
+        ×
+      </button>
+    </div>
+
+    <div class="search-box">
+
+      <input
+        type="text"
+        id="searchInput"
+        placeholder="Search OTA X"
+      >
+
+      <button onclick="performSearch()">
+        Search
+      </button>
+
+    </div>
+
+    <div id="searchResults" class="search-results">
+
+      <p class="empty-text">
+        Search for people, videos, communities and more.
+      </p>
+
+    </div>
+
+  </section>
+
+
+  <!-- COMMENTS PANEL -->
+  <section id="commentsPanel" class="comments-panel">
+
+    <div class="panel-header">
+
+      <h2>Comments</h2>
+
+      <button onclick="closeComments()">
+        ×
+      </button>
+
+    </div>
+
+
+    <div class="comments-list">
+
+      <div class="comment">
+
+        <div class="comment-avatar">
+          J
+        </div>
+
+        <div>
+          <strong>@john</strong>
+          <p>OTA X looks amazing!</p>
+        </div>
+
+      </div>
+
+
+      <div class="comment">
+
+        <div class="comment-avatar">
+          A
+        </div>
+
+        <div>
+          <strong>@amaka</strong>
+          <p>Can't wait to start creating.</p>
+        </div>
+
+      </div>
+
+
+      <div class="comment">
+
+        <div class="comment-avatar">
+          D
+        </div>
+
+        <div>
+          <strong>@david</strong>
+          <p>This is going to be big.</p>
+        </div>
+
       </div>
 
     </div>
 
-  </div>
 
-</article>
+    <div class="comment-input">
 
+      <input
+        type="text"
+        id="commentInput"
+        placeholder="Add a comment..."
+      >
 
-<!-- POST 2 -->
+      <button
+        onclick="toggleRecording()"
+        id="micButton"
+      >
+        🎤
+      </button>
 
-<article class="post">
+      <button onclick="sendComment()">
+        Send
+      </button>
 
-  <div class="videoBackground two">
-
-    <div class="videoText">CREATE</div>
-
-    <div class="watermark">
-      OTA<span>X</span>
     </div>
 
-  </div>
+  </section>
 
-  <div class="videoOverlay"></div>
 
-  <div class="actions">
+  <!-- PROFILE PANEL -->
+  <section id="profilePanel" class="full-panel">
 
-    <div class="avatarWrap">
-      <div class="avatar">A</div>
-      <div class="followPlus">+</div>
+    <div class="panel-header">
+
+      <h2>Profile</h2>
+
+      <button onclick="closeProfile()">
+        ×
+      </button>
+
     </div>
 
-    <button class="action"
-            onclick="toggleLike(this)">
 
-      <div class="actionIcon">♡</div>
-      <span>8.7K</span>
+    <div class="profile-header">
+
+      <div class="profile-avatar">
+        O
+      </div>
+
+      <h2>@OTAcreator</h2>
+
+      <span class="verified">
+        ✓
+      </span>
+
+      <p>
+        Welcome to my OTA X profile.
+      </p>
+
+
+      <div class="profile-stats">
+
+        <div>
+          <strong>0</strong>
+          <span>Following</span>
+        </div>
+
+        <div>
+          <strong>0</strong>
+          <span>Followers</span>
+        </div>
+
+        <div>
+          <strong>0</strong>
+          <span>Likes</span>
+        </div>
+
+      </div>
+
+
+      <button class="edit-profile-btn">
+        Edit Profile
+      </button>
+
+    </div>
+
+  </section>
+
+
+  <!-- CREATE PANEL -->
+  <section id="createPanel" class="create-panel">
+
+    <div class="panel-header">
+
+      <h2>Create</h2>
+
+      <button onclick="closeCreate()">
+        ×
+      </button>
+
+    </div>
+
+
+    <div class="create-options">
+
+      <button onclick="createMessage('Video')">
+
+        <span>▶</span>
+
+        <strong>
+          Video
+        </strong>
+
+        <small>
+          Upload or create a video
+        </small>
+
+      </button>
+
+
+      <button onclick="createMessage('Photo')">
+
+        <span>▧</span>
+
+        <strong>
+          Photo
+        </strong>
+
+        <small>
+          Share a photo
+        </small>
+
+      </button>
+
+
+      <button onclick="createMessage('Story')">
+
+        <span>◉</span>
+
+        <strong>
+          Story
+        </strong>
+
+        <small>
+          Share something for 24 hours
+        </small>
+
+      </button>
+
+
+      <button onclick="createMessage('LIVE')">
+
+        <span>●</span>
+
+        <strong>
+          LIVE
+        </strong>
+
+        <small>
+          Go live with your audience
+        </small>
+
+      </button>
+
+    </div>
+
+  </section>
+
+
+  <!-- BOTTOM NAVIGATION -->
+  <nav class="bottom-nav">
+
+    <button
+      class="nav-item active"
+      onclick="goHome()"
+    >
+
+      <span>⌂</span>
+
+      <small>
+        Home
+      </small>
 
     </button>
 
-    <button class="action"
-            onclick="openComments()">
 
-      <div class="actionIcon">💬</div>
-      <span>421</span>
+    <button
+      class="nav-item"
+      onclick="openSearch()"
+    >
 
-    </button>
+      <span>⌕</span>
 
-    <button class="action"
-            onclick="sharePost()">
-
-      <div class="actionIcon">↗</div>
-      <span>Share</span>
+      <small>
+        Search
+      </small>
 
     </button>
 
-    <button class="action"
-            onclick="savePost(this)">
 
-      <div class="actionIcon">🔖</div>
-      <span>Save</span>
+    <button
+      class="nav-create"
+      onclick="openCreate()"
+    >
+      +
+    </button>
+
+
+    <button
+      class="nav-item"
+      onclick="openProfile()"
+    >
+
+      <span>♙</span>
+
+      <small>
+        Profile
+      </small>
 
     </button>
 
-  </div>
+  </nav>
 
-  <div class="postContent">
 
-    <div class="postInfo">
+  <!-- TOAST -->
+  <div id="toast" class="toast"></div>
 
-      <div class="username">
-        @AfricaCreators
-        <span class="verified">✓</span>
-      </div>
 
-      <div class="caption">
-        Your creativity belongs here. Create something original today.
-      </div>
+  <!-- JAVASCRIPT -->
+  <script>
 
-      <div class="sound">
-        🎵 Original sound · Africa Creators
-      </div>
+    const API_URL =
+      "https://ota-x-backend.onrender.com";
 
-    </div>
 
-  </div>
+    function showAuth(type){
 
-</article>
+      const loginBox =
+        document.getElementById("loginBox");
 
+      const signupBox =
+        document.getElementById("signupBox");
 
-<!-- POST 3 -->
 
-<article class="post">
+      if(type === "signup"){
 
-  <div class="videoBackground three">
+        loginBox.classList.add("hidden");
 
-    <div class="videoText">AFRICA</div>
+        signupBox.classList.remove("hidden");
 
-    <div class="watermark">
-      OTA<span>X</span>
-    </div>
+      }else{
 
-  </div>
+        signupBox.classList.add("hidden");
 
-  <div class="videoOverlay"></div>
+        loginBox.classList.remove("hidden");
 
-  <div class="actions">
-
-    <div class="avatarWrap">
-      <div class="avatar">N</div>
-      <div class="followPlus">+</div>
-    </div>
-
-    <button class="action"
-            onclick="toggleLike(this)">
-
-      <div class="actionIcon">♡</div>
-      <span>21.3K</span>
-
-    </button>
-
-    <button class="action"
-            onclick="openComments()">
-
-      <div class="actionIcon">💬</div>
-      <span>1.2K</span>
-
-    </button>
-
-    <button class="action"
-            onclick="sharePost()">
-
-      <div class="actionIcon">↗</div>
-      <span>Share</span>
-
-    </button>
-
-    <button class="action"
-            onclick="savePost(this)">
-
-      <div class="actionIcon">🔖</div>
-      <span>Save</span>
-
-    </button>
-
-  </div>
-
-  <div class="postContent">
-
-    <div class="postInfo">
-
-      <div class="username">
-        @NigerianCreator
-        <span class="verified">✓</span>
-      </div>
-
-      <div class="caption">
-        Africa has a story to tell. This is your space to create.
-      </div>
-
-      <div class="sound">
-        🎵 Original sound · OTA X
-      </div>
-
-    </div>
-
-  </div>
-
-</article>
-
-  </main>  <!-- ================= BOTTOM NAV ================= -->  <nav class="bottomNav"><button class="navButton active"
-        onclick="goHome()">
-  <span class="navIcon">⌂</span>
-  Home
-</button>
-
-<button class="navButton"
-        onclick="openSearch()">
-  <span class="navIcon">⌕</span>
-  Search
-</button>
-
-<button class="navButton"
-        onclick="openCreate()">
-  <span class="createNav">+</span>
-  Create
-</button>
-
-<button class="navButton"
-        onclick="openProfile()">
-  <span class="navIcon">♙</span>
-  Profile
-</button>
-
-  </nav></div><!-- ================= SEARCH ================= --><div id="searchPanel" class="overlayPanel">  <div class="panelHeader"><button class="closeButton"
-        onclick="closeSearch()">
-  ×
-</button>
-
-<input id="searchInput"
-       class="searchInput"
-       placeholder="Search OTA X...">
-
-  </div>  <div class="panelBody"><div class="sectionTitle">
-  Trending on OTA X
-</div>
-
-<div class="trend">
-  <strong>#OTA X</strong>
-  <span>12.4K posts</span>
-</div>
-
-<div class="trend">
-  <strong>#AfricaCreators</strong>
-  <span>8.7K posts</span>
-</div>
-
-<div class="trend">
-  <strong>#Football</strong>
-  <span>245K posts</span>
-</div>
-
-<div class="trend">
-  <strong>#Music</strong>
-  <span>189K posts</span>
-</div>
-
-  </div></div><!-- ================= COMMENTS ================= --><div id="commentsPanel" class="commentsPanel">  <div class="commentsHeader">Comments
-
-<button class="commentsClose"
-        onclick="closeComments()">
-  ×
-</button>
-
-  </div>  <div class="commentsList"><div class="comment">
-
-  <div class="commentAvatar">A</div>
-
-  <div class="commentBody">
-
-    <div class="commentName">
-      @AfricaUser
-    </div>
-
-    <div class="commentText">
-      OTA X is looking good!
-    </div>
-
-  </div>
-
-</div>
-
-
-<div class="comment">
-
-  <div class="commentAvatar">N</div>
-
-  <div class="commentBody">
-
-    <div class="commentName">
-      @NaijaCreator
-    </div>
-
-    <div class="commentText">
-      Can't wait to start creating here.
-    </div>
-
-  </div>
-
-</div>
-
-  </div>  <div id="recordingStatus"
-       class="recordingStatus">
-    Recording voice comment...
-  </div>  <div class="commentComposer"><input id="commentInput"
-       class="commentInput"
-       placeholder="Add a comment...">
-
-<button id="micButton"
-        class="micButton"
-        onclick="toggleRecording()">
-  🎤
-</button>
-
-<button class="sendButton"
-        onclick="sendComment()">
-  ➤
-</button>
-
-  </div></div><!-- ================= PROFILE ================= --><div id="profilePanel" class="profilePanel">  <div class="profileHeader"><strong>Profile</strong>
-
-<button class="closeButton"
-        onclick="closeProfile()">
-  ×
-</button>
-
-  </div>  <div class="profileTop"><div class="bigAvatar">O</div>
-
-<div class="profileName">
-  OTA Creator
-  <span class="verified">✓</span>
-</div>
-
-<div class="profileUsername">
-  @OTAcreator
-</div>
-
-<div class="profileStats">
-
-  <div class="stat">
-    <strong>125</strong>
-    <span>Following</span>
-  </div>
-
-  <div class="stat">
-    <strong>12.4K</strong>
-    <span>Followers</span>
-  </div>
-
-  <div class="stat">
-    <strong>245K</strong>
-    <span>Likes</span>
-  </div>
-
-</div>
-
-<div class="profileActions">
-
-  <button class="profileButton red">
-    Edit Profile
-  </button>
-
-  <button class="profileButton">
-    Share
-  </button>
-
-</div>
-
-  </div>  <div class="profileGrid"><div class="gridItem">▶</div>
-<div class="gridItem">★</div>
-<div class="gridItem">◉</div>
-<div class="gridItem">▶</div>
-<div class="gridItem">★</div>
-<div class="gridItem">◉</div>
-
-  </div></div><!-- ================= CREATE ================= --><div id="createPanel" class="createPanel">  <div class="panelHeader"><button class="closeButton"
-        onclick="closeCreate()">
-  ×
-</button>
-
-<strong>Create</strong>
-
-  </div>  <div class="createOptions"><button class="createOption"
-        onclick="createMessage('Video upload coming soon')">
-
-  <div>🎥</div>
-  <strong>Video</strong>
-  <p>Share a video</p>
-
-</button>
-
-<button class="createOption"
-        onclick="createMessage('Photo upload coming soon')">
-
-  <div>📷</div>
-  <strong>Photo</strong>
-  <p>Share a photo</p>
-
-</button>
-
-<button class="createOption"
-        onclick="createMessage('Story creation coming soon')">
-
-  <div>⭕</div>
-  <strong>Story</strong>
-  <p>Create a story</p>
-
-</button>
-
-<button class="createOption"
-        onclick="createMessage('LIVE coming soon')">
-
-  <div>🔴</div>
-  <strong>LIVE</strong>
-  <p>Go live</p>
-
-</button>
-
-  </div></div><div id="toast" class="toast"></div><!-- ================= JAVASCRIPT ================= --><script>
-
-const API_URL = "https://ota-x-backend.onrender.com";
-
-function showAuth(type){
-
-  const loginForm =
-    document.getElementById("loginForm");
-
-  const signupForm =
-    document.getElementById("signupForm");
-
-  const loginTab =
-    document.getElementById("loginTab");
-
-  const signupTab =
-    document.getElementById("signupTab");
-
-  if(type === "login"){
-
-    loginForm.classList.add("active");
-    signupForm.classList.remove("active");
-
-    loginTab.classList.add("active");
-    signupTab.classList.remove("active");
-
-  }else{
-
-    loginForm.classList.remove("active");
-    signupForm.classList.add("active");
-
-    loginTab.classList.remove("active");
-    signupTab.classList.add("active");
-
-  }
-
-  document.getElementById("authMessage").textContent = "";
-
-}
-
-
-async function registerUser(event){
-
-  event.preventDefault();
-
-  const username =
-    document.getElementById("signupUsername").value.trim();
-
-  const email =
-    document.getElementById("signupEmail").value.trim();
-
-  const password =
-    document.getElementById("signupPassword").value;
-
-  const message =
-    document.getElementById("authMessage");
-
-  message.textContent = "Creating account...";
-
-  try{
-
-    const response = await fetch(
-      API_URL + "/api/auth/register",
-      {
-        method:"POST",
-        headers:{
-          "Content-Type":"application/json"
-        },
-        body:JSON.stringify({
-          username,
-          email,
-          password
-        })
       }
-    );
-
-    const data = await response.json();
-
-    if(!response.ok){
-
-      message.textContent =
-        data.error || "Registration failed.";
-
-      return;
 
     }
 
-    message.style.color = "#55ff77";
-    message.textContent =
-      "Account created. You can now login.";
 
-    document.getElementById("loginEmail").value = email;
+    async function registerUser(){
 
-    showAuth("login");
+      const username =
+        document
+          .getElementById("signupUsername")
+          .value
+          .trim();
 
-  }catch(error){
+      const email =
+        document
+          .getElementById("signupEmail")
+          .value
+          .trim();
 
-    message.style.color = "#ff5555";
-
-    message.textContent =
-      "Could not connect to OTA X server.";
-
-  }
-
-}
+      const password =
+        document
+          .getElementById("signupPassword")
+          .value;
 
 
-async function loginUser(event){
+      if(!username || !email || !password){
 
-  event.preventDefault();
+        showToast(
+          "Please fill in all fields."
+        );
 
-  const email =
-    document.getElementById("loginEmail").value.trim();
-
-  const password =
-    document.getElementById("loginPassword").value;
-
-  const message =
-    document.getElementById("authMessage");
-
-  message.style.color = "#ff5555";
-  message.textContent = "Logging in...";
-
-  try{
-
-    const response = await fetch(
-      API_URL + "/api/auth/login",
-      {
-        method:"POST",
-        headers:{
-          "Content-Type":"application/json"
-        },
-        body:JSON.stringify({
-          email,
-          password
-        })
+        return;
       }
-    );
 
-    const data = await response.json();
 
-    if(!response.ok){
+      try{
 
-      message.textContent =
-        data.error || "Login failed.";
+        const response =
+          await fetch(
+            API_URL + "/api/auth/register",
+            {
+              method:"POST",
 
-      return;
+              headers:{
+                "Content-Type":"application/json"
+              },
+
+              body:JSON.stringify({
+                username,
+                email,
+                password
+              })
+            }
+          );
+
+
+        const data =
+          await response.json();
+
+
+        if(!response.ok){
+
+          showToast(
+            data.error ||
+            "Registration failed."
+          );
+
+          return;
+        }
+
+
+        showToast(
+          "Account created successfully!"
+        );
+
+        showAuth("login");
+
+
+      }catch(error){
+
+        console.error(error);
+
+        showToast(
+          "Unable to connect to OTA X."
+        );
+
+      }
 
     }
 
-    if(data.token){
 
-      localStorage.setItem(
-        "ota_token",
-        data.token
+    async function loginUser(){
+
+      const email =
+        document
+          .getElementById("loginEmail")
+          .value
+          .trim();
+
+      const password =
+        document
+          .getElementById("loginPassword")
+          .value;
+
+
+      if(!email || !password){
+
+        showToast(
+          "Please enter your email and password."
+        );
+
+        return;
+      }
+
+
+      try{
+
+        const response =
+          await fetch(
+            API_URL + "/api/auth/login",
+            {
+              method:"POST",
+
+              headers:{
+                "Content-Type":"application/json"
+              },
+
+              body:JSON.stringify({
+                email,
+                password
+              })
+            }
+          );
+
+
+        const data =
+          await response.json();
+
+
+        if(!response.ok){
+
+          showToast(
+            data.error ||
+            "Login failed."
+          );
+
+          return;
+        }
+
+
+        if(data.token){
+
+          localStorage.setItem(
+            "ota_token",
+            data.token
+          );
+
+        }
+
+
+        document
+          .getElementById("authScreen")
+          .classList.add("hidden");
+
+
+        document
+          .getElementById("app")
+          .classList.remove("hidden");
+
+
+        showToast(
+          "Welcome to OTA X!"
+        );
+
+
+      }catch(error){
+
+        console.error(error);
+
+        showToast(
+          "Unable to connect to OTA X."
+        );
+
+      }
+
+    }
+
+
+    function switchFeed(type){
+
+      const following =
+        document.getElementById(
+          "followingTab"
+        );
+
+      const forYou =
+        document.getElementById(
+          "forYouTab"
+        );
+
+
+      following.classList.remove("active");
+
+      forYou.classList.remove("active");
+
+
+      if(type === "following"){
+
+        following.classList.add("active");
+
+        showToast(
+          "Following feed selected."
+        );
+
+      }else{
+
+        forYou.classList.add("active");
+
+      }
+
+    }
+
+
+    function toggleLike(button){
+
+      const count =
+        button.querySelector("span");
+
+
+      button.classList.toggle("liked");
+
+
+      if(
+        button.classList.contains("liked")
+      ){
+
+        button.firstChild.textContent =
+          "♥ ";
+
+
+        let number =
+          parseFloat(
+            count.textContent
+          );
+
+
+        if(!isNaN(number)){
+
+          count.textContent =
+            (number + 0.1).toFixed(1) +
+            "K";
+
+        }
+
+      }else{
+
+        button.firstChild.textContent =
+          "♡ ";
+
+      }
+
+    }
+
+
+    function savePost(button){
+
+      button.classList.toggle("saved");
+
+
+      if(
+        button.classList.contains("saved")
+      ){
+
+        button.querySelector("span")
+          .textContent = "Saved";
+
+        showToast(
+          "Post saved."
+        );
+
+      }else{
+
+        button.querySelector("span")
+          .textContent = "Save";
+
+      }
+
+    }
+
+
+    function sharePost(){
+
+      showToast(
+        "Share feature is ready for connection."
       );
 
     }
 
-    document.getElementById("authScreen")
-      .classList.add("hidden");
 
-    document.getElementById("app")
-      .classList.remove("hidden");
+    function openSearch(){
 
-  }catch(error){
+      document
+        .getElementById("searchPanel")
+        .classList.add("open");
 
-    message.textContent =
-      "Could not connect to OTA X server.";
+    }
 
-  }
 
-}
+    function closeSearch(){
 
+      document
+        .getElementById("searchPanel")
+        .classList.remove("open");
 
-function switchFeed(type){
+    }
 
-  document
-    .getElementById("followingTab")
-    .classList.remove("active");
 
-  document
-    .getElementById("forYouTab")
-    .classList.remove("active");
+    function performSearch(){
 
-  if(type === "following"){
+      const input =
+        document
+          .getElementById("searchInput")
+          .value
+          .trim();
 
-    document
-      .getElementById("followingTab")
-      .classList.add("active");
 
-    showToast("Following feed selected");
+      const results =
+        document
+          .getElementById("searchResults");
 
-  }else{
 
-    document
-      .getElementById("forYouTab")
-      .classList.add("active");
+      if(!input){
 
-  }
+        results.innerHTML =
+          `<p class="empty-text">
+            Type something to search.
+          </p>`;
 
-}
+        return;
 
+      }
 
-function toggleLike(button){
 
-  button.classList.toggle("liked");
+      results.innerHTML = `
 
-  const icon =
-    button.querySelector(".actionIcon");
+        <div class="search-result">
 
-  if(button.classList.contains("liked")){
+          <div class="result-avatar">
+            O
+          </div>
 
-    icon.textContent = "♥";
+          <div>
+            <strong>@${escapeHTML(input)}</strong>
+            <p>OTA X creator</p>
+          </div>
 
-  }else{
+        </div>
 
-    icon.textContent = "♡";
 
-  }
+        <div class="search-result">
 
-}
+          <div class="result-avatar">
+            #
+          </div>
 
+          <div>
+            <strong>#${escapeHTML(input)}</strong>
+            <p>Discover posts</p>
+          </div>
 
-function savePost(button){
+        </div>
 
-  button.classList.toggle("saved");
+      `;
 
-  const icon =
-    button.querySelector(".actionIcon");
+    }
+        function openComments(){
 
-  if(button.classList.contains("saved")){
+      document
+        .getElementById("commentsPanel")
+        .classList.add("open");
 
-    icon.textContent = "🔖";
-    showToast("Saved");
+    }
 
-  }else{
 
-    showToast("Removed from saved");
+    function closeComments(){
 
-  }
+      document
+        .getElementById("commentsPanel")
+        .classList.remove("open");
 
-}
+    }
 
 
-function sharePost(){
+    function sendComment(){
 
-  if(navigator.share){
+      const input =
+        document.getElementById(
+          "commentInput"
+        );
 
-    navigator.share({
-      title:"OTA X",
-      text:"Check out this post on OTA X"
-    }).catch(()=>{});
+      const text =
+        input.value.trim();
 
-  }else{
 
-    showToast("Share link copied");
+      if(!text){
+        return;
+      }
 
-  }
 
-}
+      const list =
+        document.querySelector(
+          ".comments-list"
+        );
 
 
-function openSearch(){
+      const comment =
+        document.createElement("div");
 
-  document
-    .getElementById("searchPanel")
-    .classList.add("open");
+      comment.className =
+        "comment";
 
-}
 
+      comment.innerHTML = `
 
-function closeSearch(){
+        <div class="comment-avatar">
+          Y
+        </div>
 
-  document
-    .getElementById("searchPanel")
-    .classList.remove("open");
+        <div>
+          <strong>@you</strong>
+          <p>${escapeHTML(text)}</p>
+        </div>
 
-}
+      `;
 
 
-function openComments(){
+      list.appendChild(comment);
 
-  document
-    .getElementById("commentsPanel")
-    .classList.add("open");
+      input.value = "";
 
-}
+      showToast(
+        "Comment added."
+      );
 
+    }
 
-function closeComments(){
 
-  document
-    .getElementById("commentsPanel")
-    .classList.remove("open");
+    function toggleRecording(){
 
-}
+      const button =
+        document.getElementById(
+          "micButton"
+        );
 
 
-function openProfile(){
+      button.classList.toggle(
+        "recording"
+      );
 
-  document
-    .getElementById("profilePanel")
-    .classList.add("open");
 
-}
+      if(
+        button.classList.contains(
+          "recording"
+        )
+      ){
 
+        showToast(
+          "Microphone mode selected."
+        );
 
-function closeProfile(){
+      }else{
 
-  document
-    .getElementById("profilePanel")
-    .classList.remove("open");
+        showToast(
+          "Microphone mode stopped."
+        );
 
-}
+      }
 
+    }
 
-function openCreate(){
 
-  document
-    .getElementById("createPanel")
-    .classList.add("open");
+    function openProfile(){
 
-}
+      document
+        .getElementById("profilePanel")
+        .classList.add("open");
 
+    }
 
-function closeCreate(){
 
-  document
-    .getElementById("createPanel")
-    .classList.remove("open");
+    function closeProfile(){
 
-}
+      document
+        .getElementById("profilePanel")
+        .classList.remove("open");
 
+    }
 
-function goHome(){
 
-  document
-    .getElementById("feed")
-    .scrollTo({
-      top:0,
-      behavior:"smooth"
-    });
+    function openCreate(){
 
-}
+      document
+        .getElementById("createPanel")
+        .classList.add("open");
 
+    }
 
-function sendComment(){
 
-  const input =
-    document.getElementById("commentInput");
+    function closeCreate(){
 
-  const text =
-    input.value.trim();
+      document
+        .getElementById("createPanel")
+        .classList.remove("open");
 
-  if(!text){
+    }
 
-    showToast("Write a comment first");
-    return;
 
-  }
+    function createMessage(type){
 
-  const list =
-    document.querySelector(".commentsList");
+      showToast(
+        type + " creation selected."
+      );
 
-  const comment =
-    document.createElement("div");
+    }
 
-  comment.className = "comment";
 
-  comment.innerHTML = `
-    <div class="commentAvatar">O</div>
-    <div class="commentBody">
-      <div class="commentName">@OTAcreator</div>
-      <div class="commentText"></div>
-    </div>
-  `;
+    function goHome(){
 
-  comment.querySelector(".commentText")
-    .textContent = text;
+      closeSearch();
+      closeComments();
+      closeProfile();
+      closeCreate();
 
-  list.appendChild(comment);
 
-  input.value = "";
+      window.scrollTo({
+        top:0,
+        behavior:"smooth"
+      });
 
-  list.scrollTop = list.scrollHeight;
+    }
 
-}
 
+    function showToast(message){
 
-let recording = false;
+      const toast =
+        document.getElementById(
+          "toast"
+        );
 
-function toggleRecording(){
 
-  const button =
-    document.getElementById("micButton");
+      toast.textContent =
+        message;
 
-  const status =
-    document.getElementById("recordingStatus");
 
-  recording = !recording;
+      toast.classList.add("show");
 
-  if(recording){
 
-    button.classList.add("recording");
-    status.classList.add("show");
-    showToast("Voice recording started");
+      setTimeout(() => {
 
-  }else{
+        toast.classList.remove("show");
 
-    button.classList.remove("recording");
-    status.classList.remove("show");
-    showToast("Voice recording stopped");
+      }, 2500);
 
-  }
+    }
 
-}
 
+    function escapeHTML(text){
 
-function createMessage(message){
+      const div =
+        document.createElement("div");
 
-  showToast(message);
+      div.textContent =
+        text;
 
-}
+      return div.innerHTML;
 
+    }
 
-function showToast(message){
 
-  const toast =
-    document.getElementById("toast");
+    window.addEventListener(
+      "load",
+      function(){
 
-  toast.textContent = message;
+        const token =
+          localStorage.getItem(
+            "ota_token"
+          );
 
-  toast.classList.add("show");
 
-  setTimeout(()=>{
-    toast.classList.remove("show");
-  },2000);
+        if(token){
 
-}
+          document
+            .getElementById("authScreen")
+            .classList.add("hidden");
 
 
-window.addEventListener("load",()=>{
+          document
+            .getElementById("app")
+            .classList.remove("hidden");
 
-  const token =
-    localStorage.getItem("ota_token");
+        }
 
-  if(token){
+      }
+    );
 
-    document
-      .getElementById("authScreen")
-      .classList.add("hidden");
+  </script>
 
-    document
-      .getElementById("app")
-      .classList.remove("hidden");
-
-  }
-
-});
-
-</script></body>
-        </html>
-        *{
-box-sizing:border-box;
-margin:0;
-padding:0;
-}
-
-:root{
---red:#e00000;
---black:#050505;
---dark:#101010;
---card:#171717;
---white:#fff;
---gray:#999;
---line:#292929;
-}
-
-html,
-body{
-width:100%;
-height:100%;
-}
-
-body{
-font-family:Arial,Helvetica,sans-serif;
-background:#000;
-color:#fff;
-overflow:hidden;
-}
-
-button,
-input{
-font:inherit;
-}
-
-button{
-border:0;
-cursor:pointer;
-}
-
-.hidden{
-display:none!important;
-}
-
-/* ================= AUTH ================= */
-
-#authScreen{
-position:fixed;
-inset:0;
-z-index:1000;
-background:
-radial-gradient(
-circle at top right,
-#420000 0,
-transparent 35%
-),
-#050505;
-
-display:flex;
-justify-content:center;
-align-items:center;
-padding:20px;
-}
-
-.authBox{
-width:100%;
-max-width:420px;
-background:#111;
-border:1px solid #292929;
-border-radius:24px;
-padding:30px 24px;
-box-shadow:0 20px 70px rgba(0,0,0,.7);
-}
-
-.logo{
-text-align:center;
-font-size:44px;
-font-weight:900;
-letter-spacing:-3px;
-color:#fff;
-margin-bottom:5px;
-}
-
-.logo span,
-.topLogo span,
-.watermark span{
-color:var(--red);
-}
-
-.authSubtitle{
-text-align:center;
-color:#888;
-margin-bottom:28px;
-}
-
-.authTabs{
-display:flex;
-background:#1a1a1a;
-border-radius:12px;
-padding:4px;
-margin-bottom:22px;
-}
-
-.authTabs button{
-width:50%;
-padding:11px;
-border-radius:9px;
-background:transparent;
-color:#888;
-}
-
-.authTabs button.active{
-background:#fff;
-color:#000;
-font-weight:bold;
-}
-
-.authForm{
-display:none;
-}
-
-.authForm.active{
-display:block;
-}
-
-.inputGroup{
-margin-bottom:15px;
-}
-
-.inputGroup label{
-display:block;
-color:#aaa;
-font-size:13px;
-margin-bottom:7px;
-}
-
-.inputGroup input{
-width:100%;
-padding:14px;
-background:#1a1a1a;
-border:1px solid #303030;
-color:#fff;
-border-radius:12px;
-outline:none;
-}
-
-.inputGroup input:focus{
-border-color:var(--red);
-}
-
-.authButton{
-width:100%;
-padding:14px;
-background:var(--red);
-color:#fff;
-border-radius:12px;
-font-weight:bold;
-margin-top:5px;
-}
-
-.authMessage{
-min-height:20px;
-text-align:center;
-color:#ff5555;
-font-size:13px;
-margin-top:14px;
-}
-
-/* ================= APP ================= */
-
-#app{
-height:100vh;
-width:100%;
-position:relative;
-background:#000;
-}
-
-/* ================= TOP BAR ================= */
-
-.topBar{
-position:fixed;
-top:0;
-left:0;
-right:0;
-height:60px;
-z-index:50;
-
-display:flex;
-align-items:center;
-justify-content:space-between;
-
-padding:0 18px;
-
-background:
-linear-gradient(
-to bottom,
-rgba(0,0,0,.9),
-transparent
-);
-}
-
-.topLogo{
-font-size:28px;
-font-weight:900;
-letter-spacing:-2px;
-}
-
-.topRight{
-display:flex;
-align-items:center;
-gap:14px;
-}
-
-.searchTop{
-width:38px;
-height:38px;
-border-radius:50%;
-background:rgba(255,255,255,.12);
-color:#fff;
-font-size:20px;
-}
-
-.feedTabs{
-position:fixed;
-top:15px;
-left:50%;
-transform:translateX(-50%);
-z-index:55;
-
-display:flex;
-gap:20px;
-}
-
-.feedTabs button{
-background:none;
-color:#888;
-font-weight:bold;
-padding-bottom:6px;
-}
-
-.feedTabs button.active{
-color:#fff;
-border-bottom:2px solid var(--red);
-}
-
-/* ================= FEED ================= */
-
-.feed{
-height:100vh;
-overflow-y:auto;
-scroll-snap-type:y mandatory;
-scrollbar-width:none;
-}
-
-.feed::-webkit-scrollbar{
-display:none;
-}
-
-.post{
-position:relative;
-height:100vh;
-min-height:600px;
-scroll-snap-align:start;
-overflow:hidden;
-background:#111;
-}
-
-.videoBackground{
-position:absolute;
-inset:0;
-
-display:flex;
-align-items:center;
-justify-content:center;
-
-overflow:hidden;
-}
-
-.videoBackground.one{
-background:
-radial-gradient(
-circle at 70% 20%,
-#ff4444,
-transparent 22%
-),
-linear-gradient(
-135deg,
-#180000,
-#090909 50%,
-#400000
-);
-}
-
-.videoBackground.two{
-background:
-radial-gradient(
-circle at 25% 30%,
-#8b0000,
-transparent 25%
-),
-linear-gradient(
-135deg,
-#050505,
-#260000 60%,
-#090909
-);
-}
-
-.videoBackground.three{
-background:
-radial-gradient(
-circle at 65% 45%,
-#555,
-transparent 20%
-),
-linear-gradient(
-135deg,
-#111,
-#050505 60%,
-#330000
-);
-}
-
-.videoText{
-font-size:80px;
-font-weight:900;
-opacity:.08;
-transform:rotate(-15deg);
-}
-
-.videoOverlay{
-position:absolute;
-inset:0;
-
-background:
-linear-gradient(
-to bottom,
-rgba(0,0,0,.25),
-transparent 35%,
-rgba(0,0,0,.05) 50%,
-rgba(0,0,0,.9)
-);
-}
-
-.watermark{
-position:absolute;
-top:50%;
-left:50%;
-transform:
-translate(-50%,-50%)
-rotate(-15deg);
-
-font-size:60px;
-font-weight:900;
-opacity:.05;
-}
-
-.postContent{
-position:absolute;
-left:0;
-right:0;
-bottom:78px;
-padding:20px;
-z-index:5;
-}
-
-.postInfo{
-max-width:calc(100% - 75px);
-}
-
-.username{
-font-weight:bold;
-font-size:16px;
-margin-bottom:8px;
-}
-
-.verified{
-display:inline-flex;
-align-items:center;
-justify-content:center;
-
-width:18px;
-height:18px;
-
-background:var(--red);
-color:#000;
-
-border-radius:50%;
-font-size:11px;
-margin-left:4px;
-}
-
-.caption{
-font-size:15px;
-line-height:1.4;
-margin-bottom:10px;
-}
-
-.sound{
-color:#ddd;
-font-size:13px;
-}
-
-/* ================= ACTIONS ================= */
-
-.actions{
-position:absolute;
-right:14px;
-bottom:92px;
-
-display:flex;
-flex-direction:column;
-align-items:center;
-
-gap:16px;
-z-index:10;
-}
-
-.avatarWrap{
-display:flex;
-flex-direction:column;
-align-items:center;
-margin-bottom:3px;
-}
-
-.avatar{
-width:48px;
-height:48px;
-
-border-radius:50%;
-background:#fff;
-color:#000;
-
-display:flex;
-align-items:center;
-justify-content:center;
-
-font-size:21px;
-font-weight:bold;
-
-border:2px solid #fff;
-}
-
-.followPlus{
-margin-top:-8px;
-
-width:22px;
-height:22px;
-
-border-radius:50%;
-background:var(--red);
-
-display:flex;
-align-items:center;
-justify-content:center;
-
-font-weight:bold;
-
-border:2px solid #000;
-}
-
-.action{
-background:none;
-color:#fff;
-
-display:flex;
-flex-direction:column;
-align-items:center;
-
-gap:4px;
-}
-
-.actionIcon{
-width:42px;
-height:42px;
-
-display:flex;
-align-items:center;
-justify-content:center;
-
-border-radius:50%;
-background:rgba(0,0,0,.35);
-
-font-size:22px;
-}
-
-.action span{
-font-size:11px;
-color:#fff;
-}
-
-.action.liked .actionIcon,
-.action.saved .actionIcon{
-color:var(--red);
-}
-
-/* ================= BOTTOM NAV ================= */
-
-.bottomNav{
-position:fixed;
-bottom:0;
-left:0;
-right:0;
-
-height:65px;
-z-index:100;
-
-background:rgba(0,0,0,.92);
-border-top:1px solid #222;
-
-display:flex;
-justify-content:space-around;
-align-items:center;
-}
-
-.navButton{
-background:none;
-color:#888;
-
-display:flex;
-flex-direction:column;
-align-items:center;
-
-gap:3px;
-font-size:11px;
-}
-
-.navButton .navIcon{
-font-size:21px;
-}
-
-.navButton.active{
-color:#fff;
-}
-
-.createNav{
-width:48px;
-height:34px;
-
-border-radius:10px;
-background:#fff;
-color:#000;
-
-font-size:25px;
-line-height:30px;
-}
-
-/* ================= PANELS ================= */
-
-.overlayPanel{
-position:fixed;
-inset:0;
-
-z-index:200;
-
-background:#090909;
-
-transform:translateY(100%);
-transition:.25s ease;
-
-display:flex;
-flex-direction:column;
-}
-
-.overlayPanel.open{
-transform:translateY(0);
-}
-
-.panelHeader{
-height:65px;
-
-display:flex;
-align-items:center;
-gap:12px;
-
-padding:0 16px;
-
-border-bottom:1px solid #222;
-}
-
-.closeButton{
-width:38px;
-height:38px;
-
-border-radius:50%;
-background:#1b1b1b;
-color:#fff;
-
-font-size:20px;
-}
-
-.searchInput{
-flex:1;
-
-padding:13px 15px;
-
-background:#1b1b1b;
-color:#fff;
-
-border:1px solid #292929;
-border-radius:12px;
-
-outline:none;
-}
-
-.panelBody{
-padding:20px;
-overflow:auto;
-}
-
-.sectionTitle{
-font-size:18px;
-font-weight:bold;
-margin-bottom:16px;
-}
-
-.trend{
-padding:15px 0;
-border-bottom:1px solid #222;
-}
-
-.trend strong{
-display:block;
-margin-bottom:4px;
-}
-
-.trend span{
-color:#888;
-font-size:12px;
-}
-
-/* ================= COMMENTS ================= */
-
-.commentsPanel{
-position:fixed;
-left:0;
-right:0;
-bottom:0;
-
-height:75vh;
-
-z-index:300;
-
-background:#111;
-
-border-radius:22px 22px 0 0;
-
-transform:translateY(100%);
-transition:.25s ease;
-
-display:flex;
-flex-direction:column;
-}
-
-.commentsPanel.open{
-transform:translateY(0);
-}
-
-.commentsHeader{
-padding:17px;
-border-bottom:1px solid #292929;
-text-align:center;
-position:relative;
-font-weight:bold;
-}
-
-.commentsClose{
-position:absolute;
-right:15px;
-top:13px;
-
-width:34px;
-height:34px;
-
-background:#222;
-color:#fff;
-
-border-radius:50%;
-}
-
-.commentsList{
-flex:1;
-overflow:auto;
-padding:15px;
-}
-
-.comment{
-display:flex;
-gap:10px;
-margin-bottom:18px;
-}
-
-.commentAvatar{
-flex:none;
-
-width:38px;
-height:38px;
-
-border-radius:50%;
-background:#fff;
-color:#000;
-
-display:flex;
-align-items:center;
-justify-content:center;
-
-font-weight:bold;
-}
-
-.commentBody{
-flex:1;
-}
-
-.commentName{
-font-weight:bold;
-font-size:14px;
-margin-bottom:4px;
-}
-
-.commentText{
-color:#ddd;
-font-size:14px;
-line-height:1.4;
-}
-
-.commentComposer{
-padding:10px;
-
-border-top:1px solid #292929;
-
-display:flex;
-gap:8px;
-align-items:center;
-}
-
-.commentInput{
-flex:1;
-
-background:#1c1c1c;
-color:#fff;
-
-border:1px solid #292929;
-border-radius:22px;
-
-padding:12px 15px;
-
-outline:none;
-}
-
-.micButton,
-.sendButton{
-width:43px;
-height:43px;
-
-border-radius:50%;
-
-background:#222;
-color:#fff;
-}
-
-.sendButton{
-background:var(--red);
-color:#000;
-}
-
-.recording{
-background:var(--red)!important;
-color:#000!important;
-}
-
-.recordingStatus{
-padding:7px 15px;
-
-color:#ff4444;
-font-size:12px;
-
-display:none;
-}
-
-.recordingStatus.show{
-display:block;
-}
-
-/* ================= PROFILE ================= */
-
-.profilePanel{
-position:fixed;
-inset:0;
-
-z-index:250;
-
-background:#090909;
-
-transform:translateX(100%);
-transition:.25s ease;
-
-overflow:auto;
-}
-
-.profilePanel.open{
-transform:translateX(0);
-}
-
-.profileHeader{
-padding:18px;
-
-display:flex;
-justify-content:space-between;
-align-items:center;
-
-border-bottom:1px solid #222;
-}
-
-.profileTop{
-padding:30px 20px;
-text-align:center;
-}
-
-.bigAvatar{
-width:90px;
-height:90px;
-
-margin:auto;
-
-border-radius:50%;
-background:#fff;
-color:#000;
-
-display:flex;
-align-items:center;
-justify-content:center;
-
-font-size:38px;
-font-weight:bold;
-}
-
-.profileName{
-font-size:21px;
-font-weight:bold;
-margin-top:13px;
-}
-
-.profileUsername{
-color:#888;
-margin-top:4px;
-}
-
-.profileStats{
-display:flex;
-justify-content:center;
-
-gap:40px;
-margin-top:22px;
-}
-
-.stat strong{
-display:block;
-font-size:18px;
-}
-
-.stat span{
-color:#888;
-font-size:12px;
-}
-
-.profileActions{
-display:flex;
-justify-content:center;
-
-gap:10px;
-margin-top:25px;
-}
-
-.profileButton{
-padding:11px 22px;
-
-border-radius:10px;
-background:#222;
-color:#fff;
-}
-
-.profileButton.red{
-background:var(--red);
-color:#000;
-}
-
-.profileGrid{
-display:grid;
-grid-template-columns:repeat(3,1fr);
-
-gap:2px;
-margin-top:20px;
-}
-
-.gridItem{
-aspect-ratio:1;
-
-background:#191919;
-
-display:flex;
-align-items:center;
-justify-content:center;
-
-font-size:30px;
-}
-
-.gridItem:nth-child(2){
-background:#250000;
-}
-
-.gridItem:nth-child(3){
-background:#222;
-}
-
-/* ================= CREATE ================= */
-
-.createPanel{
-position:fixed;
-inset:0;
-
-z-index:350;
-
-background:#090909;
-
-transform:translateY(100%);
-transition:.25s ease;
-
-padding:20px;
-}
-
-.createPanel.open{
-transform:translateY(0);
-}
-
-.createOptions{
-display:grid;
-
-grid-template-columns:1fr 1fr;
-
-gap:14px;
-margin-top:30px;
-}
-
-.createOption{
-background:#191919;
-
-border:1px solid #292929;
-
-border-radius:18px;
-
-padding:30px 15px;
-
-color:#fff;
-text-align:center;
-}
-
-.createOption div{
-font-size:38px;
-margin-bottom:10px;
-}
-
-.createOption p{
-color:#888;
-margin-top:6px;
-font-size:12px;
-}
-
-/* ================= TOAST ================= */
-
-.toast{
-position:fixed;
-
-left:50%;
-bottom:85px;
-
-transform:
-translateX(-50%)
-translateY(20px);
-
-background:#fff;
-color:#000;
-
-padding:11px 17px;
-
-border-radius:20px;
-
-z-index:1000;
-
-opacity:0;
-pointer-events:none;
-
-transition:.2s;
-
-font-size:13px;
-}
-
-.toast.show{
-opacity:1;
-
-transform:
-translateX(-50%)
-translateY(0);
-}
-
-/* ================= RESPONSIVE ================= */
-
-@media(max-width:600px){
-
-.feedTabs{
-gap:12px;
-}
-
-.feedTabs button{
-font-size:12px;
-}
-
-.topLogo{
-font-size:25px;
-}
-
-.postContent{
-bottom:72px;
-}
-
-.actions{
-bottom:85px;
-}
-
-.authBox{
-padding:25px 20px;
-}
-
-}
+</body>
+</html>

@@ -1,2719 +1,1046 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-
-<title>OTA X</title>
-
-<style>
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-:root {
-  --black: #050505;
-  --white: #ffffff;
-  --red: #e50914;
-  --gray: #a8a8a8;
-}
-
-html,
-body {
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  background: var(--black);
-  font-family: Arial, Helvetica, sans-serif;
-  color: var(--white);
-}
-
-button {
-  border: 0;
-  background: none;
-  color: inherit;
-  font-family: inherit;
-}
-
-/* APP */
-
-.app {
-  width: 100%;
-  height: 100vh;
-  position: relative;
-  background: #000;
-  overflow: hidden;
-}
-
-/* VIDEO FEED */
-
-.feed {
-  width: 100%;
-  height: 100vh;
-  overflow-y: scroll;
-  scroll-snap-type: y mandatory;
-  scrollbar-width: none;
-}
-
-.feed::-webkit-scrollbar {
-  display: none;
-}
-
-.post {
-  width: 100%;
-  height: 100vh;
-  position: relative;
-  scroll-snap-align: start;
-  overflow: hidden;
-}
-
-/* DEMO VIDEO BACKGROUNDS */
-
-.video1 {
-  background:
-    radial-gradient(
-      circle at 65% 35%,
-      rgba(229,9,20,.55),
-      transparent 30%
-    ),
-    linear-gradient(
-      135deg,
-      #030303,
-      #1c0203,
-      #600007
-    );
-}
-
-.video2 {
-  background:
-    radial-gradient(
-      circle at 35% 30%,
-      rgba(255,255,255,.16),
-      transparent 28%
-    ),
-    linear-gradient(
-      145deg,
-      #050505,
-      #181818,
-      #500006
-    );
-}
-
-.video3 {
-  background:
-    radial-gradient(
-      circle at 70% 25%,
-      rgba(229,9,20,.6),
-      transparent 30%
-    ),
-    linear-gradient(
-      135deg,
-      #090909,
-      #310003,
-      #020202
-    );
-}
-
-/* DARK OVERLAY */
-
-.post::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background:
-    linear-gradient(
-      to bottom,
-      rgba(0,0,0,.45),
-      transparent 25%,
-      transparent 55%,
-      rgba(0,0,0,.82)
-    );
-  pointer-events: none;
-}
-
-/* TOP */
-
-.top {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 76px;
-  z-index: 20;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* OTA X LOGO */
-
-.logo {
-  position: absolute;
-  left: 18px;
-  font-size: 24px;
-  font-weight: 900;
-  letter-spacing: -1px;
-}
-
-.logo-x {
-  color: var(--red);
-  font-size: 29px;
-  font-style: italic;
-  margin-left: 2px;
-}
-
-/* FOR YOU */
-
-.feed-tabs {
-  display: flex;
-  align-items: center;
-  gap: 24px;
-  font-size: 15px;
-  font-weight: 700;
-}
-
-.feed-tab {
-  color: rgba(255,255,255,.65);
-  position: relative;
-}
-
-.feed-tab.active {
-  color: white;
-}
-
-.feed-tab.active::after {
-  content: "";
-  position: absolute;
-  height: 3px;
-  width: 22px;
-  border-radius: 5px;
-  background: var(--red);
-  bottom: -9px;
-  left: 50%;
-  transform: translateX(-50%);
-}
-
-/* SEARCH */
-
-.search {
-  position: absolute;
-  right: 17px;
-
-  width: 40px;
-  height: 40px;
-
-  border-radius: 50%;
-
-  background: rgba(0,0,0,.35);
-  border: 1px solid rgba(255,255,255,.18);
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  font-size: 23px;
-}
-
-/* CENTER BRAND WATERMARK */
-
-.watermark {
-  position: absolute;
-  top: 47%;
-  left: 50%;
-
-  transform: translate(-50%, -50%);
-
-  font-size: 32px;
-  font-weight: 900;
-
-  opacity: .12;
-
-  pointer-events: none;
-}
-
-.watermark span {
-  color: var(--red);
-}
-
-/* RIGHT ACTIONS */
-
-.actions {
-  position: absolute;
-  right: 12px;
-  bottom: 104px;
-
-  z-index: 10;
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-  gap: 17px;
-}
-
-/* PROFILE */
-
-.creator-avatar {
-  width: 49px;
-  height: 49px;
-
-  border-radius: 50%;
-
-  background:
-    linear-gradient(
-      135deg,
-      #eeeeee,
-      #555555
-    );
-
-  border: 2px solid white;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  color: #111;
-  font-size: 19px;
-  font-weight: 900;
-}
-
-.follow {
-  width: 23px;
-  height: 23px;
-
-  border-radius: 50%;
-
-  background: var(--red);
-
-  border: 2px solid white;
-
-  margin-top: -23px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  font-weight: 900;
-}
-
-/* ACTION BUTTON */
-
-.action {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-  gap: 4px;
-
-  font-size: 11px;
-  font-weight: 700;
-
-  text-shadow: 0 2px 6px #000;
-}
-
-.action-icon {
-  width: 46px;
-  height: 46px;
-
-  border-radius: 15px;
-
-  background: rgba(0,0,0,.42);
-
-  border: 1px solid rgba(255,255,255,.15);
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  font-size: 22px;
-
-  backdrop-filter: blur(7px);
-}
-
-.action.active .action-icon {
-  color: var(--red);
-  border-color: rgba(229,9,20,.7);
-}
-
-/* SAVE ICON */
-
-.save-icon {
-  width: 18px;
-  height: 21px;
-
-  border: 2px solid white;
-  border-radius: 4px;
-
-  position: relative;
-}
-
-.save-icon::after {
-  content: "";
-
-  position: absolute;
-
-  bottom: -2px;
-  left: 3px;
-
-  width: 8px;
-  height: 8px;
-
-  background: #000;
-
-  border-left: 2px solid white;
-  border-bottom: 2px solid white;
-
-  transform: rotate(-45deg);
-}
-
-/* POST INFORMATION */
-
-.post-info {
-  position: absolute;
-
-  left: 16px;
-  right: 85px;
-  bottom: 88px;
-
-  z-index: 10;
-}
-
-.username {
-  font-size: 17px;
-  font-weight: 800;
-
-  margin-bottom: 9px;
-}
-
-.verified {
-  display: inline-flex;
-
-  width: 18px;
-  height: 18px;
-
-  border-radius: 50%;
-
-  background: var(--red);
-  color: black;
-
-  align-items: center;
-  justify-content: center;
-
-  font-size: 11px;
-  font-weight: 900;
-
-  margin-left: 3px;
-}
-
-.caption {
-  font-size: 14px;
-  line-height: 1.4;
-
-  margin-bottom: 10px;
-}
-
-.sound {
-  font-size: 13px;
-  color: #ddd;
-
-  display: flex;
-  align-items: center;
-
-  gap: 6px;
-}
-
-/* BOTTOM NAV */
-
-.bottom-nav {
-  position: fixed;
-
-  left: 0;
-  right: 0;
-  bottom: 0;
-
-  height: 67px;
-
-  z-index: 30;
-
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-
-  background: rgba(0,0,0,.94);
-
-  border-top: 1px solid rgba(255,255,255,.08);
-}
-
-.nav {
-  width: 20%;
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-  gap: 5px;
-
-  color: #8e8e8e;
-
-  font-size: 10px;
-}
-
-.nav.active {
-  color: white;
-}
-
-.nav-icon {
-  width: 24px;
-  height: 24px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  font-size: 21px;
-}
-
-/* ORIGINAL OTA CREATE BUTTON */
-
-.create {
-  width: 48px;
-  height: 35px;
-
-  border-radius: 12px;
-
-  background: white;
-  color: black;
-
-  font-size: 25px;
-  font-weight: 900;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  position: relative;
-}
-
-.create::before {
-  content: "";
-
-  position: absolute;
-
-  left: -5px;
-  top: 3px;
-
-  width: 7px;
-  height: 29px;
-
-  border-radius: 7px;
-
-  background: var(--red);
-}
-
-/* SEARCH PANEL */
-
-.search-panel {
-  position: fixed;
-  inset: 0;
-
-  z-index: 100;
-
-  background: #050505;
-
-  display: none;
-
-  padding: 20px;
-}
-
-.search-panel.open {
-  display: block;
-}
-
-.search-header {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.back {
-  font-size: 30px;
-}
-
-.search-input {
-  flex: 1;
-
-  height: 46px;
-
-  border-radius: 25px;
-
-  background: #151515;
-
-  border: 1px solid #333;
-
-  color: white;
-
-  padding: 0 17px;
-
-  outline: none;
-
-  font-size: 15px;
-}
-
-.trending {
-  margin-top: 30px;
-}
-
-.trending h3 {
-  margin-bottom: 15px;
-}
-
-.topic {
-  padding: 15px;
-
-  background: #151515;
-
-  border-radius: 12px;
-
-  margin-bottom: 9px;
-}
-
-.topic small {
-  display: block;
-  color: var(--gray);
-  margin-top: 4px;
-}
-
-/* COMMENTS */
-
-.comments {
-  position: fixed;
-
-  left: 0;
-  right: 0;
-  bottom: 0;
-
-  height: 55%;
-
-  z-index: 200;
-
-  background: #101010;
-
-  border-radius: 22px 22px 0 0;
-
-  padding: 20px;
-
-  transform: translateY(100%);
-
-  transition: .25s;
-}
-
-.comments.open {
-  transform: translateY(0);
-}
-
-.comments-title {
-  text-align: center;
-
-  font-size: 14px;
-  font-weight: 800;
-
-  margin-bottom: 25px;
-}
-
-.comment {
-  display: flex;
-  gap: 10px;
-
-  margin-bottom: 18px;
-}
-
-.comment-photo {
-  width: 38px;
-  height: 38px;
-
-  border-radius: 50%;
-
-  background: #444;
-}
-
-.comment-name {
-  color: #999;
-
-  font-size: 12px;
-
-  margin-bottom: 4px;
-}
-
-/* PROFILE */
-
-.profile {
-  position: fixed;
-
-  inset: 0;
-
-  z-index: 150;
-
-  background: #050505;
-
-  display: none;
-
-  overflow-y: auto;
-}
-
-.profile.open {
-  display: block;
-}
-
-.profile-head {
-  height: 60px;
-
-  display: flex;
-  align-items: center;
-
-  padding: 0 18px;
-}
-
-.profile-main {
-  text-align: center;
-
-  padding: 20px;
-}
-
-.profile-photo {
-  width: 94px;
-  height: 94px;
-
-  border-radius: 50%;
-
-  margin: auto;
-
-  border: 3px solid var(--red);
-
-  background: linear-gradient(135deg,#eee,#444);
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  color: #111;
-
-  font-size: 28px;
-  font-weight: 900;
-}
-
-.profile-name {
-  margin-top: 12px;
-
-  font-size: 20px;
-  font-weight: 900;
-}
-
-.profile-handle {
-  color: #888;
-  margin-top: 4px;
-}
-
-.stats {
-  display: flex;
-  justify-content: center;
-  gap: 30px;
-
-  margin: 22px 0;
-}
-
-.stat strong {
-  display: block;
-  font-size: 18px;
-}
-
-.stat span {
-  color: #888;
-  font-size: 12px;
-}
-
-.edit {
-  padding: 10px 28px;
-
-  border: 1px solid #444;
-
-  border-radius: 8px;
-}
-
-.grid {
-  display: grid;
-  grid-template-columns: repeat(3,1fr);
-
-  gap: 2px;
-}
-
-.grid div {
-  aspect-ratio: 1;
-
-  background:
-    linear-gradient(
-      135deg,
-      #260003,
-      #a0000b
-    );
-}
-
-.grid div:nth-child(2n) {
-  background:
-    linear-gradient(
-      135deg,
-      #181818,
-      #555
-    );
-}
-
-/* DESKTOP */
-
-@media (min-width: 700px) {
-
-  .app {
-    max-width: 500px;
-    margin: auto;
-  }
-
-  .top,
-  .bottom-nav {
-    max-width: 500px;
-    left: 50%;
-    right: auto;
-    width: 100%;
-    transform: translateX(-50%);
-  }
-
-}
-</style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>OTA X</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      font-family: Arial, Helvetica, sans-serif;
+      background: #000;
+      color: #fff;
+    }
+
+    button,
+    input {
+      font: inherit;
+    }
+
+    button {
+      border: none;
+      cursor: pointer;
+    }
+
+    /* =========================
+       AUTH SCREEN
+    ========================= */
+
+    #authScreen {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 25px;
+      overflow-y: auto;
+    }
+
+    .authBox {
+      width: 100%;
+      max-width: 390px;
+      text-align: center;
+    }
+
+    .authLogo {
+      font-size: 48px;
+      font-weight: 900;
+      letter-spacing: -4px;
+      margin-bottom: 8px;
+    }
+
+    .authLogo span {
+      color: #e50914;
+    }
+
+    .authSubtitle {
+      color: #aaa;
+      font-size: 14px;
+      margin-bottom: 30px;
+    }
+
+    .authTabs {
+      display: flex;
+      background: #151515;
+      border-radius: 12px;
+      padding: 4px;
+      margin-bottom: 20px;
+    }
+
+    .authTab {
+      flex: 1;
+      padding: 12px;
+      background: transparent;
+      color: #aaa;
+      border-radius: 9px;
+      font-weight: 700;
+    }
+
+    .authTab.active {
+      background: #e50914;
+      color: #fff;
+    }
+
+    .authForm {
+      display: none;
+    }
+
+    .authForm.active {
+      display: block;
+    }
+
+    .authInput {
+      width: 100%;
+      padding: 15px;
+      margin-bottom: 12px;
+      border: 1px solid #292929;
+      border-radius: 10px;
+      background: #111;
+      color: #fff;
+      outline: none;
+    }
+
+    .authInput:focus {
+      border-color: #e50914;
+    }
+
+    .authButton {
+      width: 100%;
+      padding: 15px;
+      border-radius: 10px;
+      background: #e50914;
+      color: #fff;
+      font-weight: 800;
+      margin-top: 5px;
+    }
+
+    .authButton:disabled {
+      opacity: .6;
+    }
+
+    #authMessage {
+      min-height: 22px;
+      margin-top: 15px;
+      font-size: 13px;
+      color: #ff4d4d;
+    }
+
+    /* =========================
+       MAIN APP
+    ========================= */
+
+    #app {
+      display: none;
+      width: 100%;
+      height: 100%;
+      position: relative;
+      background: #000;
+    }
+
+    .topBar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 65px;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 16px;
+      background: linear-gradient(
+        to bottom,
+        rgba(0,0,0,.8),
+        transparent
+      );
+    }
+
+    .logo {
+      font-size: 25px;
+      font-weight: 900;
+      letter-spacing: -2px;
+    }
+
+    .logo span {
+      color: #e50914;
+    }
+
+    .feedTabs {
+      display: flex;
+      gap: 20px;
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
+    .feedTab {
+      background: none;
+      color: #aaa;
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    .feedTab.active {
+      color: #fff;
+    }
+
+    .searchTop {
+      background: rgba(255,255,255,.12);
+      color: #fff;
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      font-size: 19px;
+    }
+
+    /* =========================
+       FEED
+    ========================= */
+
+    .feed {
+      width: 100%;
+      height: 100%;
+      overflow-y: auto;
+      scroll-snap-type: y mandatory;
+      scrollbar-width: none;
+    }
+
+    .feed::-webkit-scrollbar {
+      display: none;
+    }
+
+    .post {
+      width: 100%;
+      height: 100vh;
+      position: relative;
+      scroll-snap-align: start;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .videoBg {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 20% 20%, #e50914, transparent 30%),
+        radial-gradient(circle at 80% 70%, #450008, transparent 35%),
+        linear-gradient(135deg, #080808, #260000);
+    }
+
+    .videoBg.two {
+      background:
+        radial-gradient(circle at 80% 20%, #ff3340, transparent 25%),
+        radial-gradient(circle at 20% 80%, #300006, transparent 40%),
+        linear-gradient(135deg, #000, #170000);
+    }
+
+    .videoBg.three {
+      background:
+        radial-gradient(circle at 50% 20%, #a0000b, transparent 30%),
+        radial-gradient(circle at 50% 80%, #1d1d1d, transparent 40%),
+        linear-gradient(135deg, #050505, #120000);
+    }
+
+    .videoCenter {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+      opacity: .9;
+    }
+
+    .videoCenter .play {
+      width: 75px;
+      height: 75px;
+      border: 2px solid rgba(255,255,255,.8);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: auto;
+      font-size: 30px;
+      padding-left: 4px;
+    }
+
+    .videoCenter p {
+      margin-top: 12px;
+      font-size: 12px;
+      color: #ddd;
+    }
+
+    .darkOverlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to top,
+        rgba(0,0,0,.9),
+        transparent 45%,
+        rgba(0,0,0,.25)
+      );
+    }
+
+    /* =========================
+       RIGHT ACTIONS
+    ========================= */
+
+    .actions {
+      position: absolute;
+      right: 12px;
+      bottom: 115px;
+      z-index: 20;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .action {
+      background: none;
+      color: #fff;
+      text-align: center;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .actionIcon {
+      width: 45px;
+      height: 45px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      background: rgba(0,0,0,.3);
+      font-size: 24px;
+      margin-bottom: 4px;
+    }
+
+    .likeButton.liked .actionIcon {
+      color: #e50914;
+    }
+
+    .avatar {
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      background: #e50914;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      border: 2px solid #fff;
+    }
+
+    .followPlus {
+      position: absolute;
+      bottom: -7px;
+      right: -4px;
+      background: #e50914;
+      width: 19px;
+      height: 19px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 15px;
+    }
+
+    .avatarWrap {
+      position: relative;
+    }
+
+    /* =========================
+       POST INFO
+    ========================= */
+
+    .postInfo {
+      position: absolute;
+      left: 15px;
+      right: 75px;
+      bottom: 92px;
+      z-index: 10;
+    }
+
+    .username {
+      font-weight: 900;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 8px;
+    }
+
+    .verified {
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background: #e50914;
+      color: #000;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 900;
+    }
+
+    .caption {
+      font-size: 14px;
+      line-height: 1.4;
+      margin-bottom: 8px;
+    }
+
+    .sound {
+      font-size: 12px;
+      color: #ddd;
+    }
+
+    /* =========================
+       BOTTOM NAV
+    ========================= */
+
+    .bottomNav {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 65px;
+      z-index: 200;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      background: rgba(0,0,0,.88);
+      border-top: 1px solid #202020;
+    }
+
+    .navItem {
+      background: none;
+      color: #aaa;
+      font-size: 10px;
+      min-width: 55px;
+    }
+
+    .navItem .navIcon {
+      font-size: 21px;
+      display: block;
+      margin-bottom: 3px;
+    }
+
+    .navItem.active {
+      color: #fff;
+    }
+
+    .createButton {
+      width: 48px;
+      height: 32px;
+      border-radius: 9px;
+      background: #fff;
+      color: #000;
+      font-size: 25px;
+      line-height: 25px;
+    }
+
+    /* =========================
+       SEARCH PANEL
+    ========================= */
+
+    .panel {
+      position: fixed;
+      inset: 0;
+      z-index: 500;
+      background: #050505;
+      display: none;
+      overflow-y: auto;
+    }
+
+    .panel.active {
+      display: block;
+    }
+
+    .panelHeader {
+      height: 65px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 0 15px;
+      border-bottom: 1px solid #222;
+    }
+
+    .backButton {
+      background: none;
+      color: #fff;
+      font-size: 25px;
+    }
+
+    .searchInput {
+      flex: 1;
+      background: #151515;
+      border: 1px solid #252525;
+      color: #fff;
+      border-radius: 10px;
+      padding: 12px;
+      outline: none;
+    }
+
+    .panelContent {
+      padding: 20px;
+    }
+
+    .panelContent h2 {
+      margin-bottom: 18px;
+    }
+
+    .trend {
+      padding: 15px 0;
+      border-bottom: 1px solid #1e1e1e;
+    }
+
+    .trend strong {
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    .trend span {
+      color: #888;
+      font-size: 12px;
+    }
+
+    /* =========================
+       COMMENTS
+    ========================= */
+
+    .commentsSheet {
+      position: fixed;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 65%;
+      z-index: 700;
+      background: #111;
+      border-radius: 20px 20px 0 0;
+      display: none;
+      flex-direction: column;
+    }
+
+    .commentsSheet.active {
+      display: flex;
+    }
+
+    .sheetTop {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 17px;
+      border-bottom: 1px solid #292929;
+    }
+
+    .closeSheet {
+      background: none;
+      color: #fff;
+      font-size: 22px;
+    }
+
+    .commentsList {
+      flex: 1;
+      overflow-y: auto;
+      padding: 15px;
+    }
+
+    .comment {
+      display: flex;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .commentAvatar {
+      width: 36px;
+      height: 36px;
+      flex-shrink: 0;
+      border-radius: 50%;
+      background: #e50914;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+    }
+
+    .commentText {
+      font-size: 13px;
+    }
+
+    .commentText span {
+      display: block;
+      color: #777;
+      font-size: 11px;
+      margin-top: 4px;
+    }
+
+    /* =========================
+       PROFILE
+    ========================= */
+
+    .profilePanel {
+      position: fixed;
+      inset: 0;
+      z-index: 600;
+      background: #000;
+      display: none;
+      overflow-y: auto;
+    }
+
+    .profilePanel.active {
+      display: block;
+    }
+
+    .profileHeader {
+      padding: 65px 20px 20px;
+      text-align: center;
+      border-bottom: 1px solid #222;
+    }
+
+    .profileBigAvatar {
+      width: 90px;
+      height: 90px;
+      margin: auto;
+      border-radius: 50%;
+      background: #e50914;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 30px;
+      font-weight: 900;
+      border: 3px solid #fff;
+    }
+
+    .profileName {
+      font-size: 20px;
+      font-weight: 900;
+      margin-top: 12px;
+    }
+
+    .profileUsername {
+      color: #888;
+      margin-top: 4px;
+    }
+
+    .profileStats {
+      display: flex;
+      justify-content: center;
+      gap: 35px;
+      margin-top: 20px;
+    }
+
+    .stat strong {
+      display: block;
+      font-size: 18px;
+    }
+
+    .stat span {
+      color: #888;
+      font-size: 11px;
+    }
+
+    .profileGrid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+      padding-top: 2px;
+    }
+
+    .gridItem {
+      aspect-ratio: 1;
+      background: linear-gradient(135deg, #190000, #e50914);
+    }
+
+    .gridItem:nth-child(2) {
+      background: linear-gradient(135deg, #111, #65000a);
+    }
+
+    .gridItem:nth-child(3) {
+      background: linear-gradient(135deg, #300006, #111);
+    }
+
+    .gridItem:nth-child(4) {
+      background: linear-gradient(135deg, #111, #e50914);
+    }
+
+    .gridItem:nth-child(5) {
+      background: linear-gradient(135deg, #4a0005, #000);
+    }
+
+    .gridItem:nth-child(6) {
+      background: linear-gradient(135deg, #000, #9e0009);
+    }
+
+    /* =========================
+       TOAST
+    ========================= */
+
+    #toast {
+      position: fixed;
+      left: 50%;
+      bottom: 85px;
+      transform: translateX(-50%);
+      background: rgba(255,255,255,.95);
+      color: #000;
+      padding: 10px 16px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 700;
+      z-index: 99999;
+      display: none;
+    }
+  </style>
 </head>
 
 <body>
 
-<div class="app">
+  <!-- =========================
+       LOGIN / SIGN UP
+  ========================= -->
 
-  <!-- TOP -->
-  <header class="top">
+  <section id="authScreen">
 
-    <div class="logo">
-      OTA<span class="logo-x">X</span>
-    </div>
+    <div class="authBox">
 
-    <div class="feed-tabs">
-      <div class="feed-tab">Following</div>
-      <div class="feed-tab active">For You</div>
-    </div>
-
-    <button class="search" onclick="openSearch()">⌕</button>
-
-  </header>
-
-
-  <!-- FEED -->
-
-  <main class="feed">
-
-
-    <!-- POST 1 -->
-
-    <section class="post video1">
-
-      <div class="watermark">
+      <div class="authLogo">
         OTA<span>X</span>
       </div>
 
-      <div class="actions">
-
-        <div class="creator-avatar">
-          O
-        </div>
-
-        <div class="follow">
-          +
-        </div>
-
-
-        <button class="action" onclick="toggleLike(this)">
-
-          <div class="action-icon">
-            ♡
-          </div>
-
-          <span>12.4K</span>
-
-        </button>
-
-
-        <button class="action" onclick="openComments()">
-
-          <div class="action-icon">
-            ◇
-          </div>
-
-          <span>840</span>
-
-        </button>
-
-
-        <button class="action">
-
-          <div class="action-icon">
-            ↗
-          </div>
-
-          <span>Share</span>
-
-        </button>
-
-
-        <button class="action">
-
-          <div class="action-icon">
-
-            <div class="save-icon"></div>
-
-          </div>
-
-          <span>Save</span>
-
-        </button>
-
+      <div class="authSubtitle">
+        Connect. Create. Share your world.
       </div>
 
-
-      <div class="post-info">
-
-        <div class="username">
-          @OTAcreator
-          <span class="verified">✓</span>
-        </div>
-
-        <div class="caption">
-          Welcome to OTA X — connect, create and share your world.
-          #OTAX #ForYou
-        </div>
-
-        <div class="sound">
-          ◉ Original sound · OTA X
-        </div>
-
-      </div>
-
-    </section>
-
-
-    <!-- POST 2 -->
-
-    <section class="post video2">
-
-      <div class="watermark">
-        OTA<span>X</span>
-      </div>
-
-      <div class="actions">
-
-        <div class="creator-avatar">
-          A
-        </div>
-
-        <div class="follow">
-          +
-        </div>
-
-        <button class="action" onclick="toggleLike(this)">
-
-          <div class="action-icon">
-            ♡
-          </div>
-
-          <span>8.7K</span>
-
+      <div class="authTabs">
+        <button
+          id="loginTab"
+          class="authTab active"
+          onclick="showAuthForm('login')">
+          Login
         </button>
 
-        <button class="action" onclick="openComments()">
+        <button
+          id="signupTab"
+          class="authTab"
+          onclick="showAuthForm('signup')">
+          Sign Up
+        </button>
+      </div>
 
-          <div class="action-icon">
-            ◇
-          </div>
+      <!-- LOGIN -->
 
-          <span>421</span>
+      <form
+        id="loginForm"
+        class="authForm active"
+        onsubmit="loginUser(event)">
 
+        <input
+          id="loginEmail"
+          class="authInput"
+          type="email"
+          placeholder="Email"
+          autocomplete="email"
+          required />
+
+        <input
+          id="loginPassword"
+          class="authInput"
+          type="password"
+          placeholder="Password"
+          autocomplete="current-password"
+          required />
+
+        <button
+          id="loginButton"
+          class="authButton"
+          type="submit">
+          Login
         </button>
 
-        <button class="action">
+      </form>
 
-          <div class="action-icon">
-            ↗
-          </div>
+      <!-- SIGN UP -->
 
-          <span>Share</span>
+      <form
+        id="signupForm"
+        class="authForm"
+        onsubmit="registerUser(event)">
 
+        <input
+          id="signupUsername"
+          class="authInput"
+          type="text"
+          placeholder="Username"
+          autocomplete="username"
+          required />
+
+        <input
+          id="signupEmail"
+          class="authInput"
+          type="email"
+          placeholder="Email"
+          autocomplete="email"
+          required />
+
+        <input
+          id="signupPassword"
+          class="authInput"
+          type="password"
+          placeholder="Password"
+          autocomplete="new-password"
+          required />
+
+        <button
+          id="signupButton"
+          class="authButton"
+          type="submit">
+          Create Account
         </button>
 
-        <button class="action">
+      </form>
 
-          <div class="action-icon">
-
-            <div class="save-icon"></div>
-
-          </div>
-
-          <span>Save</span>
-
-        </button>
-
-      </div>
-
-
-      <div class="post-info">
-
-        <div class="username">
-          @AfricaCreator
-          <span class="verified">✓</span>
-        </div>
-
-        <div class="caption">
-          Discover creators, communities and stories from across Africa.
-          #Africa #OTAX
-        </div>
-
-        <div class="sound">
-          ◉ Original sound
-        </div>
-
-      </div>
-
-    </section>
-
-
-    <!-- POST 3 -->
-
-    <section class="post video3">
-
-      <div class="watermark">
-        OTA<span>X</span>
-      </div>
-
-      <div class="actions">
-
-        <div class="creator-avatar">
-          X
-        </div>
-
-        <div class="follow">
-          +
-        </div>
-
-        <button class="action" onclick="toggleLike(this)">
-
-          <div class="action-icon">
-            ♡
-          </div>
-
-          <span>19.1K</span>
-
-        </button>
-
-        <button class="action" onclick="openComments()">
-
-          <div class="action-icon">
-            ◇
-          </div>
-
-          <span>1.2K</span>
-
-        </button>
-
-        <button class="action">
-
-          <div class="action-icon">
-            ↗
-          </div>
-
-          <span>Share</span>
-
-        </button>
-
-        <button class="action">
-
-          <div class="action-icon">
-
-            <div class="save-icon"></div>
-
-          </div>
-
-          <span>Save</span>
-
-        </button>
-
-      </div>
-
-
-      <div class="post-info">
-
-        <div class="username">
-          @OTAx3
-          <span class="verified">✓</span>
-        </div>
-
-        <div class="caption">
-          Your world. Your people. Your stories.
-          #OTAX #Create
-        </div>
-
-        <div class="sound">
-          ◉ OTA X sound
-        </div>
-
-      </div>
-
-    </section>
-
-  </main>
-
-
-  <!-- BOTTOM NAV -->
-
-  <nav class="bottom-nav">
-
-    <button class="nav active">
-      <div class="nav-icon">⌂</div>
-      <span>Home</span>
-    </button>
-
-    <button class="nav" onclick="openSearch()">
-      <div class="nav-icon">⌕</div>
-      <span>Discover</span>
-    </button>
-
-    <button class="nav">
-      <div class="create">+</div>
-      <span>Create</span>
-    </button>
-
-    <button class="nav">
-      <div class="nav-icon">◇</div>
-      <span>Inbox</span>
-    </button>
-
-    <button class="nav" onclick="openProfile()">
-      <div class="nav-icon">○</div>
-      <span>Profile</span>
-    </button>
-
-  </nav>
-
-
-  <!-- SEARCH -->
-
-  <section class="search-panel" id="searchPanel">
-
-    <div class="search-header">
-
-      <button class="back" onclick="closeSearch()">
-        ‹
-      </button>
-
-      <input
-        class="search-input"
-        placeholder="Search OTA X"
-      >
-
-    </div>
-
-    <div class="trending">
-
-      <h3>Trending on OTA X</h3>
-
-      <div class="topic">
-        <strong>#OTAX</strong>
-        <small>Trending now</small>
-      </div>
-
-      <div class="topic">
-        <strong>#Africa</strong>
-        <small>Creators across Africa</small>
-      </div>
-
-      <div class="topic">
-        <strong>#Football</strong>
-        <small>Sports and football</small>
-      </div>
-
-      <div class="topic">
-        <strong>#Music</strong>
-        <small>Music and creators</small>
-      </div>
+      <div id="authMessage"></div>
 
     </div>
 
   </section>
 
 
-  <!-- COMMENTS -->
+  <!-- =========================
+       MAIN OTA X APP
+  ========================= -->
 
-  <section class="comments" id="comments">
+  <main id="app">
 
-    <div class="comments-title">
-      840 Comments
-    </div>
+    <!-- TOP BAR -->
 
-    <div class="comment">
+    <header class="topBar">
 
-      <div class="comment-photo"></div>
-
-      <div>
-        <div class="comment-name">
-          @creator1
-        </div>
-
-        <div>
-          OTA X is looking clean!
-        </div>
-      </div>
-
-    </div>
-
-
-    <div class="comment">
-
-      <div class="comment-photo"></div>
-
-      <div>
-        <div class="comment-name">
-          @africa
-        </div>
-
-        <div>
-          Can't wait to see this platform grow.
-        </div>
-      </div>
-
-    </div>
-
-  </section>
-
-
-  <!-- PROFILE -->
-
-  <section class="profile" id="profile">
-
-    <div class="profile-head">
-
-      <button onclick="closeProfile()">
-        ‹
-      </button>
-
-    </div>
-
-    <div class="profile-main">
-
-      <div class="profile-photo">
-        O
-      </div>
-
-      <div class="profile-name">
-        OTA Creator
-        <span class="verified">✓</span>
-      </div>
-
-      <div class="profile-handle">
-        @OTAcreator
-      </div>
-
-      <div class="stats">
-
-        <div class="stat">
-          <strong>12</strong>
-          <span>Following</span>
-        </div>
-
-        <div class="stat">
-          <strong>48.6K</strong>
-          <span>Followers</span>
-        </div>
-
-        <div class="stat">
-          <strong>1.2M</strong>
-          <span>Likes</span>
-        </div>
-
-      </div>
-
-      <button class="edit">
-        Edit profile
-      </button>
-
-    </div>
-
-
-    <div class="grid">
-
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
-
-    </div>
-
-  </section>
-
-</div>
-
-
-<script>
-
-function toggleLike(button) {
-
-  button.classList.toggle("active");
-
-  const icon =
-    button.querySelector(".action-icon");
-
-  if (button.classList.contains("active")) {
-
-    icon.textContent = "♥";
-
-  } else {
-
-    icon.textContent = "♡";
-
-  }
-
-}
-
-
-function openSearch() {
-
-  document
-    .getElementById("searchPanel")
-    .classList.add("open");
-
-}
-
-
-function closeSearch() {
-
-  document
-    .getElementById("searchPanel")
-    .classList.remove("open");
-
-}
-
-
-function openComments() {
-
-  document
-    .getElementById("comments")
-    .classList.add("open");
-
-}
-
-
-function closeComments() {
-
-  document
-    .getElementById("comments")
-    .classList.remove("open");
-
-}
-
-
-function openProfile() {
-
-  document
-    .getElementById("profile")
-    .classList.add("open");
-
-}
-
-
-function closeProfile() {
-
-  document
-    .getElementById("profile")
-    .classList.remove("open");
-
-}
-
-
-document
-  .getElementById("comments")
-  .addEventListener("click", function(event) {
-
-    if (event.target === this) {
-
-      closeComments();
-
-    }
-
-  });
-
-</script>
-
-</body>
-    </html><!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-
-<title>OTA X</title>
-
-<style>
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-:root {
-  --black: #050505;
-  --white: #ffffff;
-  --red: #e50914;
-  --gray: #a8a8a8;
-}
-
-html,
-body {
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  background: var(--black);
-  font-family: Arial, Helvetica, sans-serif;
-  color: var(--white);
-}
-
-button {
-  border: 0;
-  background: none;
-  color: inherit;
-  font-family: inherit;
-}
-
-/* APP */
-
-.app {
-  width: 100%;
-  height: 100vh;
-  position: relative;
-  background: #000;
-  overflow: hidden;
-}
-
-/* VIDEO FEED */
-
-.feed {
-  width: 100%;
-  height: 100vh;
-  overflow-y: scroll;
-  scroll-snap-type: y mandatory;
-  scrollbar-width: none;
-}
-
-.feed::-webkit-scrollbar {
-  display: none;
-}
-
-.post {
-  width: 100%;
-  height: 100vh;
-  position: relative;
-  scroll-snap-align: start;
-  overflow: hidden;
-}
-
-/* DEMO VIDEO BACKGROUNDS */
-
-.video1 {
-  background:
-    radial-gradient(
-      circle at 65% 35%,
-      rgba(229,9,20,.55),
-      transparent 30%
-    ),
-    linear-gradient(
-      135deg,
-      #030303,
-      #1c0203,
-      #600007
-    );
-}
-
-.video2 {
-  background:
-    radial-gradient(
-      circle at 35% 30%,
-      rgba(255,255,255,.16),
-      transparent 28%
-    ),
-    linear-gradient(
-      145deg,
-      #050505,
-      #181818,
-      #500006
-    );
-}
-
-.video3 {
-  background:
-    radial-gradient(
-      circle at 70% 25%,
-      rgba(229,9,20,.6),
-      transparent 30%
-    ),
-    linear-gradient(
-      135deg,
-      #090909,
-      #310003,
-      #020202
-    );
-}
-
-/* DARK OVERLAY */
-
-.post::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background:
-    linear-gradient(
-      to bottom,
-      rgba(0,0,0,.45),
-      transparent 25%,
-      transparent 55%,
-      rgba(0,0,0,.82)
-    );
-  pointer-events: none;
-}
-
-/* TOP */
-
-.top {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 76px;
-  z-index: 20;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-/* OTA X LOGO */
-
-.logo {
-  position: absolute;
-  left: 18px;
-  font-size: 24px;
-  font-weight: 900;
-  letter-spacing: -1px;
-}
-
-.logo-x {
-  color: var(--red);
-  font-size: 29px;
-  font-style: italic;
-  margin-left: 2px;
-}
-
-/* FOR YOU */
-
-.feed-tabs {
-  display: flex;
-  align-items: center;
-  gap: 24px;
-  font-size: 15px;
-  font-weight: 700;
-}
-
-.feed-tab {
-  color: rgba(255,255,255,.65);
-  position: relative;
-}
-
-.feed-tab.active {
-  color: white;
-}
-
-.feed-tab.active::after {
-  content: "";
-  position: absolute;
-  height: 3px;
-  width: 22px;
-  border-radius: 5px;
-  background: var(--red);
-  bottom: -9px;
-  left: 50%;
-  transform: translateX(-50%);
-}
-
-/* SEARCH */
-
-.search {
-  position: absolute;
-  right: 17px;
-
-  width: 40px;
-  height: 40px;
-
-  border-radius: 50%;
-
-  background: rgba(0,0,0,.35);
-  border: 1px solid rgba(255,255,255,.18);
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  font-size: 23px;
-}
-
-/* CENTER BRAND WATERMARK */
-
-.watermark {
-  position: absolute;
-  top: 47%;
-  left: 50%;
-
-  transform: translate(-50%, -50%);
-
-  font-size: 32px;
-  font-weight: 900;
-
-  opacity: .12;
-
-  pointer-events: none;
-}
-
-.watermark span {
-  color: var(--red);
-}
-
-/* RIGHT ACTIONS */
-
-.actions {
-  position: absolute;
-  right: 12px;
-  bottom: 104px;
-
-  z-index: 10;
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-  gap: 17px;
-}
-
-/* PROFILE */
-
-.creator-avatar {
-  width: 49px;
-  height: 49px;
-
-  border-radius: 50%;
-
-  background:
-    linear-gradient(
-      135deg,
-      #eeeeee,
-      #555555
-    );
-
-  border: 2px solid white;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  color: #111;
-  font-size: 19px;
-  font-weight: 900;
-}
-
-.follow {
-  width: 23px;
-  height: 23px;
-
-  border-radius: 50%;
-
-  background: var(--red);
-
-  border: 2px solid white;
-
-  margin-top: -23px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  font-weight: 900;
-}
-
-/* ACTION BUTTON */
-
-.action {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-  gap: 4px;
-
-  font-size: 11px;
-  font-weight: 700;
-
-  text-shadow: 0 2px 6px #000;
-}
-
-.action-icon {
-  width: 46px;
-  height: 46px;
-
-  border-radius: 15px;
-
-  background: rgba(0,0,0,.42);
-
-  border: 1px solid rgba(255,255,255,.15);
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  font-size: 22px;
-
-  backdrop-filter: blur(7px);
-}
-
-.action.active .action-icon {
-  color: var(--red);
-  border-color: rgba(229,9,20,.7);
-}
-
-/* SAVE ICON */
-
-.save-icon {
-  width: 18px;
-  height: 21px;
-
-  border: 2px solid white;
-  border-radius: 4px;
-
-  position: relative;
-}
-
-.save-icon::after {
-  content: "";
-
-  position: absolute;
-
-  bottom: -2px;
-  left: 3px;
-
-  width: 8px;
-  height: 8px;
-
-  background: #000;
-
-  border-left: 2px solid white;
-  border-bottom: 2px solid white;
-
-  transform: rotate(-45deg);
-}
-
-/* POST INFORMATION */
-
-.post-info {
-  position: absolute;
-
-  left: 16px;
-  right: 85px;
-  bottom: 88px;
-
-  z-index: 10;
-}
-
-.username {
-  font-size: 17px;
-  font-weight: 800;
-
-  margin-bottom: 9px;
-}
-
-.verified {
-  display: inline-flex;
-
-  width: 18px;
-  height: 18px;
-
-  border-radius: 50%;
-
-  background: var(--red);
-  color: black;
-
-  align-items: center;
-  justify-content: center;
-
-  font-size: 11px;
-  font-weight: 900;
-
-  margin-left: 3px;
-}
-
-.caption {
-  font-size: 14px;
-  line-height: 1.4;
-
-  margin-bottom: 10px;
-}
-
-.sound {
-  font-size: 13px;
-  color: #ddd;
-
-  display: flex;
-  align-items: center;
-
-  gap: 6px;
-}
-
-/* BOTTOM NAV */
-
-.bottom-nav {
-  position: fixed;
-
-  left: 0;
-  right: 0;
-  bottom: 0;
-
-  height: 67px;
-
-  z-index: 30;
-
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-
-  background: rgba(0,0,0,.94);
-
-  border-top: 1px solid rgba(255,255,255,.08);
-}
-
-.nav {
-  width: 20%;
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-  gap: 5px;
-
-  color: #8e8e8e;
-
-  font-size: 10px;
-}
-
-.nav.active {
-  color: white;
-}
-
-.nav-icon {
-  width: 24px;
-  height: 24px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  font-size: 21px;
-}
-
-/* ORIGINAL OTA CREATE BUTTON */
-
-.create {
-  width: 48px;
-  height: 35px;
-
-  border-radius: 12px;
-
-  background: white;
-  color: black;
-
-  font-size: 25px;
-  font-weight: 900;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  position: relative;
-}
-
-.create::before {
-  content: "";
-
-  position: absolute;
-
-  left: -5px;
-  top: 3px;
-
-  width: 7px;
-  height: 29px;
-
-  border-radius: 7px;
-
-  background: var(--red);
-}
-
-/* SEARCH PANEL */
-
-.search-panel {
-  position: fixed;
-  inset: 0;
-
-  z-index: 100;
-
-  background: #050505;
-
-  display: none;
-
-  padding: 20px;
-}
-
-.search-panel.open {
-  display: block;
-}
-
-.search-header {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.back {
-  font-size: 30px;
-}
-
-.search-input {
-  flex: 1;
-
-  height: 46px;
-
-  border-radius: 25px;
-
-  background: #151515;
-
-  border: 1px solid #333;
-
-  color: white;
-
-  padding: 0 17px;
-
-  outline: none;
-
-  font-size: 15px;
-}
-
-.trending {
-  margin-top: 30px;
-}
-
-.trending h3 {
-  margin-bottom: 15px;
-}
-
-.topic {
-  padding: 15px;
-
-  background: #151515;
-
-  border-radius: 12px;
-
-  margin-bottom: 9px;
-}
-
-.topic small {
-  display: block;
-  color: var(--gray);
-  margin-top: 4px;
-}
-
-/* COMMENTS */
-
-.comments {
-  position: fixed;
-
-  left: 0;
-  right: 0;
-  bottom: 0;
-
-  height: 55%;
-
-  z-index: 200;
-
-  background: #101010;
-
-  border-radius: 22px 22px 0 0;
-
-  padding: 20px;
-
-  transform: translateY(100%);
-
-  transition: .25s;
-}
-
-.comments.open {
-  transform: translateY(0);
-}
-
-.comments-title {
-  text-align: center;
-
-  font-size: 14px;
-  font-weight: 800;
-
-  margin-bottom: 25px;
-}
-
-.comment {
-  display: flex;
-  gap: 10px;
-
-  margin-bottom: 18px;
-}
-
-.comment-photo {
-  width: 38px;
-  height: 38px;
-
-  border-radius: 50%;
-
-  background: #444;
-}
-
-.comment-name {
-  color: #999;
-
-  font-size: 12px;
-
-  margin-bottom: 4px;
-}
-
-/* PROFILE */
-
-.profile {
-  position: fixed;
-
-  inset: 0;
-
-  z-index: 150;
-
-  background: #050505;
-
-  display: none;
-
-  overflow-y: auto;
-}
-
-.profile.open {
-  display: block;
-}
-
-.profile-head {
-  height: 60px;
-
-  display: flex;
-  align-items: center;
-
-  padding: 0 18px;
-}
-
-.profile-main {
-  text-align: center;
-
-  padding: 20px;
-}
-
-.profile-photo {
-  width: 94px;
-  height: 94px;
-
-  border-radius: 50%;
-
-  margin: auto;
-
-  border: 3px solid var(--red);
-
-  background: linear-gradient(135deg,#eee,#444);
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  color: #111;
-
-  font-size: 28px;
-  font-weight: 900;
-}
-
-.profile-name {
-  margin-top: 12px;
-
-  font-size: 20px;
-  font-weight: 900;
-}
-
-.profile-handle {
-  color: #888;
-  margin-top: 4px;
-}
-
-.stats {
-  display: flex;
-  justify-content: center;
-  gap: 30px;
-
-  margin: 22px 0;
-}
-
-.stat strong {
-  display: block;
-  font-size: 18px;
-}
-
-.stat span {
-  color: #888;
-  font-size: 12px;
-}
-
-.edit {
-  padding: 10px 28px;
-
-  border: 1px solid #444;
-
-  border-radius: 8px;
-}
-
-.grid {
-  display: grid;
-  grid-template-columns: repeat(3,1fr);
-
-  gap: 2px;
-}
-
-.grid div {
-  aspect-ratio: 1;
-
-  background:
-    linear-gradient(
-      135deg,
-      #260003,
-      #a0000b
-    );
-}
-
-.grid div:nth-child(2n) {
-  background:
-    linear-gradient(
-      135deg,
-      #181818,
-      #555
-    );
-}
-
-/* DESKTOP */
-
-@media (min-width: 700px) {
-
-  .app {
-    max-width: 500px;
-    margin: auto;
-  }
-
-  .top,
-  .bottom-nav {
-    max-width: 500px;
-    left: 50%;
-    right: auto;
-    width: 100%;
-    transform: translateX(-50%);
-  }
-
-}
-</style>
-</head>
-
-<body>
-
-<div class="app">
-
-  <!-- TOP -->
-  <header class="top">
-
-    <div class="logo">
-      OTA<span class="logo-x">X</span>
-    </div>
-
-    <div class="feed-tabs">
-      <div class="feed-tab">Following</div>
-      <div class="feed-tab active">For You</div>
-    </div>
-
-    <button class="search" onclick="openSearch()">⌕</button>
-
-  </header>
-
-
-  <!-- FEED -->
-
-  <main class="feed">
-
-
-    <!-- POST 1 -->
-
-    <section class="post video1">
-
-      <div class="watermark">
+      <div class="logo">
         OTA<span>X</span>
       </div>
 
-      <div class="actions">
+      <div class="feedTabs">
 
-        <div class="creator-avatar">
-          O
-        </div>
-
-        <div class="follow">
-          +
-        </div>
-
-
-        <button class="action" onclick="toggleLike(this)">
-
-          <div class="action-icon">
-            ♡
-          </div>
-
-          <span>12.4K</span>
-
+        <button
+          class="feedTab"
+          onclick="setFeedTab(this)">
+          Following
         </button>
 
-
-        <button class="action" onclick="openComments()">
-
-          <div class="action-icon">
-            ◇
-          </div>
-
-          <span>840</span>
-
-        </button>
-
-
-        <button class="action">
-
-          <div class="action-icon">
-            ↗
-          </div>
-
-          <span>Share</span>
-
-        </button>
-
-
-        <button class="action">
-
-          <div class="action-icon">
-
-            <div class="save-icon"></div>
-
-          </div>
-
-          <span>Save</span>
-
+        <button
+          class="feedTab active"
+          onclick="setFeedTab(this)">
+          For You
         </button>
 
       </div>
 
-
-      <div class="post-info">
-
-        <div class="username">
-          @OTAcreator
-          <span class="verified">✓</span>
-        </div>
-
-        <div class="caption">
-          Welcome to OTA X — connect, create and share your world.
-          #OTAX #ForYou
-        </div>
-
-        <div class="sound">
-          ◉ Original sound · OTA X
-        </div>
-
-      </div>
-
-    </section>
-
-
-    <!-- POST 2 -->
-
-    <section class="post video2">
-
-      <div class="watermark">
-        OTA<span>X</span>
-      </div>
-
-      <div class="actions">
-
-        <div class="creator-avatar">
-          A
-        </div>
-
-        <div class="follow">
-          +
-        </div>
-
-        <button class="action" onclick="toggleLike(this)">
-
-          <div class="action-icon">
-            ♡
-          </div>
-
-          <span>8.7K</span>
-
-        </button>
-
-        <button class="action" onclick="openComments()">
-
-          <div class="action-icon">
-            ◇
-          </div>
-
-          <span>421</span>
-
-        </button>
-
-        <button class="action">
-
-          <div class="action-icon">
-            ↗
-          </div>
-
-          <span>Share</span>
-
-        </button>
-
-        <button class="action">
-
-          <div class="action-icon">
-
-            <div class="save-icon"></div>
-
-          </div>
-
-          <span>Save</span>
-
-        </button>
-
-      </div>
-
-
-      <div class="post-info">
-
-        <div class="username">
-          @AfricaCreator
-          <span class="verified">✓</span>
-        </div>
-
-        <div class="caption">
-          Discover creators, communities and stories from across Africa.
-          #Africa #OTAX
-        </div>
-
-        <div class="sound">
-          ◉ Original sound
-        </div>
-
-      </div>
-
-    </section>
-
-
-    <!-- POST 3 -->
-
-    <section class="post video3">
-
-      <div class="watermark">
-        OTA<span>X</span>
-      </div>
-
-      <div class="actions">
-
-        <div class="creator-avatar">
-          X
-        </div>
-
-        <div class="follow">
-          +
-        </div>
-
-        <button class="action" onclick="toggleLike(this)">
-
-          <div class="action-icon">
-            ♡
-          </div>
-
-          <span>19.1K</span>
-
-        </button>
-
-        <button class="action" onclick="openComments()">
-
-          <div class="action-icon">
-            ◇
-          </div>
-
-          <span>1.2K</span>
-
-        </button>
-
-        <button class="action">
-
-          <div class="action-icon">
-            ↗
-          </div>
-
-          <span>Share</span>
-
-        </button>
-
-        <button class="action">
-
-          <div class="action-icon">
-
-            <div class="save-icon"></div>
-
-          </div>
-
-          <span>Save</span>
-
-        </button>
-
-      </div>
-
-
-      <div class="post-info">
-
-        <div class="username">
-          @OTAx3
-          <span class="verified">✓</span>
-        </div>
-
-        <div class="caption">
-          Your world. Your people. Your stories.
-          #OTAX #Create
-        </div>
-
-        <div class="sound">
-          ◉ OTA X sound
-        </div>
-
-      </div>
-
-    </section>
-
-  </main>
-
-
-  <!-- BOTTOM NAV -->
-
-  <nav class="bottom-nav">
-
-    <button class="nav active">
-      <div class="nav-icon">⌂</div>
-      <span>Home</span>
-    </button>
-
-    <button class="nav" onclick="openSearch()">
-      <div class="nav-icon">⌕</div>
-      <span>Discover</span>
-    </button>
-
-    <button class="nav">
-      <div class="create">+</div>
-      <span>Create</span>
-    </button>
-
-    <button class="nav">
-      <div class="nav-icon">◇</div>
-      <span>Inbox</span>
-    </button>
-
-    <button class="nav" onclick="openProfile()">
-      <div class="nav-icon">○</div>
-      <span>Profile</span>
-    </button>
-
-  </nav>
-
-
-  <!-- SEARCH -->
-
-  <section class="search-panel" id="searchPanel">
-
-    <div class="search-header">
-
-      <button class="back" onclick="closeSearch()">
-        ‹
+      <button
+        class="searchTop"
+        onclick="openSearch()">
+        ⌕
       </button>
 
-      <input
-        class="search-input"
-        placeholder="Search OTA X"
-      >
-
-    </div>
-
-    <div class="trending">
-
-      <h3>Trending on OTA X</h3>
-
-      <div class="topic">
-        <strong>#OTAX</strong>
-        <small>Trending now</small>
-      </div>
-
-      <div class="topic">
-        <strong>#Africa</strong>
-        <small>Creators across Africa</small>
-      </div>
-
-      <div class="topic">
-        <strong>#Football</strong>
-        <small>Sports and football</small>
-      </div>
-
-      <div class="topic">
-        <strong>#Music</strong>
-        <small>Music and creators</small>
-      </div>
-
-    </div>
-
-  </section>
+    </header>
 
 
-  <!-- COMMENTS -->
+    <!-- FEED -->
 
-  <section class="comments" id="comments">
+    <section class="feed">
 
-    <div class="comments-title">
-      840 Comments
-    </div>
+      <!-- POST 1 -->
 
-    <div class="comment">
+      <article class="post">
 
-      <div class="comment-photo"></div>
+        <div class="videoBg"></div>
 
-      <div>
-        <div class="comment-name">
-          @creator1
+        <div class="videoCenter">
+          <div class="play">▶</div>
+          <p>OTA X video</p>
         </div>
 
-        <div>
-          OTA X is looking clean!
-        </div>
-      </div>
+        <div class="darkOverlay"></div>
 
-    </div>
+        <div class="actions">
 
+          <div class="avatarWrap">
+            <div class="avatar">O</div>
+            <div class="followPlus">+</div>
+          </div>
 
-    <div class="comment">
+          <button
+            class="action likeButton"
+            onclick="toggleLike(this)">
+            <div class="actionIcon">♡</div>
+            <div class="likeCount">12.4K</div>
+          </button>
 
-      <div class="comment-photo"></div>
+          <button
+            class="action"
+            onclick="openComments()">
+            <div class="actionIcon">💬</div>
+            <div>840</div>
+          </button>
 
-      <div>
-        <div class="comment-name">
-          @africa
-        </div>
+          <button
+            class="action"
+            onclick="sharePost()">
+            <div class="actionIcon">↗</div>
+            <div>Share</div>
+          </button>
 
-        <div>
-          Can't wait to see this platform grow.
-        </div>
-      </div>
+          <button
+            class="action"
+            onclick="savePost(this)">
+            <div class="actionIcon">🔖</div>
+            <div>Save</div>
+          </button>
 
-    </div>
-
-  </section>
-
-
-  <!-- PROFILE -->
-
-  <section class="profile" id="profile">
-
-    <div class="profile-head">
-
-      <button onclick="closeProfile()">
-        ‹
-      </button>
-
-    </div>
-
-    <div class="profile-main">
-
-      <div class="profile-photo">
-        O
-      </div>
-
-      <div class="profile-name">
-        OTA Creator
-        <span class="verified">✓</span>
-      </div>
-
-      <div class="profile-handle">
-        @OTAcreator
-      </div>
-
-      <div class="stats">
-
-        <div class="stat">
-          <strong>12</strong>
-          <span>Following</span>
         </div>
 
-        <div class="stat">
-          <strong>48.6K</strong>
-          <span>Followers</span>
+        <div class="postInfo">
+
+          <div class="username">
+            @OTAcreator
+            <span class="verified">✓</span>
+          </div>
+
+          <div class="caption">
+            Welcome to OTA X — connect, create and share your world.
+          </div>
+
+          <div class="sound">
+            ♪ Original sound — OTA X
+          </div>
+
         </div>
 
-        <div class="stat">
-          <strong>1.2M</strong>
-          <span>Likes</span>
+      </article>
+
+
+      <!-- POST 2 -->
+
+      <article class="post">
+
+        <div class="videoBg two"></div>
+
+        <div class="videoCenter">
+          <div class="play">▶</div>
+          <p>Create something original</p>
         </div>
 
-      </div>
+        <div class="darkOverlay"></div>
 
-      <button class="edit">
-        Edit profile
-      </button>
+        <div class="actions">
 
-    </div>
+          <div class="avatarWrap">
+            <div class="avatar">A</div>
+            <div class="followPlus">+</div>
+          </div>
 
+          <button
+            class="action likeButton"
+            onclick="toggleLike(this)">
+            <div class="actionIcon">♡</div>
+            <div class="likeCount">8.7K</div>
+          </button>
 
-    <div class="grid">
+          <button
+            class="action"
+            onclick="openComments()">
+            <div class="actionIcon">💬</div>
+            <div>421</div>
+          </button>
 
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
+          <button
+            class="action"
+            onclick="sharePost()">
+            <div class="actionIcon">↗</div>
+            <div>Share</div>
+          </button>
 
-    </div>
+          <button
+            class="action"
+            onclick="savePost(this)">
+            <div class="actionIcon">🔖</div>
+            <div>Save</div>
+          </button>
 
-  </section>
+        </div>
 
-</div>
+        <div class="postInfo">
 
+          <div class="username">
+            @OTAx3
+            <span class="verified">✓</span>
+          </div>
 
-<script>
+          <div class="caption">
+            Your world. Your creativity. Your community.
+          </div>
 
-function toggleLike(button) {
+          <div class="sound">
+            ♪ Original sound
+          </div>
 
-  button.classList.toggle("active");
+        </div>
 
-  const icon =
-    button.querySelector(".action-icon");
-
-  if (button.classList.contains("active")) {
-
-    icon.textContent = "♥";
-
-  } else {
-
-    icon.textContent = "♡";
-
-  }
-
-}
-
-
-function openSearch() {
-
-  document
-    .getElementById("searchPanel")
-    .classList.add("open");
-
-}
-
-
-function closeSearch() {
-
-  document
-    .getElementById("searchPanel")
-    .classList.remove("open");
-
-}
+      </article>
 
 
-function openComments() {
+      <!-- POST 3 -->
 
-  document
-    .getElementById("comments")
-    .classList.add("open");
+      <article class="post">
 
-}
+        <div class="videoBg three"></div>
 
+        <div class="videoCenter">
+          <div class="play">▶</div>
+          <p>Discover OTA X</p>
+        </div>
 
-function closeComments() {
+        <div class="darkOverlay"></div>
 
-  document
-    .getElementById("comments")
-    .classList.remove("open");
+        <div class="actions">
 
-}
+          <div class="avatarWrap">
+            <div class="avatar">X</div>
+            <div class="followPlus">+</div>
+          </div>
 
+          <button
+            class="action likeButton"
+            onclick="toggleLike(this)">
+            <div class="actionIcon">♡</div>
+            <div class="likeCount">5.2K</div>
+          </button>
 
-function openProfile() {
+          <button
+            class="action"
+            onclick="openComments()">
+            <div class="actionIcon">💬</div>
+            <div>190</div>
+          </button>
 
-  document
-    .getElementById("profile")
-    .classList.add("open");
+          <button
+            class="action"
+            onclick="sharePost()">
+            <div class="actionIcon">↗</div>
+            <div>Share</div>
+          </button>
 
-}
-
-
-function closeProfile() {
-
-  document
-    .getElementById("profile")
-    .classList.remove("open");
-
-}
-
-
-document
-  .getElementById("comments")
-  .addEventListener("click", function(event) {
-
-    if (event.target === this) {
-
-      closeComments();
-
-    }
-
-  });
-
-</script>
-
-</body>
-  </html>
+          <button
+            class="action"
+  

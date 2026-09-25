@@ -1106,9 +1106,7 @@
         <div class="actions">
 
           <div class="avatarWrap">
-            <div class="avatar">O</div>
-            <div class="followPlus">+</div>
-          </div>
+            <div class="avatar">O</div
 
           <button
             class="action likeButton"
@@ -1323,3 +1321,335 @@
       </article>
 
     </section>
+          <!-- =========================
+         BOTTOM NAVIGATION
+    ========================= -->
+
+    <nav class="bottomNav">
+
+      <button
+        class="navItem active"
+        onclick="goHome()">
+        <span class="navIcon">⌂</span>
+        Home
+      </button>
+
+      <button
+        class="navItem"
+        onclick="openSearch()">
+        <span class="navIcon">⌕</span>
+        Search
+      </button>
+
+      <button
+        class="navItem"
+        onclick="openCreate()">
+        <span class="createButton">+</span>
+        Create
+      </button>
+
+      <button
+        class="navItem"
+        onclick="openInbox()">
+        <span class="navIcon">✉</span>
+        Inbox
+      </button>
+
+      <button
+        class="navItem"
+        onclick="openProfile()">
+        <span class="navIcon">♙</span>
+        Profile
+      </button>
+
+    </nav>
+
+
+    <!-- =========================
+         SEARCH PANEL
+    ========================= -->
+
+    <section
+      id="searchPanel"
+      class="panel">
+
+      <div class="panelHeader">
+
+        <button
+          class="backButton"
+          onclick="closeSearch()">
+          ←
+        </button>
+
+        <input
+          id="searchInput"
+          class="searchInput"
+          type="search"
+          placeholder="Search OTA X">
+
+      </div>
+
+      <div class="panelContent">
+
+        <h2>Discover</h2>
+
+        <div class="trend">
+          <strong>#OTAX</strong>
+          <span>12.4M posts</span>
+        </div>
+
+        <div class="trend">
+          <strong>#Africa</strong>
+          <span>8.7M posts</span>
+        </div>
+
+        <div class="trend">
+          <strong>#Football</strong>
+          <span>6.2M posts</span>
+        </div>
+
+        <div class="trend">
+          <strong>#Music</strong>
+          <span>5.8M posts</span>
+        </div>
+
+        <div class="trend">
+          <strong>#Creators</strong>
+          <span>3.9M posts</span>
+        </div>
+
+      </div>
+
+    </section>
+
+
+    <!-- =========================
+         COMMENTS
+    ========================= -->
+
+    <section
+      id="commentsSheet"
+      class="commentsSheet">
+
+      <div class="sheetTop">
+
+        <strong>Comments</strong>
+
+        <button
+          class="closeSheet"
+          onclick="closeComments()">
+          ×
+        </button>
+
+      </div>
+
+
+      <div
+        id="commentsList"
+        class="commentsList">
+
+        <!-- COMMENT 1 -->
+
+        <div class="comment">
+
+          <div class="commentAvatar">
+            A
+          </div>
+
+          <div class="commentBody">
+
+            <div class="commentName">
+              @africacreator
+            </div>
+
+            <div class="commentText">
+              OTA X is looking amazing!
+            </div>
+
+            <span class="commentMeta">
+              2m
+            </span>
+
+          </div>
+
+        </div>
+
+
+        <!-- COMMENT 2 -->
+
+        <div class="comment">
+
+          <div class="commentAvatar">
+            T
+          </div>
+
+          <div class="commentBody">
+
+            <div class="commentName">
+              @trendtalk
+            </div>
+
+            <div class="commentText">
+              Can't wait to see more creators here.
+            </div>
+
+            <span class="commentMeta">
+              5m
+            </span>
+
+          </div>
+
+        </div>
+
+
+        <!-- COMMENT 3 -->
+
+        <div class="comment">
+
+          <div class="commentAvatar">
+            O
+          </div>
+
+          <div class="commentBody">
+
+            <div class="commentName">
+              @otacreator
+            </div>
+
+            <div class="commentText">
+              Welcome to OTA X ❤️
+            </div>
+
+            <span class="commentMeta">
+              8m
+            </span>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- RECORDING STATUS -->
+
+      <div
+        id="recordingStatus"
+        class="recordingStatus">
+        Recording voice note... Tap the microphone to stop.
+      </div>
+
+
+      <!-- COMMENT COMPOSER -->
+
+      <div class="commentComposer">
+
+        <input
+          id="commentInput"
+          class="commentInput"
+          type="text"
+          placeholder="Add a comment...">
+
+        <button
+          id="voiceRecordButton"
+          class="voiceRecordButton"
+          onclick="toggleVoiceRecording()"
+          title="Record voice note">
+          🎙
+        </button>
+
+        <button
+          class="sendCommentButton"
+          onclick="sendComment()"
+          title="Send comment">
+          ➤
+        </button>
+
+      </div>
+
+    </section>
+
+
+    <!-- =========================
+         PROFILE
+    ========================= -->
+
+    <section
+      id="profilePanel"
+      class="profilePanel">
+
+      <div class="profileHeader">
+
+        <button
+          class="profileClose"
+          onclick="closeProfile()">
+          ←
+        </button>
+
+        <div
+          id="profileBigAvatar"
+          class="profileBigAvatar">
+          O
+        </div>
+
+        <div
+          id="profileName"
+          class="profileName">
+          OTA User
+        </div>
+
+        <div
+          id="profileUsername"
+          class="profileUsername">
+          @user
+        </div>
+
+        <div class="profileStats">
+
+          <div class="stat">
+            <strong>0</strong>
+            <span>Following</span>
+          </div>
+
+          <div class="stat">
+            <strong>0</strong>
+            <span>Followers</span>
+          </div>
+
+          <div class="stat">
+            <strong>0</strong>
+            <span>Likes</span>
+          </div>
+
+        </div>
+
+        <button
+          class="logoutButton"
+          onclick="logoutUser()">
+          Log Out
+        </button>
+
+      </div>
+
+
+      <div class="profileGrid">
+
+        <div class="gridItem"></div>
+        <div class="gridItem"></div>
+        <div class="gridItem"></div>
+        <div class="gridItem"></div>
+        <div class="gridItem"></div>
+        <div class="gridItem"></div>
+
+      </div>
+
+    </section>
+
+
+    <!-- =========================
+         TOAST
+    ========================= -->
+
+    <div id="toast"></div>
+
+  </main>

@@ -1,521 +1,111 @@
-/* =========================================================
-   OTA X CREATE + EDIT/POST STYLES
-   PASTE THIS INSIDE YOUR EXISTING <style> SECTION
-   ========================================================= */
-
-.ota-create-screen{
-  position:fixed;
-  inset:0;
-  z-index:1000;
-  background:#050505;
-  color:#fff;
-  display:none;
-  overflow-y:auto;
+body {
+    font-family: Arial, sans-serif;
+    background-color: #000;
+    color: #fff;
+    margin: 0;
+    padding: 0;
 }
 
-.ota-create-screen.active{
-  display:block;
+.video-container {
+    position: relative;
+    width: 100%;
+    max-width: 400px;
+    height: 70vh;
+    margin: 0 auto;
+    background: #111;
 }
 
-.ota-create-top{
-  height:64px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding:0 16px;
-  border-bottom:1px solid #242424;
-  background:#050505;
-  position:sticky;
-  top:0;
-  z-index:20;
+.video-container video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
-.ota-create-back{
-  border:0;
-  background:transparent;
-  color:#fff;
-  font-size:32px;
-  width:45px;
-  height:45px;
+/* Floating Overlay for Video-to-Video / Story Replies */
+.overlay-container {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    width: 100px;
+    height: 140px;
+    border: 2px solid #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    background: #000;
 }
 
-.ota-create-title{
-  font-size:22px;
-  font-weight:700;
+.overlay-container img, .overlay-container video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
-.ota-sound-button{
-  border:0;
-  background:#111;
-  color:#fff;
-  border-radius:28px;
-  padding:12px 17px;
-  font-size:15px;
-  font-weight:600;
+.comment-section {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 15px;
+    background: #181818;
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
 }
 
-.ota-sound-button span{
-  color:#e00000;
-  margin-right:6px;
+.comments-list {
+    max-height: 150px;
+    overflow-y: auto;
+    margin-bottom: 10px;
 }
 
-.ota-camera{
-  position:relative;
-  margin:14px auto 0;
-  width:calc(100% - 24px);
-  max-width:520px;
-  height:calc(100vh - 205px);
-  min-height:520px;
-  background:#101010;
-  border:1px solid #292929;
-  border-radius:4px;
-  overflow:hidden;
+.comment-item {
+    margin-bottom: 8px;
+    font-size: 14px;
+    background: #222;
+    padding: 8px;
+    border-radius: 6px;
 }
 
-#otaCameraVideo{
-  position:absolute;
-  inset:0;
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  background:#101010;
+.comment-item img {
+    max-width: 80px;
+    display: block;
+    margin-top: 5px;
+    border-radius: 4px;
 }
 
-.ota-camera-empty{
-  position:absolute;
-  inset:0;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  flex-direction:column;
-  gap:12px;
-  color:#777;
-  background:radial-gradient(circle,#242424 0%,#101010 48%,#050505 100%);
-  pointer-events:none;
+.comment-input-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
-.ota-camera-symbol{
-  font-size:64px;
-  opacity:.45;
+.comment-input-bar input[type="text"] {
+    flex: 1;
+    padding: 10px;
+    border-radius: 20px;
+    border: none;
+    background: #333;
+    color: #fff;
 }
 
-.ota-camera-empty-text{
-  font-size:15px;
+.camera-btn, #stickerBtn {
+    cursor: pointer;
+    font-size: 18px;
+    background: none;
+    border: none;
 }
 
-.ota-camera-close{
-  position:absolute;
-  top:18px;
-  left:18px;
-  width:44px;
-  height:44px;
-  border:0;
-  border-radius:50%;
-  background:#050505dd;
-  color:#fff;
-  font-size:25px;
-  z-index:8;
+.sticker-drawer {
+    display: flex;
+    gap: 10px;
+    padding: 10px;
+    background: #222;
+    margin-top: 8px;
+    border-radius: 8px;
 }
 
-.ota-camera-sound{
-  position:absolute;
-  top:18px;
-  right:18px;
-  border:0;
-  border-radius:25px;
-  background:#050505e8;
-  color:#fff;
-  padding:12px 17px;
-  font-size:15px;
-  z-index:8;
+.sticker-drawer.hidden, .overlay-container.hidden {
+    display: none;
 }
 
-.ota-camera-tools{
-  position:absolute;
-  right:12px;
-  top:95px;
-  display:flex;
-  flex-direction:column;
-  gap:12px;
-  z-index:8;
+.sticker {
+    cursor: pointer;
+    font-size: 20px;
 }
-
-.ota-camera-tool{
-  width:58px;
-  min-height:65px;
-  border:0;
-  border-radius:15px;
-  background:#050505e8;
-  color:#fff;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  flex-direction:column;
-  gap:4px;
-  font-size:12px;
-}
-
-.ota-camera-tool-icon{
-  font-size:25px;
-  line-height:1;
-}
-
-.ota-camera-tool.active{
-  border:1px solid #e00000;
-  box-shadow:0 0 12px #e0000055;
-}
-
-.ota-camera-mode{
-  position:absolute;
-  bottom:148px;
-  left:0;
-  right:0;
-  display:flex;
-  justify-content:center;
-  gap:30px;
-  z-index:8;
-}
-
-.ota-mode{
-  border:0;
-  background:transparent;
-  color:#999;
-  font-size:18px;
-  font-weight:500;
-}
-
-.ota-mode.active{
-  color:#fff;
-  font-weight:800;
-}
-
-.ota-record-area{
-  position:absolute;
-  bottom:25px;
-  left:0;
-  right:0;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  z-index:8;
-}
-
-.ota-record-button{
-  width:92px;
-  height:92px;
-  border-radius:50%;
-  border:9px solid #777;
-  background:#fff;
-  box-shadow:
-    0 0 0 5px #ddd,
-    0 0 0 13px #555;
-  cursor:pointer;
-}
-
-.ota-record-button.recording{
-  background:#e00000;
-  border-color:#fff;
-  box-shadow:
-    0 0 0 5px #e00000,
-    0 0 0 13px #555;
-}
-
-.ota-camera-bottom-left,
-.ota-camera-bottom-right{
-  position:absolute;
-  bottom:40px;
-  z-index:9;
-}
-
-.ota-camera-bottom-left{
-  left:18px;
-}
-
-.ota-camera-bottom-right{
-  right:18px;
-}
-
-.ota-small-camera-btn{
-  width:54px;
-  height:54px;
-  border:0;
-  border-radius:15px;
-  background:#050505e8;
-  color:#fff;
-  font-size:24px;
-}
-
-.ota-create-options{
-  max-width:520px;
-  margin:14px auto 30px;
-  padding:0 12px;
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:12px;
-}
-
-.ota-create-option{
-  min-height:110px;
-  border:1px solid #292929;
-  border-radius:20px;
-  background:#171717;
-  color:#fff;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  flex-direction:column;
-  gap:7px;
-}
-
-.ota-create-option strong{
-  font-size:21px;
-}
-
-.ota-create-option small{
-  color:#888;
-  font-size:14px;
-}
-
-.ota-create-option:hover{
-  border-color:#e00000;
-}
-
-
-/* =========================================================
-   EDIT / POST PAGE
-   ========================================================= */
-
-.ota-edit-screen{
-  position:fixed;
-  inset:0;
-  z-index:1100;
-  background:#050505;
-  color:#fff;
-  display:none;
-  overflow-y:auto;
-}
-
-.ota-edit-screen.active{
-  display:block;
-}
-
-.ota-edit-top{
-  height:64px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding:0 16px;
-  border-bottom:1px solid #292929;
-  position:sticky;
-  top:0;
-  background:#050505;
-  z-index:20;
-}
-
-.ota-edit-back{
-  background:transparent;
-  border:0;
-  color:#fff;
-  font-size:30px;
-}
-
-.ota-edit-title{
-  font-size:20px;
-  font-weight:700;
-}
-
-.ota-post-button{
-  border:0;
-  background:#e00000;
-  color:#fff;
-  border-radius:22px;
-  padding:10px 18px;
-  font-weight:800;
-  font-size:15px;
-}
-
-.ota-edit-layout{
-  max-width:900px;
-  margin:auto;
-  padding:16px;
-}
-
-.ota-preview-box{
-  position:relative;
-  width:100%;
-  max-width:420px;
-  aspect-ratio:9/16;
-  margin:0 auto 18px;
-  background:#111;
-  border-radius:14px;
-  overflow:hidden;
-  border:1px solid #292929;
-}
-
-#otaEditVideo,
-#otaEditImage{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  display:none;
-}
-
-.ota-preview-placeholder{
-  width:100%;
-  height:100%;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  color:#777;
-  font-size:15px;
-}
-
-.ota-edit-tools{
-  display:flex;
-  gap:8px;
-  overflow-x:auto;
-  padding:4px 0 15px;
-  max-width:900px;
-  margin:auto;
-}
-
-.ota-edit-tool{
-  flex:0 0 auto;
-  min-width:78px;
-  height:72px;
-  border:1px solid #292929;
-  border-radius:14px;
-  background:#111;
-  color:#fff;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  flex-direction:column;
-  gap:5px;
-}
-
-.ota-edit-tool span{
-  font-size:22px;
-}
-
-.ota-edit-tool small{
-  font-size:11px;
-  color:#aaa;
-}
-
-.ota-post-card{
-  max-width:900px;
-  margin:8px auto 30px;
-  background:#111;
-  border:1px solid #292929;
-  border-radius:18px;
-  padding:16px;
-}
-
-.ota-caption{
-  width:100%;
-  min-height:90px;
-  resize:none;
-  border:0;
-  outline:0;
-  background:#181818;
-  color:#fff;
-  border-radius:12px;
-  padding:14px;
-  font-size:16px;
-  margin-bottom:14px;
-}
-
-.ota-caption::placeholder{
-  color:#777;
-}
-
-.ota-post-row{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  padding:15px 3px;
-  border-top:1px solid #292929;
-}
-
-.ota-post-row-left{
-  display:flex;
-  align-items:center;
-  gap:10px;
-}
-
-.ota-post-row-icon{
-  font-size:22px;
-}
-
-.ota-post-row-title{
-  font-size:15px;
-  font-weight:600;
-}
-
-.ota-post-row-sub{
-  color:#777;
-  font-size:12px;
-  margin-top:3px;
-}
-
-.ota-post-row button{
-  background:transparent;
-  border:0;
-  color:#fff;
-  font-size:20px;
-}
-
-.ota-switch{
-  width:48px;
-  height:27px;
-  border-radius:20px;
-  background:#444;
-  position:relative;
-  cursor:pointer;
-}
-
-.ota-switch::after{
-  content:"";
-  position:absolute;
-  top:4px;
-  left:4px;
-  width:19px;
-  height:19px;
-  background:#fff;
-  border-radius:50%;
-  transition:.2s;
-}
-
-.ota-switch.on{
-  background:#e00000;
-}
-
-.ota-switch.on::after{
-  left:25px;
-}
-
-.ota-edit-message{
-  text-align:center;
-  color:#777;
-  font-size:13px;
-  padding:10px;
-}
-
-@media(max-width:600px){
-
-  .ota-camera{
-    height:calc(100vh - 190px);
-    min-height:500px;
-  }
-
-  .ota-camera-tool{
-    width:55px;
-  }
-
-  .ota-record-button{
-    width:82px;
-    height:82px;
-  }
-
-   }

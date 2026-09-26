@@ -7,786 +7,831 @@
 <title>OTA X</title>
 
 <style>
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
 }
 
-:root {
-  --black: #050505;
-  --white: #ffffff;
-  --red: #e50914;
-  --gray: #a8a8a8;
+:root{
+  --black:#050505;
+  --dark:#101010;
+  --card:#171717;
+  --white:#fff;
+  --gray:#999;
+  --red:#e50914;
 }
 
-html,
-body {
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  background: var(--black);
-  font-family: Arial, Helvetica, sans-serif;
-  color: var(--white);
+html,body{
+  width:100%;
+  height:100%;
+  overflow:hidden;
+  background:var(--black);
+  color:var(--white);
+  font-family:Arial,Helvetica,sans-serif;
 }
 
-button {
-  border: 0;
-  background: none;
-  color: inherit;
-  font-family: inherit;
+button{
+  border:0;
+  background:none;
+  color:inherit;
+  font-family:inherit;
 }
 
-/* APP */
-
-.app {
-  width: 100%;
-  height: 100vh;
-  position: relative;
-  background: #000;
-  overflow: hidden;
+.app{
+  width:100%;
+  height:100vh;
+  position:relative;
+  background:#000;
+  overflow:hidden;
 }
 
-/* VIDEO FEED */
+/* FEED */
 
-.feed {
-  width: 100%;
-  height: 100vh;
-  overflow-y: scroll;
-  scroll-snap-type: y mandatory;
-  scrollbar-width: none;
+.feed{
+  width:100%;
+  height:100vh;
+  overflow-y:scroll;
+  scroll-snap-type:y mandatory;
+  scrollbar-width:none;
 }
 
-.feed::-webkit-scrollbar {
-  display: none;
+.feed::-webkit-scrollbar{
+  display:none;
 }
 
-.post {
-  width: 100%;
-  height: 100vh;
-  position: relative;
-  scroll-snap-align: start;
-  overflow: hidden;
+.post{
+  width:100%;
+  height:100vh;
+  position:relative;
+  scroll-snap-align:start;
+  overflow:hidden;
 }
 
-/* DEMO VIDEO BACKGROUNDS */
-
-.video1 {
+.video1{
   background:
-    radial-gradient(
-      circle at 65% 35%,
-      rgba(229,9,20,.55),
-      transparent 30%
-    ),
-    linear-gradient(
-      135deg,
-      #030303,
-      #1c0203,
-      #600007
-    );
+  radial-gradient(circle at 65% 35%,rgba(229,9,20,.55),transparent 30%),
+  linear-gradient(135deg,#030303,#1c0203,#600007);
 }
 
-.video2 {
+.video2{
   background:
-    radial-gradient(
-      circle at 35% 30%,
-      rgba(255,255,255,.16),
-      transparent 28%
-    ),
-    linear-gradient(
-      145deg,
-      #050505,
-      #181818,
-      #500006
-    );
+  radial-gradient(circle at 35% 30%,rgba(255,255,255,.16),transparent 28%),
+  linear-gradient(145deg,#050505,#181818,#500006);
 }
 
-.video3 {
+.video3{
   background:
-    radial-gradient(
-      circle at 70% 25%,
-      rgba(229,9,20,.6),
-      transparent 30%
-    ),
-    linear-gradient(
-      135deg,
-      #090909,
-      #310003,
-      #020202
-    );
+  radial-gradient(circle at 70% 25%,rgba(229,9,20,.6),transparent 30%),
+  linear-gradient(135deg,#090909,#310003,#020202);
 }
 
-/* DARK OVERLAY */
-
-.post::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background:
-    linear-gradient(
-      to bottom,
-      rgba(0,0,0,.45),
-      transparent 25%,
-      transparent 55%,
-      rgba(0,0,0,.82)
-    );
-  pointer-events: none;
+.post::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:linear-gradient(
+    to bottom,
+    rgba(0,0,0,.45),
+    transparent 25%,
+    transparent 55%,
+    rgba(0,0,0,.82)
+  );
+  pointer-events:none;
 }
 
 /* TOP */
 
-.top {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 76px;
-  z-index: 20;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
+.top{
+  position:fixed;
+  top:0;
+  left:0;
+  right:0;
+  height:76px;
+  z-index:20;
+  display:flex;
+  align-items:center;
+  justify-content:center;
 }
 
-/* OTA X LOGO */
-
-.logo {
-  position: absolute;
-  left: 18px;
-  font-size: 24px;
-  font-weight: 900;
-  letter-spacing: -1px;
+.logo{
+  position:absolute;
+  left:18px;
+  font-size:24px;
+  font-weight:900;
 }
 
-.logo-x {
-  color: var(--red);
-  font-size: 29px;
-  font-style: italic;
-  margin-left: 2px;
+.logo-x{
+  color:var(--red);
+  font-size:29px;
+  font-style:italic;
 }
 
-/* FOR YOU */
-
-.feed-tabs {
-  display: flex;
-  align-items: center;
-  gap: 24px;
-  font-size: 15px;
-  font-weight: 700;
+.feed-tabs{
+  display:flex;
+  gap:24px;
+  font-size:15px;
+  font-weight:700;
 }
 
-.feed-tab {
-  color: rgba(255,255,255,.65);
-  position: relative;
+.feed-tab{
+  color:rgba(255,255,255,.65);
+  position:relative;
 }
 
-.feed-tab.active {
-  color: white;
+.feed-tab.active{
+  color:white;
 }
 
-.feed-tab.active::after {
-  content: "";
-  position: absolute;
-  height: 3px;
-  width: 22px;
-  border-radius: 5px;
-  background: var(--red);
-  bottom: -9px;
-  left: 50%;
-  transform: translateX(-50%);
+.feed-tab.active::after{
+  content:"";
+  position:absolute;
+  height:3px;
+  width:22px;
+  border-radius:5px;
+  background:var(--red);
+  bottom:-9px;
+  left:50%;
+  transform:translateX(-50%);
 }
 
-/* SEARCH */
-
-.search {
-  position: absolute;
-  right: 17px;
-
-  width: 40px;
-  height: 40px;
-
-  border-radius: 50%;
-
-  background: rgba(0,0,0,.35);
-  border: 1px solid rgba(255,255,255,.18);
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  font-size: 23px;
+.search{
+  position:absolute;
+  right:17px;
+  width:40px;
+  height:40px;
+  border-radius:50%;
+  background:rgba(0,0,0,.35);
+  border:1px solid rgba(255,255,255,.18);
+  font-size:23px;
 }
 
-/* CENTER BRAND WATERMARK */
+/* WATERMARK */
 
-.watermark {
-  position: absolute;
-  top: 47%;
-  left: 50%;
-
-  transform: translate(-50%, -50%);
-
-  font-size: 32px;
-  font-weight: 900;
-
-  opacity: .12;
-
-  pointer-events: none;
+.watermark{
+  position:absolute;
+  top:47%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  font-size:32px;
+  font-weight:900;
+  opacity:.12;
 }
 
-.watermark span {
-  color: var(--red);
+.watermark span{
+  color:var(--red);
 }
 
-/* RIGHT ACTIONS */
+/* ACTIONS */
 
-.actions {
-  position: absolute;
-  right: 12px;
-  bottom: 104px;
-
-  z-index: 10;
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-  gap: 17px;
+.actions{
+  position:absolute;
+  right:12px;
+  bottom:104px;
+  z-index:10;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:17px;
 }
 
-/* PROFILE */
-
-.creator-avatar {
-  width: 49px;
-  height: 49px;
-
-  border-radius: 50%;
-
-  background:
-    linear-gradient(
-      135deg,
-      #eeeeee,
-      #555555
-    );
-
-  border: 2px solid white;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  color: #111;
-  font-size: 19px;
-  font-weight: 900;
+.creator-avatar{
+  width:49px;
+  height:49px;
+  border-radius:50%;
+  background:linear-gradient(135deg,#eee,#555);
+  border:2px solid white;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:#111;
+  font-size:19px;
+  font-weight:900;
 }
 
-.follow {
-  width: 23px;
-  height: 23px;
-
-  border-radius: 50%;
-
-  background: var(--red);
-
-  border: 2px solid white;
-
-  margin-top: -23px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  font-weight: 900;
+.follow{
+  width:23px;
+  height:23px;
+  border-radius:50%;
+  background:var(--red);
+  border:2px solid white;
+  margin-top:-23px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:900;
 }
 
-/* ACTION BUTTON */
-
-.action {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-  gap: 4px;
-
-  font-size: 11px;
-  font-weight: 700;
-
-  text-shadow: 0 2px 6px #000;
+.action{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:4px;
+  font-size:11px;
+  font-weight:700;
+  text-shadow:0 2px 6px #000;
 }
 
-.action-icon {
-  width: 46px;
-  height: 46px;
-
-  border-radius: 15px;
-
-  background: rgba(0,0,0,.42);
-
-  border: 1px solid rgba(255,255,255,.15);
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  font-size: 22px;
-
-  backdrop-filter: blur(7px);
+.action-icon{
+  width:46px;
+  height:46px;
+  border-radius:15px;
+  background:rgba(0,0,0,.42);
+  border:1px solid rgba(255,255,255,.15);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:22px;
 }
 
-.action.active .action-icon {
-  color: var(--red);
-  border-color: rgba(229,9,20,.7);
+.action.active .action-icon{
+  color:var(--red);
 }
 
-/* SAVE ICON */
-
-.save-icon {
-  width: 18px;
-  height: 21px;
-
-  border: 2px solid white;
-  border-radius: 4px;
-
-  position: relative;
+.save-icon{
+  width:18px;
+  height:21px;
+  border:2px solid white;
+  border-radius:4px;
 }
 
-.save-icon::after {
-  content: "";
+/* POST INFO */
 
-  position: absolute;
-
-  bottom: -2px;
-  left: 3px;
-
-  width: 8px;
-  height: 8px;
-
-  background: #000;
-
-  border-left: 2px solid white;
-  border-bottom: 2px solid white;
-
-  transform: rotate(-45deg);
+.post-info{
+  position:absolute;
+  left:16px;
+  right:85px;
+  bottom:88px;
+  z-index:10;
 }
 
-/* POST INFORMATION */
-
-.post-info {
-  position: absolute;
-
-  left: 16px;
-  right: 85px;
-  bottom: 88px;
-
-  z-index: 10;
+.username{
+  font-size:17px;
+  font-weight:800;
+  margin-bottom:9px;
 }
 
-.username {
-  font-size: 17px;
-  font-weight: 800;
-
-  margin-bottom: 9px;
+.verified{
+  display:inline-flex;
+  width:18px;
+  height:18px;
+  border-radius:50%;
+  background:var(--red);
+  color:#000;
+  align-items:center;
+  justify-content:center;
+  font-size:11px;
+  font-weight:900;
 }
 
-.verified {
-  display: inline-flex;
-
-  width: 18px;
-  height: 18px;
-
-  border-radius: 50%;
-
-  background: var(--red);
-  color: black;
-
-  align-items: center;
-  justify-content: center;
-
-  font-size: 11px;
-  font-weight: 900;
-
-  margin-left: 3px;
+.caption{
+  font-size:14px;
+  line-height:1.4;
+  margin-bottom:10px;
 }
 
-.caption {
-  font-size: 14px;
-  line-height: 1.4;
-
-  margin-bottom: 10px;
-}
-
-.sound {
-  font-size: 13px;
-  color: #ddd;
-
-  display: flex;
-  align-items: center;
-
-  gap: 6px;
+.sound{
+  font-size:13px;
+  color:#ddd;
 }
 
 /* BOTTOM NAV */
 
-.bottom-nav {
-  position: fixed;
-
-  left: 0;
-  right: 0;
-  bottom: 0;
-
-  height: 67px;
-
-  z-index: 30;
-
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-
-  background: rgba(0,0,0,.94);
-
-  border-top: 1px solid rgba(255,255,255,.08);
+.bottom-nav{
+  position:fixed;
+  left:0;
+  right:0;
+  bottom:0;
+  height:67px;
+  z-index:30;
+  display:flex;
+  align-items:center;
+  justify-content:space-around;
+  background:rgba(0,0,0,.96);
+  border-top:1px solid rgba(255,255,255,.08);
 }
 
-.nav {
-  width: 20%;
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-  gap: 5px;
-
-  color: #8e8e8e;
-
-  font-size: 10px;
+.nav{
+  width:20%;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:5px;
+  color:#8e8e8e;
+  font-size:10px;
 }
 
-.nav.active {
-  color: white;
+.nav.active{
+  color:white;
 }
 
-.nav-icon {
-  width: 24px;
-  height: 24px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  font-size: 21px;
+.nav-icon{
+  width:24px;
+  height:24px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:21px;
 }
 
-/* ORIGINAL OTA CREATE BUTTON */
-
-.create {
-  width: 48px;
-  height: 35px;
-
-  border-radius: 12px;
-
-  background: white;
-  color: black;
-
-  font-size: 25px;
-  font-weight: 900;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  position: relative;
+.create{
+  width:48px;
+  height:35px;
+  border-radius:12px;
+  background:white;
+  color:black;
+  font-size:25px;
+  font-weight:900;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  position:relative;
 }
 
-.create::before {
-  content: "";
-
-  position: absolute;
-
-  left: -5px;
-  top: 3px;
-
-  width: 7px;
-  height: 29px;
-
-  border-radius: 7px;
-
-  background: var(--red);
+.create::before{
+  content:"";
+  position:absolute;
+  left:-5px;
+  top:3px;
+  width:7px;
+  height:29px;
+  border-radius:7px;
+  background:var(--red);
 }
 
-/* SEARCH PANEL */
+/* GENERAL PANELS */
 
-.search-panel {
-  position: fixed;
-  inset: 0;
-
-  z-index: 100;
-
-  background: #050505;
-
-  display: none;
-
-  padding: 20px;
+.panel{
+  position:fixed;
+  inset:0;
+  z-index:150;
+  background:#050505;
+  display:none;
+  overflow-y:auto;
+  padding-bottom:80px;
 }
 
-.search-panel.open {
-  display: block;
+.panel.open{
+  display:block;
 }
 
-.search-header {
-  display: flex;
-  align-items: center;
-  gap: 10px;
+.panel-head{
+  height:65px;
+  display:flex;
+  align-items:center;
+  padding:0 18px;
+  border-bottom:1px solid #222;
+  position:sticky;
+  top:0;
+  background:#050505;
+  z-index:5;
 }
 
-.back {
-  font-size: 30px;
+.panel-head h2{
+  flex:1;
+  text-align:center;
+  font-size:18px;
 }
 
-.search-input {
-  flex: 1;
-
-  height: 46px;
-
-  border-radius: 25px;
-
-  background: #151515;
-
-  border: 1px solid #333;
-
-  color: white;
-
-  padding: 0 17px;
-
-  outline: none;
-
-  font-size: 15px;
+.back{
+  font-size:30px;
 }
 
-.trending {
-  margin-top: 30px;
+.panel-content{
+  padding:20px;
 }
 
-.trending h3 {
-  margin-bottom: 15px;
+/* SEARCH */
+
+.search-input{
+  width:100%;
+  height:48px;
+  border-radius:25px;
+  background:#151515;
+  border:1px solid #333;
+  color:white;
+  padding:0 18px;
+  outline:none;
+  font-size:15px;
 }
 
-.topic {
-  padding: 15px;
-
-  background: #151515;
-
-  border-radius: 12px;
-
-  margin-bottom: 9px;
+.topic{
+  padding:16px;
+  background:#151515;
+  border-radius:12px;
+  margin-top:10px;
 }
 
-.topic small {
-  display: block;
-  color: var(--gray);
-  margin-top: 4px;
+.topic small{
+  display:block;
+  color:var(--gray);
+  margin-top:5px;
 }
 
-/* COMMENTS */
+/* CREATE */
 
-.comments {
-  position: fixed;
-
-  left: 0;
-  right: 0;
-  bottom: 0;
-
-  height: 55%;
-
-  z-index: 200;
-
-  background: #101010;
-
-  border-radius: 22px 22px 0 0;
-
-  padding: 20px;
-
-  transform: translateY(100%);
-
-  transition: .25s;
+.create-tools{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:12px;
 }
 
-.comments.open {
-  transform: translateY(0);
+.tool-card{
+  background:var(--card);
+  border:1px solid #292929;
+  border-radius:16px;
+  padding:22px 12px;
+  text-align:center;
 }
 
-.comments-title {
-  text-align: center;
-
-  font-size: 14px;
-  font-weight: 800;
-
-  margin-bottom: 25px;
+.tool-icon{
+  font-size:32px;
+  margin-bottom:10px;
 }
 
-.comment {
-  display: flex;
-  gap: 10px;
-
-  margin-bottom: 18px;
+.tool-card strong{
+  display:block;
 }
 
-.comment-photo {
-  width: 38px;
-  height: 38px;
-
-  border-radius: 50%;
-
-  background: #444;
+.tool-card small{
+  color:#888;
+  display:block;
+  margin-top:5px;
 }
 
-.comment-name {
-  color: #999;
+/* CAMERA / CREATE AREA */
 
-  font-size: 12px;
+.camera-box{
+  height:55vh;
+  border-radius:18px;
+  background:
+    radial-gradient(circle,#300006,#080808 65%);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+  margin-bottom:20px;
+}
 
-  margin-bottom: 4px;
+.camera-icon{
+  font-size:65px;
+}
+
+.record{
+  width:70px;
+  height:70px;
+  border-radius:50%;
+  background:var(--red);
+  border:5px solid white;
+  margin-top:25px;
+}
+
+/* STUDIO */
+
+.studio-card{
+  background:#151515;
+  border-radius:16px;
+  padding:18px;
+  margin-bottom:12px;
+}
+
+.studio-row{
+  display:flex;
+  align-items:center;
+  gap:14px;
+}
+
+.studio-row .big{
+  font-size:28px;
+}
+
+.studio-row div:nth-child(2){
+  flex:1;
+}
+
+.studio-card small{
+  color:#888;
+}
+
+/* SETTINGS */
+
+.settings-section{
+  margin-bottom:25px;
+}
+
+.settings-title{
+  color:#888;
+  font-size:12px;
+  text-transform:uppercase;
+  margin:0 10px 8px;
+}
+
+.setting{
+  background:#151515;
+  padding:17px;
+  border-bottom:1px solid #242424;
+  display:flex;
+  align-items:center;
+  gap:14px;
+}
+
+.setting:first-of-type{
+  border-radius:12px 12px 0 0;
+}
+
+.setting:last-of-type{
+  border-radius:0 0 12px 12px;
+  border-bottom:0;
+}
+
+.setting-icon{
+  width:28px;
+  text-align:center;
+  font-size:21px;
+}
+
+.setting-text{
+  flex:1;
+}
+
+.setting-text small{
+  display:block;
+  color:#888;
+  margin-top:4px;
+}
+
+.toggle{
+  width:46px;
+  height:25px;
+  border-radius:20px;
+  background:#444;
+  padding:3px;
+}
+
+.toggle::after{
+  content:"";
+  display:block;
+  width:19px;
+  height:19px;
+  background:white;
+  border-radius:50%;
+}
+
+.toggle.on{
+  background:var(--red);
+}
+
+.toggle.on::after{
+  margin-left:21px;
 }
 
 /* PROFILE */
 
-.profile {
-  position: fixed;
-
-  inset: 0;
-
-  z-index: 150;
-
-  background: #050505;
-
-  display: none;
-
-  overflow-y: auto;
+.profile-photo{
+  width:94px;
+  height:94px;
+  border-radius:50%;
+  margin:20px auto;
+  border:3px solid var(--red);
+  background:linear-gradient(135deg,#eee,#444);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:#111;
+  font-size:28px;
+  font-weight:900;
 }
 
-.profile.open {
-  display: block;
+.profile-main{
+  text-align:center;
 }
 
-.profile-head {
-  height: 60px;
-
-  display: flex;
-  align-items: center;
-
-  padding: 0 18px;
+.profile-name{
+  font-size:20px;
+  font-weight:900;
 }
 
-.profile-main {
-  text-align: center;
-
-  padding: 20px;
+.profile-handle{
+  color:#888;
+  margin-top:5px;
 }
 
-.profile-photo {
-  width: 94px;
-  height: 94px;
-
-  border-radius: 50%;
-
-  margin: auto;
-
-  border: 3px solid var(--red);
-
-  background: linear-gradient(135deg,#eee,#444);
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  color: #111;
-
-  font-size: 28px;
-  font-weight: 900;
+.stats{
+  display:flex;
+  justify-content:center;
+  gap:30px;
+  margin:22px 0;
 }
 
-.profile-name {
-  margin-top: 12px;
-
-  font-size: 20px;
-  font-weight: 900;
+.stat strong{
+  display:block;
+  font-size:18px;
 }
 
-.profile-handle {
-  color: #888;
-  margin-top: 4px;
+.stat span{
+  color:#888;
+  font-size:12px;
 }
 
-.stats {
-  display: flex;
-  justify-content: center;
-  gap: 30px;
-
-  margin: 22px 0;
+.edit{
+  padding:10px 28px;
+  border:1px solid #444;
+  border-radius:8px;
 }
 
-.stat strong {
-  display: block;
-  font-size: 18px;
+.grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:2px;
+  margin-top:25px;
 }
 
-.stat span {
-  color: #888;
-  font-size: 12px;
+.grid div{
+  aspect-ratio:1;
+  background:linear-gradient(135deg,#260003,#a0000b);
 }
 
-.edit {
-  padding: 10px 28px;
-
-  border: 1px solid #444;
-
-  border-radius: 8px;
+.grid div:nth-child(2n){
+  background:linear-gradient(135deg,#181818,#555);
 }
 
-.grid {
-  display: grid;
-  grid-template-columns: repeat(3,1fr);
+/* INBOX */
 
-  gap: 2px;
+.message{
+  padding:15px;
+  background:#151515;
+  border-radius:14px;
+  margin-bottom:10px;
+  display:flex;
+  gap:12px;
+  align-items:center;
 }
 
-.grid div {
-  aspect-ratio: 1;
-
-  background:
-    linear-gradient(
-      135deg,
-      #260003,
-      #a0000b
-    );
+.message-avatar{
+  width:48px;
+  height:48px;
+  border-radius:50%;
+  background:#444;
+  display:flex;
+  align-items:center;
+  justify-content:center;
 }
 
-.grid div:nth-child(2n) {
-  background:
-    linear-gradient(
-      135deg,
-      #181818,
-      #555
-    );
+.message-text{
+  flex:1;
 }
 
-/* DESKTOP */
+.message-text small{
+  color:#888;
+}
 
-@media (min-width: 700px) {
+/* FRIENDS */
 
-  .app {
-    max-width: 500px;
-    margin: auto;
+.friend{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:15px;
+  background:#151515;
+  border-radius:14px;
+  margin-bottom:10px;
+}
+
+.friend-avatar{
+  width:50px;
+  height:50px;
+  border-radius:50%;
+  background:linear-gradient(135deg,#eee,#555);
+  color:#111;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:900;
+}
+
+.friend-info{
+  flex:1;
+}
+
+.friend-info small{
+  color:#888;
+}
+
+.follow-btn{
+  background:var(--red);
+  color:white;
+  padding:8px 15px;
+  border-radius:8px;
+}
+
+/* LIVE */
+
+.live-card{
+  background:linear-gradient(135deg,#250003,#101010);
+  border-radius:18px;
+  padding:20px;
+  margin-bottom:12px;
+  border:1px solid #3b0005;
+}
+
+.live-badge{
+  display:inline-block;
+  background:var(--red);
+  padding:5px 9px;
+  border-radius:6px;
+  font-size:11px;
+  font-weight:bold;
+  margin-bottom:12px;
+}
+
+/* NOTIFICATIONS */
+
+.notification{
+  display:flex;
+  gap:12px;
+  padding:16px;
+  border-bottom:1px solid #222;
+}
+
+.notification-icon{
+  font-size:22px;
+}
+
+.notification small{
+  color:#888;
+}
+
+/* VOICE */
+
+.voice-box{
+  text-align:center;
+  padding:35px 20px;
+  background:#151515;
+  border-radius:18px;
+}
+
+.mic{
+  width:85px;
+  height:85px;
+  border-radius:50%;
+  background:var(--red);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:38px;
+  margin:20px auto;
+}
+
+.voice-status{
+  color:#888;
+}
+
+/* LIGHT MODE */
+
+.light-mode{
+  --black:#f5f5f5;
+  --dark:#fff;
+  --card:#fff;
+  --white:#111;
+  --gray:#666;
+}
+
+.light-mode .panel,
+.light-mode .panel-head{
+  background:#f5f5f5;
+}
+
+.light-mode .bottom-nav{
+  background:rgba(255,255,255,.96);
+  color:#111;
+}
+
+.light-mode .setting,
+.light-mode .topic,
+.light-mode .message,
+.light-mode .friend,
+.light-mode .tool-card,
+.light-mode .studio-card,
+.light-mode .voice-box{
+  background:white;
+  border-color:#ddd;
+}
+
+@media(min-width:700px){
+
+  .app{
+    max-width:500px;
+    margin:auto;
   }
 
   .top,
-  .bottom-nav {
-    max-width: 500px;
-    left: 50%;
-    right: auto;
-    width: 100%;
-    transform: translateX(-50%);
+  .bottom-nav{
+    max-width:500px;
+    left:50%;
+    right:auto;
+    width:100%;
+    transform:translateX(-50%);
   }
-
 }
 </style>
 </head>
@@ -795,423 +840,660 @@ button {
 
 <div class="app">
 
-  <!-- TOP -->
-  <header class="top">
+<header class="top">
 
-    <div class="logo">
-      OTA<span class="logo-x">X</span>
+  <div class="logo">
+    OTA<span class="logo-x">X</span>
+  </div>
+
+  <div class="feed-tabs">
+    <div class="feed-tab">Following</div>
+    <div class="feed-tab active">For You</div>
+  </div>
+
+  <button class="search" onclick="openPanel('searchPanel')">⌕</button>
+
+</header>
+
+<main class="feed">
+
+<section class="post video1">
+
+  <div class="watermark">
+    OTA<span>X</span>
+  </div>
+
+  <div class="actions">
+
+    <div class="creator-avatar">O</div>
+
+    <div class="follow">+</div>
+
+    <button class="action" onclick="toggleLike(this)">
+      <div class="action-icon">♡</div>
+      <span>12.4K</span>
+    </button>
+
+    <button class="action" onclick="openPanel('commentsPanel')">
+      <div class="action-icon">◇</div>
+      <span>840</span>
+    </button>
+
+    <button class="action">
+      <div class="action-icon">↗</div>
+      <span>Share</span>
+    </button>
+
+    <button class="action">
+      <div class="action-icon"><div class="save-icon"></div></div>
+      <span>Save</span>
+    </button>
+
+  </div>
+
+  <div class="post-info">
+
+    <div class="username">
+      @OTAcreator
+      <span class="verified">✓</span>
     </div>
 
-    <div class="feed-tabs">
-      <div class="feed-tab">Following</div>
-      <div class="feed-tab active">For You</div>
+    <div class="caption">
+      Welcome to OTA X — connect, create and share your world.
+      #OTAX #ForYou
     </div>
 
-    <button class="search" onclick="openSearch()">⌕</button>
+    <div class="sound">
+      ◉ Original sound · OTA X
+    </div>
 
-  </header>
+  </div>
 
+</section>
 
-  <!-- FEED -->
+<section class="post video2">
 
-  <main class="feed">
+  <div class="watermark">
+    OTA<span>X</span>
+  </div>
 
+  <div class="actions">
 
-    <!-- POST 1 -->
+    <div class="creator-avatar">A</div>
+    <div class="follow">+</div>
 
-    <section class="post video1">
-
-      <div class="watermark">
-        OTA<span>X</span>
-      </div>
-
-      <div class="actions">
-
-        <div class="creator-avatar">
-          O
-        </div>
-
-        <div class="follow">
-          +
-        </div>
-
-
-        <button class="action" onclick="toggleLike(this)">
-
-          <div class="action-icon">
-            ♡
-          </div>
-
-          <span>12.4K</span>
-
-        </button>
-
-
-        <button class="action" onclick="openComments()">
-
-          <div class="action-icon">
-            ◇
-          </div>
-
-          <span>840</span>
-
-        </button>
-
-
-        <button class="action">
-
-          <div class="action-icon">
-            ↗
-          </div>
-
-          <span>Share</span>
-
-        </button>
-
-
-        <button class="action">
-
-          <div class="action-icon">
-
-            <div class="save-icon"></div>
-
-          </div>
-
-          <span>Save</span>
-
-        </button>
-
-      </div>
-
-
-      <div class="post-info">
-
-        <div class="username">
-          @OTAcreator
-          <span class="verified">✓</span>
-        </div>
-
-        <div class="caption">
-          Welcome to OTA X — connect, create and share your world.
-          #OTAX #ForYou
-        </div>
-
-        <div class="sound">
-          ◉ Original sound · OTA X
-        </div>
-
-      </div>
-
-    </section>
-
-
-    <!-- POST 2 -->
-
-    <section class="post video2">
-
-      <div class="watermark">
-        OTA<span>X</span>
-      </div>
-
-      <div class="actions">
-
-        <div class="creator-avatar">
-          A
-        </div>
-
-        <div class="follow">
-          +
-        </div>
-
-        <button class="action" onclick="toggleLike(this)">
-
-          <div class="action-icon">
-            ♡
-          </div>
-
-          <span>8.7K</span>
-
-        </button>
-
-        <button class="action" onclick="openComments()">
-
-          <div class="action-icon">
-            ◇
-          </div>
-
-          <span>421</span>
-
-        </button>
-
-        <button class="action">
-
-          <div class="action-icon">
-            ↗
-          </div>
-
-          <span>Share</span>
-
-        </button>
-
-        <button class="action">
-
-          <div class="action-icon">
-
-            <div class="save-icon"></div>
-
-          </div>
-
-          <span>Save</span>
-
-        </button>
-
-      </div>
-
-
-      <div class="post-info">
-
-        <div class="username">
-          @AfricaCreator
-          <span class="verified">✓</span>
-        </div>
-
-        <div class="caption">
-          Discover creators, communities and stories from across Africa.
-          #Africa #OTAX
-        </div>
-
-        <div class="sound">
-          ◉ Original sound
-        </div>
-
-      </div>
-
-    </section>
-
-
-    <!-- POST 3 -->
-
-    <section class="post video3">
-
-      <div class="watermark">
-        OTA<span>X</span>
-      </div>
-
-      <div class="actions">
-
-        <div class="creator-avatar">
-          X
-        </div>
-
-        <div class="follow">
-          +
-        </div>
-
-        <button class="action" onclick="toggleLike(this)">
-
-          <div class="action-icon">
-            ♡
-          </div>
-
-          <span>19.1K</span>
-
-        </button>
-
-        <button class="action" onclick="openComments()">
-
-          <div class="action-icon">
-            ◇
-          </div>
-
-          <span>1.2K</span>
-
-        </button>
-
-        <button class="action">
-
-          <div class="action-icon">
-            ↗
-          </div>
-
-          <span>Share</span>
-
-        </button>
-
-        <button class="action">
-
-          <div class="action-icon">
-
-            <div class="save-icon"></div>
-
-          </div>
-
-          <span>Save</span>
-
-        </button>
-
-      </div>
-
-
-      <div class="post-info">
-
-        <div class="username">
-          @OTAx3
-          <span class="verified">✓</span>
-        </div>
-
-        <div class="caption">
-          Your world. Your people. Your stories.
-          #OTAX #Create
-        </div>
-
-        <div class="sound">
-          ◉ OTA X sound
-        </div>
-
-      </div>
-
-    </section>
-
-  </main>
-
-
-  <!-- BOTTOM NAV -->
-
-  <nav class="bottom-nav">
-
-    <button class="nav active">
-      <div class="nav-icon">⌂</div>
-      <span>Home</span>
+    <button class="action" onclick="toggleLike(this)">
+      <div class="action-icon">♡</div>
+      <span>8.7K</span>
     </button>
 
-    <button class="nav">
-      <div class="nav-icon">♡</div>
-      <span>Friends</span>
+    <button class="action" onclick="openPanel('commentsPanel')">
+      <div class="action-icon">◇</div>
+      <span>421</span>
     </button>
 
-    <button class="nav">
-      <div class="create">+</div>
-      <span>Create</span>
+    <button class="action">
+      <div class="action-icon">↗</div>
+      <span>Share</span>
     </button>
 
-    <button class="nav">
-      <div class="nav-icon">◇</div>
-      <span>Inbox</span>
+    <button class="action">
+      <div class="action-icon"><div class="save-icon"></div></div>
+      <span>Save</span>
     </button>
 
-    <button class="nav" onclick="openProfile()">
-      <div class="nav-icon">○</div>
-      <span>Profile</span>
+  </div>
+
+  <div class="post-info">
+
+    <div class="username">
+      @AfricaCreator
+      <span class="verified">✓</span>
+    </div>
+
+    <div class="caption">
+      Discover creators, communities and stories from across Africa.
+      #Africa #OTAX
+    </div>
+
+    <div class="sound">
+      ◉ Original sound
+    </div>
+
+  </div>
+
+</section>
+
+<section class="post video3">
+
+  <div class="watermark">
+    OTA<span>X</span>
+  </div>
+
+  <div class="actions">
+
+    <div class="creator-avatar">X</div>
+    <div class="follow">+</div>
+
+    <button class="action" onclick="toggleLike(this)">
+      <div class="action-icon">♡</div>
+      <span>19.1K</span>
     </button>
 
-          </nav>
-            <!-- SEARCH -->
+    <button class="action" onclick="openPanel('commentsPanel')">
+      <div class="action-icon">◇</div>
+      <span>1.2K</span>
+    </button>
 
-  <section class="search-panel" id="searchPanel">
+    <button class="action">
+      <div class="action-icon">↗</div>
+      <span>Share</span>
+    </button>
 
-    <div class="search-header">
+    <button class="action">
+      <div class="action-icon"><div class="save-icon"></div></div>
+      <span>Save</span>
+    </button>
 
-      <button class="back" onclick="closeSearch()">
-        ‹
+  </div>
+
+  <div class="post-info">
+
+    <div class="username">
+      @OTAx3
+      <span class="verified">✓</span>
+    </div>
+
+    <div class="caption">
+      Your world. Your people. Your stories.
+      #OTAX #Create
+    </div>
+
+    <div class="sound">
+      ◉ OTA X sound
+    </div>
+
+  </div>
+
+</section>
+
+</main>
+
+<!-- BOTTOM NAV -->
+
+<nav class="bottom-nav">
+
+  <button class="nav active">
+    <div class="nav-icon">⌂</div>
+    <span>Home</span>
+  </button>
+
+  <button class="nav" onclick="openPanel('friendsPanel')">
+    <div class="nav-icon">♡</div>
+    <span>Friends</span>
+  </button>
+
+  <button class="nav" onclick="openPanel('createPanel')">
+    <div class="create">+</div>
+    <span>Create</span>
+  </button>
+
+  <button class="nav" onclick="openPanel('inboxPanel')">
+    <div class="nav-icon">◇</div>
+    <span>Inbox</span>
+  </button>
+
+  <button class="nav" onclick="openPanel('profilePanel')">
+    <div class="nav-icon">○</div>
+    <span>Profile</span>
+  </button>
+
+  </nav>
+  <!-- SEARCH -->
+
+<section class="panel" id="searchPanel">
+
+  <div class="panel-head">
+    <button class="back" onclick="closePanel('searchPanel')">‹</button>
+    <h2>Search</h2>
+    <div></div>
+  </div>
+
+  <div class="panel-content">
+
+    <input class="search-input" placeholder="Search OTA X">
+
+    <div class="topic">
+      <strong>#OTAX</strong>
+      <small>Trending now</small>
+    </div>
+
+    <div class="topic">
+      <strong>#Africa</strong>
+      <small>Creators across Africa</small>
+    </div>
+
+    <div class="topic">
+      <strong>#Football</strong>
+      <small>Sports and football</small>
+    </div>
+
+    <div class="topic">
+      <strong>#Music</strong>
+      <small>Music and creators</small>
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- FRIENDS -->
+
+<section class="panel" id="friendsPanel">
+
+  <div class="panel-head">
+    <button class="back" onclick="closePanel('friendsPanel')">‹</button>
+    <h2>Friends</h2>
+    <div></div>
+  </div>
+
+  <div class="panel-content">
+
+    <div class="friend">
+      <div class="friend-avatar">A</div>
+      <div class="friend-info">
+        <strong>@AfricaCreator ✓</strong>
+        <small>Creator</small>
+      </div>
+      <button class="follow-btn">Follow</button>
+    </div>
+
+    <div class="friend">
+      <div class="friend-avatar">M</div>
+      <div class="friend-info">
+        <strong>@MusicWorld</strong>
+        <small>Music creator</small>
+      </div>
+      <button class="follow-btn">Follow</button>
+    </div>
+
+    <div class="friend">
+      <div class="friend-avatar">F</div>
+      <div class="friend-info">
+        <strong>@FootballZone</strong>
+        <small>Sports creator</small>
+      </div>
+      <button class="follow-btn">Follow</button>
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- CREATE -->
+
+<section class="panel" id="createPanel">
+
+  <div class="panel-head">
+    <button class="back" onclick="closePanel('createPanel')">‹</button>
+    <h2>Create</h2>
+    <div></div>
+  </div>
+
+  <div class="panel-content">
+
+    <div class="create-tools">
+
+      <button class="tool-card" onclick="openPanel('cameraPanel')">
+        <div class="tool-icon">🎥</div>
+        <strong>Video</strong>
+        <small>Record a new video</small>
       </button>
 
-      <input
-        class="search-input"
-        placeholder="Search OTA X"
-      >
+      <button class="tool-card">
+        <div class="tool-icon">🖼</div>
+        <strong>Photo</strong>
+        <small>Upload photos</small>
+      </button>
 
-    </div>
+      <button class="tool-card" onclick="openPanel('voicePanel')">
+        <div class="tool-icon">🎤</div>
+        <strong>Voice</strong>
+        <small>Record audio</small>
+      </button>
 
-    <div class="trending">
+      <button class="tool-card" onclick="openPanel('livePanel')">
+        <div class="tool-icon">🔴</div>
+        <strong>LIVE</strong>
+        <small>Go live</small>
+      </button>
 
-      <h3>Trending on OTA X</h3>
+      <button class="tool-card" onclick="openPanel('studioPanel')">
+        <div class="tool-icon">🎬</div>
+        <strong>OTA X Studio</strong>
+        <small>Creator tools</small>
+      </button>
 
-      <div class="topic">
-        <strong>#OTAX</strong>
-        <small>Trending now</small>
-      </div>
-
-      <div class="topic">
-        <strong>#Africa</strong>
-        <small>Creators across Africa</small>
-      </div>
-
-      <div class="topic">
-        <strong>#Football</strong>
-        <small>Sports and football</small>
-      </div>
-
-      <div class="topic">
-        <strong>#Music</strong>
-        <small>Music and creators</small>
-      </div>
-
-    </div>
-
-  </section>
-
-
-  <!-- COMMENTS -->
-
-  <section class="comments" id="comments">
-
-    <div class="comments-title">
-      840 Comments
-    </div>
-
-    <div class="comment">
-
-      <div class="comment-photo"></div>
-
-      <div>
-        <div class="comment-name">
-          @creator1
-        </div>
-
-        <div>
-          OTA X is looking clean!
-        </div>
-      </div>
-
-    </div>
-
-
-    <div class="comment">
-
-      <div class="comment-photo"></div>
-
-      <div>
-        <div class="comment-name">
-          @africa
-        </div>
-
-        <div>
-          Can't wait to see this platform grow.
-        </div>
-      </div>
-
-    </div>
-
-  </section>
-
-
-  <!-- PROFILE -->
-
-  <section class="profile" id="profile">
-
-    <div class="profile-head">
-
-      <button onclick="closeProfile()">
-        ‹
+      <button class="tool-card">
+        <div class="tool-icon">📖</div>
+        <strong>Story</strong>
+        <small>Create a story</small>
       </button>
 
     </div>
+
+  </div>
+
+</section>
+
+
+<!-- CAMERA -->
+
+<section class="panel" id="cameraPanel">
+
+  <div class="panel-head">
+    <button class="back" onclick="closePanel('cameraPanel')">‹</button>
+    <h2>Create Video</h2>
+    <div></div>
+  </div>
+
+  <div class="panel-content">
+
+    <div class="camera-box">
+
+      <div class="camera-icon">🎥</div>
+
+      <div>Camera ready</div>
+
+      <button class="record"></button>
+
+    </div>
+
+    <div class="create-tools">
+
+      <button class="tool-card">⏱<br><strong>Timer</strong></button>
+      <button class="tool-card">✨<br><strong>Effects</strong></button>
+      <button class="tool-card">🎵<br><strong>Sounds</strong></button>
+      <button class="tool-card">⚡<br><strong>Speed</strong></button>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- VOICE -->
+
+<section class="panel" id="voicePanel">
+
+  <div class="panel-head">
+    <button class="back" onclick="closePanel('voicePanel')">‹</button>
+    <h2>Voice</h2>
+    <div></div>
+  </div>
+
+  <div class="panel-content">
+
+    <div class="voice-box">
+
+      <h3>Record your voice</h3>
+
+      <button class="mic" onclick="toggleRecording(this)">
+        🎤
+      </button>
+
+      <div class="voice-status" id="voiceStatus">
+        Tap the microphone to start
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- STUDIO -->
+
+<section class="panel" id="studioPanel">
+
+  <div class="panel-head">
+    <button class="back" onclick="closePanel('studioPanel')">‹</button>
+    <h2>OTA X Studio</h2>
+    <div></div>
+  </div>
+
+  <div class="panel-content">
+
+    <div class="studio-card">
+      <div class="studio-row">
+        <div class="big">📊</div>
+        <div>
+          <strong>Analytics</strong>
+          <small>Views, likes, followers and performance</small>
+        </div>
+        <span>›</span>
+      </div>
+    </div>
+
+    <div class="studio-card">
+      <div class="studio-row">
+        <div class="big">💰</div>
+        <div>
+          <strong>Creator Monetization</strong>
+          <small>Creator earnings and monetization tools</small>
+        </div>
+        <span>›</span>
+      </div>
+    </div>
+
+    <div class="studio-card">
+      <div class="studio-row">
+        <div class="big">🎬</div>
+        <div>
+          <strong>Video Editor</strong>
+          <small>Edit clips, sounds, text and effects</small>
+        </div>
+        <span>›</span>
+      </div>
+    </div>
+
+    <div class="studio-card">
+      <div class="studio-row">
+        <div class="big">🔴</div>
+        <div>
+          <strong>LIVE Center</strong>
+          <small>Manage LIVE streams and viewers</small>
+        </div>
+        <span>›</span>
+      </div>
+    </div>
+
+    <div class="studio-card">
+      <div class="studio-row">
+        <div class="big">📅</div>
+        <div>
+          <strong>Content Planner</strong>
+          <small>Plan and organize your posts</small>
+        </div>
+        <span>›</span>
+      </div>
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- INBOX -->
+
+<section class="panel" id="inboxPanel">
+
+  <div class="panel-head">
+    <button class="back" onclick="closePanel('inboxPanel')">‹</button>
+    <h2>Inbox</h2>
+    <div></div>
+  </div>
+
+  <div class="panel-content">
+
+    <button class="message">
+      <div class="message-avatar">A</div>
+      <div class="message-text">
+        <strong>AfricaCreator</strong>
+        <small>Sent you a message</small>
+      </div>
+      <span>›</span>
+    </button>
+
+    <button class="message">
+      <div class="message-avatar">M</div>
+      <div class="message-text">
+        <strong>MusicWorld</strong>
+        <small>Liked your video</small>
+      </div>
+      <span>›</span>
+    </button>
+
+    <button class="message">
+      <div class="message-avatar">O</div>
+      <div class="message-text">
+        <strong>OTA Team</strong>
+        <small>Welcome to OTA X</small>
+      </div>
+      <span>›</span>
+    </button>
+
+  </div>
+
+</section>
+
+
+<!-- NOTIFICATIONS -->
+
+<section class="panel" id="notificationPanel">
+
+  <div class="panel-head">
+    <button class="back" onclick="closePanel('notificationPanel')">‹</button>
+    <h2>Notifications</h2>
+    <div></div>
+  </div>
+
+  <div class="panel-content">
+
+    <div class="notification">
+      <div class="notification-icon">❤️</div>
+      <div>
+        <strong>AfricaCreator liked your video</strong>
+        <small>Just now</small>
+      </div>
+    </div>
+
+    <div class="notification">
+      <div class="notification-icon">👤</div>
+      <div>
+        <strong>MusicWorld started following you</strong>
+        <small>5 minutes ago</small>
+      </div>
+    </div>
+
+    <div class="notification">
+      <div class="notification-icon">💬</div>
+      <div>
+        <strong>You have a new comment</strong>
+        <small>10 minutes ago</small>
+      </div>
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- LIVE -->
+
+<section class="panel" id="livePanel">
+
+  <div class="panel-head">
+    <button class="back" onclick="closePanel('livePanel')">‹</button>
+    <h2>LIVE</h2>
+    <div></div>
+  </div>
+
+  <div class="panel-content">
+
+    <div class="live-card">
+      <span class="live-badge">LIVE</span>
+      <h3>OTA X LIVE</h3>
+      <p>Start a live video and connect with your community.</p>
+      <br>
+      <button class="follow-btn">Request LIVE Access</button>
+    </div>
+
+    <div class="live-card">
+      <span class="live-badge">LIVE</span>
+      <h3>Football Talk</h3>
+      <p>Creator is currently live.</p>
+    </div>
+
+  </div>
+
+</section>
+
+
+<!-- COMMENTS -->
+
+<section class="panel" id="commentsPanel">
+
+  <div class="panel-head">
+    <button class="back" onclick="closePanel('commentsPanel')">‹</button>
+    <h2>Comments</h2>
+    <div></div>
+  </div>
+
+  <div class="panel-content">
+
+    <div class="comment">
+      <strong>@creator1</strong>
+      <p>OTA X is looking clean!</p>
+    </div>
+
+    <br>
+
+    <div class="comment">
+      <strong>@africa</strong>
+      <p>Can't wait to see this platform grow.</p>
+    </div>
+
+    <br>
+
+    <button class="tool-card" style="width:100%;" onclick="openPanel('voicePanel')">
+      🎤 Add voice comment
+    </button>
+
+  </div>
+
+</section>
+
+
+<!-- PROFILE -->
+
+<section class="panel" id="profilePanel">
+
+  <div class="panel-head">
+    <button class="back" onclick="closePanel('profilePanel')">‹</button>
+    <h2>Profile</h2>
+    <button onclick="openPanel('settingsPanel')">⚙</button>
+  </div>
+
+  <div class="panel-content">
 
     <div class="profile-main">
 
-      <div class="profile-photo">
-        O
-      </div>
+      <div class="profile-photo">O</div>
 
       <div class="profile-name">
         OTA Creator
@@ -1241,118 +1523,211 @@ button {
 
       </div>
 
-      <button class="edit">
-        Edit profile
-      </button>
+      <button class="edit">Edit profile</button>
 
     </div>
-
 
     <div class="grid">
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
 
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
-      <div></div>
+  </div>
+
+</section>
+
+
+<!-- SETTINGS -->
+
+<section class="panel" id="settingsPanel">
+
+  <div class="panel-head">
+    <button class="back" onclick="closePanel('settingsPanel')">‹</button>
+    <h2>Settings</h2>
+    <div></div>
+  </div>
+
+  <div class="panel-content">
+
+    <div class="settings-section">
+
+      <div class="settings-title">Account</div>
+
+      <div class="setting">
+        <div class="setting-icon">👤</div>
+        <div class="setting-text">
+          <strong>Account</strong>
+          <small>Username, email and account information</small>
+        </div>
+        <span>›</span>
+      </div>
+
+      <div class="setting">
+        <div class="setting-icon">🔒</div>
+        <div class="setting-text">
+          <strong>Privacy</strong>
+          <small>Control who can interact with you</small>
+        </div>
+        <span>›</span>
+      </div>
+
+      <div class="setting">
+        <div class="setting-icon">🛡</div>
+        <div class="setting-text">
+          <strong>Security</strong>
+          <small>Password and login protection</small>
+        </div>
+        <span>›</span>
+      </div>
 
     </div>
 
-  </section>
 
-</div>
+    <div class="settings-section">
+
+      <div class="settings-title">App</div>
+
+      <div class="setting">
+        <div class="setting-icon">🌙</div>
+        <div class="setting-text">
+          <strong>Dark mode</strong>
+          <small>Change OTA X appearance</small>
+        </div>
+        <button class="toggle on" id="themeToggle" onclick="toggleTheme()"></button>
+      </div>
+
+      <div class="setting">
+        <div class="setting-icon">🔔</div>
+        <div class="setting-text">
+          <strong>Notifications</strong>
+          <small>Likes, comments, followers and messages</small>
+        </div>
+        <button class="toggle on"></button>
+      </div>
+
+      <div class="setting">
+        <div class="setting-icon">🔊</div>
+        <div class="setting-text">
+          <strong>Sounds</strong>
+          <small>App sounds and video sounds</small>
+        </div>
+        <button class="toggle on"></button>
+      </div>
+
+    </div>
+
+
+    <div class="settings-section">
+
+      <div class="settings-title">Creator</div>
+
+      <div class="setting" onclick="openPanel('studioPanel')">
+        <div class="setting-icon">🎬</div>
+        <div class="setting-text">
+          <strong>OTA X Studio</strong>
+          <small>Creator tools and analytics</small>
+        </div>
+        <span>›</span>
+      </div>
+
+      <div class="setting" onclick="openPanel('livePanel')">
+        <div class="setting-icon">🔴</div>
+        <div class="setting-text">
+          <strong>LIVE Center</strong>
+          <small>Manage your live broadcasts</small>
+        </div>
+        <span>›</span>
+      </div>
+
+    </div>
+
+
+    <div class="settings-section">
+
+      <div class="settings-title">Support</div>
+
+      <div class="setting">
+        <div class="setting-icon">❓</div>
+        <div class="setting-text">
+          <strong>Help Center</strong>
+          <small>Get help with OTA X</small>
+        </div>
+        <span>›</span>
+      </div>
+
+      <div class="setting">
+        <div class="setting-icon">📜</div>
+        <div class="setting-text">
+          <strong>Community Guidelines</strong>
+          <small>OTA X rules and safety</small>
+        </div>
+        <span>›</span>
+      </div>
+
+    </div>
+
+  </div>
+
+</section>
 
 
 <script>
 
-function toggleLike(button) {
+function openPanel(id){
+  document.getElementById(id).classList.add("open");
+}
+
+function closePanel(id){
+  document.getElementById(id).classList.remove("open");
+}
+
+function toggleLike(button){
 
   button.classList.toggle("active");
 
-  const icon =
-    button.querySelector(".action-icon");
+  const icon=button.querySelector(".action-icon");
 
-  if (button.classList.contains("active")) {
+  if(button.classList.contains("active")){
+    icon.textContent="♥";
+  }else{
+    icon.textContent="♡";
+  }
+}
 
-    icon.textContent = "♥";
+function toggleRecording(button){
 
-  } else {
+  const status=document.getElementById("voiceStatus");
 
-    icon.textContent = "♡";
+  button.classList.toggle("recording");
+
+  if(button.classList.contains("recording")){
+
+    button.textContent="⏹";
+    status.textContent="Recording voice...";
+
+  }else{
+
+    button.textContent="🎤";
+    status.textContent="Voice recording saved";
 
   }
-
 }
 
+function toggleTheme(){
 
-function openSearch() {
+  document.body.classList.toggle("light-mode");
 
-  document
-    .getElementById("searchPanel")
-    .classList.add("open");
+  const toggle=document.getElementById("themeToggle");
 
-}
-
-
-function closeSearch() {
-
-  document
-    .getElementById("searchPanel")
-    .classList.remove("open");
+  toggle.classList.toggle("on");
 
 }
-
-
-function openComments() {
-
-  document
-    .getElementById("comments")
-    .classList.add("open");
-
-}
-
-
-function closeComments() {
-
-  document
-    .getElementById("comments")
-    .classList.remove("open");
-
-}
-
-
-function openProfile() {
-
-  document
-    .getElementById("profile")
-    .classList.add("open");
-
-}
-
-
-function closeProfile() {
-
-  document
-    .getElementById("profile")
-    .classList.remove("open");
-
-}
-
-
-document
-  .getElementById("comments")
-  .addEventListener("click", function(event) {
-
-    if (event.target === this) {
-
-      closeComments();
-
-    }
-
-  });
 
 </script>
 
 </body>
-</html>
+        </html>

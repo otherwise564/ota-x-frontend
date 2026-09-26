@@ -8,57 +8,135 @@
 </head>
 <body>
 
-    <!-- Top Navigation Tabs -->
-    <div class="top-nav">
-        <span class="nav-tab">Following</span>
-        <span class="nav-tab active">For You</span>
+    <!-- VIEW 1: HOME FEED -->
+    <div id="homeView" class="view">
+        <div class="top-nav">
+            <span class="nav-tab">Following</span>
+            <span class="nav-tab active">For You</span>
+        </div>
+        <div class="main-feed">
+            <div class="video-placeholder">
+                <h2>OTA X</h2>
+                <p>Connect, create and share your world.</p>
+            </div>
+            
+            <!-- Right Side Action Buttons -->
+            <div class="right-actions">
+                <button class="action-btn">❤️ <br>12.4K</button>
+                <button class="action-btn" id="openCommentsBtn">💬 <br>840</button>
+                <button class="action-btn">↗️ <br>Share</button>
+                <button class="action-btn">⭐ <br>Save</button>
+            </div>
+
+            <!-- Creator Info -->
+            <div class="creator-info">
+                <div class="avatar">O</div>
+                <span class="username">@OTAcreator 🔴</span>
+                <p class="caption">Welcome to OTA X — connect, create and share your world.</p>
+            </div>
+        </div>
     </div>
 
-    <!-- Main Content Area -->
-    <div class="main-feed">
-        <div class="video-placeholder">
-            <h2>OTA X</h2>
-            <p>Connect, create and share your world.</p>
+    <!-- VIEW 2: PROFILE PAGE -->
+    <div id="profileView" class="view hidden">
+        <div class="profile-header">
+            <button class="back-arrow" data-target="home">❮</button>
+            <span>Profile</span>
+            <span>⚙️</span>
         </div>
-        
-        <!-- Right Side Action Buttons -->
-        <div class="right-actions">
-            <button class="action-btn">❤️ 12.4K</button>
-            <button class="action-btn">💬 840</button>
-            <button class="action-btn">↗️ Share</button>
-            <button class="action-btn">⭐ Save</button>
-        </div>
-
-        <!-- Creator Info -->
-        <div class="creator-info">
-            <div class="avatar">O</div>
-            <span class="username">@OTAcreator 🔴</span>
-            <p class="caption">Welcome to OTA X — connect, create and share your world.</p>
+        <div class="profile-content">
+            <div class="profile-avatar-large">O</div>
+            <h2>@OTAcreator 🔴</h2>
+            <p class="profile-bio">Welcome to my OTA X profile.</p>
+            <div class="profile-stats">
+                <div><strong>0</strong><span>Following</span></div>
+                <div><strong>0</strong><span>Followers</span></div>
+                <div><strong>0</strong><span>Likes</span></div>
+            </div>
+            <div class="profile-buttons">
+                <button class="profile-btn">Edit profile</button>
+                <button class="profile-btn">Share profile</button>
+            </div>
         </div>
     </div>
 
-    <!-- Bottom TikTok Navigation Bar -->
+    <!-- VIEW 3: CREATE / CAMERA STUDIO -->
+    <div id="createView" class="view hidden">
+        <div class="create-header">
+            <button class="close-create" data-target="home">✕</button>
+            <span>Create</span>
+            <span>🎵 Add sound</span>
+        </div>
+        <div class="create-camera-box">
+            <div class="camera-center-icon">📷</div>
+            <div class="camera-controls-right">
+                <button>✨ Effects</button>
+                <button>🔘 Filters</button>
+                <button>⚡ Speed</button>
+                <button>⏱️ Timer</button>
+            </div>
+        </div>
+        <div class="create-bottom-bar">
+            <label class="create-upload-option">
+                ⬆️ Upload
+                <input type="file" hidden>
+            </label>
+            <div class="shutter-btn"></div>
+            <div class="create-upload-option">
+                🖼️ Photo
+            </div>
+        </div>
+    </div>
+
+    <!-- COMMENTS POPUP MODAL -->
+    <div id="commentModal" class="modal hidden">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>840 Comments</h3>
+                <span id="closeComments" class="close-modal">✕</span>
+            </div>
+            <div class="comments-list">
+                <div class="comment-item">
+                    <strong>@OTAcreator 🔴</strong>
+                    <p>Welcome to OTA X!</p>
+                </div>
+                <div class="comment-item">
+                    <strong>@CreatorOne</strong>
+                    <p>This looks amazing.</p>
+                </div>
+            </div>
+            <div class="comment-input-bar">
+                <input type="text" placeholder="Add comment...">
+                <button class="tool-icon">📷</button>
+                <button class="tool-icon">😊</button>
+                <button class="send-btn">Send</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- FIXED BOTTOM NAVIGATION BAR -->
     <div class="bottom-nav">
-        <a href="#" class="nav-item active">
+        <a href="#" class="nav-item active" data-target="home">
             <span>🏠</span>
             <small>Home</small>
         </a>
-        <a href="#" class="nav-item">
+        <a href="#" class="nav-item" data-target="friends">
             <span>👥</span>
             <small>Friends</small>
         </a>
-        <a href="#" class="nav-item create-btn">
+        <a href="#" class="nav-item create-btn" data-target="create">
             <span>+</span>
         </a>
-        <a href="#" class="nav-item">
+        <a href="#" class="nav-item" data-target="inbox">
             <span>💬</span>
             <small>Inbox</small>
         </a>
-        <a href="#" class="nav-item">
+        <a href="#" class="nav-item" data-target="profile">
             <span>👤</span>
             <small>Profile</small>
         </a>
     </div>
 
+    <script src="script.js"></script>
 </body>
 </html>

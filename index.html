@@ -3,51 +3,62 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OTA X - TikTok Style Interface</title>
+    <title>OTA X</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-    <!-- Main Video Container with Duet / Overlay Support -->
-    <div class="video-container">
-        <video id="mainVideo" src="your-video.mp4" controls autoplay muted loop></video>
-        <!-- Overlay video or image for story replies -->
-        <div id="videoOverlay" class="overlay-container hidden">
-            <img id="overlayMedia" src="" alt="Overlay Media">
+    <!-- Top Navigation Tabs -->
+    <div class="top-nav">
+        <span class="nav-tab">Following</span>
+        <span class="nav-tab active">For You</span>
+    </div>
+
+    <!-- Main Content Area -->
+    <div class="main-feed">
+        <div class="video-placeholder">
+            <h2>OTA X</h2>
+            <p>Connect, create and share your world.</p>
+        </div>
+        
+        <!-- Right Side Action Buttons -->
+        <div class="right-actions">
+            <button class="action-btn">❤️ 12.4K</button>
+            <button class="action-btn">💬 840</button>
+            <button class="action-btn">↗️ Share</button>
+            <button class="action-btn">⭐ Save</button>
+        </div>
+
+        <!-- Creator Info -->
+        <div class="creator-info">
+            <div class="avatar">O</div>
+            <span class="username">@OTAcreator 🔴</span>
+            <p class="caption">Welcome to OTA X — connect, create and share your world.</p>
         </div>
     </div>
 
-    <!-- Comment Section -->
-    <div class="comment-section">
-        <h3>Comments</h3>
-        <div id="commentsList" class="comments-list">
-            <!-- Dynamic comments injected via JS -->
-        </div>
-
-        <!-- Comment Input Box with Media/Sticker Triggers -->
-        <div class="comment-input-bar">
-            <input type="text" id="commentInput" placeholder="Add comment...">
-            
-            <!-- Camera Icon for Photo/Video Replies -->
-            <label for="mediaUpload" class="camera-btn" title="Reply with photo/video">
-                📷
-            </label>
-            <input type="file" id="mediaUpload" accept="image/*,video/*" hidden>
-
-            <!-- Sticker Picker Toggle -->
-            <button id="stickerBtn" title="Add Sticker">😊</button>
-            <button id="sendCommentBtn">Post</button>
-        </div>
-
-        <!-- Sticker Drawer -->
-        <div id="stickerDrawer" class="sticker-drawer hidden">
-            <span class="sticker" data-sticker="🔥">🔥</span>
-            <span class="sticker" data-sticker="😂">😂</span>
-            <span class="sticker" data-sticker="🦅">🦅</span>
-            <span class="sticker" data-sticker="❤️">❤️</span>
-        </div>
+    <!-- Bottom TikTok Navigation Bar -->
+    <div class="bottom-nav">
+        <a href="#" class="nav-item active">
+            <span>🏠</span>
+            <small>Home</small>
+        </a>
+        <a href="#" class="nav-item">
+            <span>👥</span>
+            <small>Friends</small>
+        </a>
+        <a href="#" class="nav-item create-btn">
+            <span>+</span>
+        </a>
+        <a href="#" class="nav-item">
+            <span>💬</span>
+            <small>Inbox</small>
+        </a>
+        <a href="#" class="nav-item">
+            <span>👤</span>
+            <small>Profile</small>
+        </a>
     </div>
 
-    <script src="script.js"></script>
 </body>
 </html>

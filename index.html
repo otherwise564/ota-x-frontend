@@ -3,140 +3,301 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OTA X</title>
-    <link rel="stylesheet" href="style.css">
+    <title>TikTok Prototype</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+        body {
+            background-color: #000;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+        /* App Container scaled like a mobile phone */
+        #app-container {
+            width: 100%;
+            max-width: 414px;
+            height: 100%;
+            max-height: 896px;
+            background-color: #121212;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        .screen {
+            flex: 1;
+            display: none;
+            flex-direction: column;
+            overflow-y: auto;
+            position: relative;
+        }
+        .screen.active {
+            display: flex;
+        }
+        /* Bottom Navigation Bar */
+        .bottom-nav {
+            height: 60px;
+            background-color: #000;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            border-top: 1px solid #222;
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            z-index: 100;
+        }
+        .nav-item {
+            background: none;
+            border: none;
+            color: #888;
+            font-size: 12px;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .nav-item.active {
+            color: #fff;
+            font-weight: bold;
+        }
+        .create-btn-nav {
+            background: linear-gradient(to right, #fe2c55, #25f4ee);
+            color: #000;
+            border: none;
+            width: 45px;
+            height: 30px;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 18px;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        /* Home Screen Styles */
+        #home-screen {
+            background: #1a1a1a;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+        .video-feed-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #2c1654, #000);
+            position: relative;
+        }
+        .feed-actions {
+            position: absolute;
+            right: 15px;
+            bottom: 100px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            align-items: center;
+        }
+        .action-icon {
+            background: rgba(0,0,0,0.4);
+            border: none;
+            color: #fff;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        /* Comments Modal */
+        #comments-modal {
+            position: absolute;
+            bottom: -100%;
+            left: 0;
+            width: 100%;
+            height: 60%;
+            background: #1f1f1f;
+            border-top-left-radius: 16px;
+            border-top-right-radius: 16px;
+            transition: bottom 0.3s ease-in-out;
+            z-index: 200;
+            display: flex;
+            flex-direction: column;
+        }
+        #comments-modal.open {
+            bottom: 0;
+        }
+        .comments-header {
+            padding: 15px;
+            text-align: center;
+            border-bottom: 1px solid #333;
+            font-weight: bold;
+            position: relative;
+        }
+        .close-comments {
+            position: absolute;
+            right: 15px;
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 18px;
+            cursor: pointer;
+        }
+        .comments-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .comment-item {
+            font-size: 14px;
+        }
+        .comment-user {
+            color: #aaa;
+            font-size: 12px;
+            margin-bottom: 3px;
+        }
+        /* Profile Screen Styles */
+        #profile-screen {
+            padding: 20px;
+            background: #121212;
+        }
+        .profile-header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .profile-avatar {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            background: #333;
+            margin-bottom: 10px;
+        }
+        .profile-stats {
+            display: flex;
+            gap: 25px;
+            margin: 15px 0;
+            text-align: center;
+            font-size: 14px;
+        }
+        .profile-stats span {
+            display: block;
+            font-weight: bold;
+            font-size: 16px;
+        }
+    </style>
 </head>
 <body>
 
-    <!-- VIEW 1: HOME FEED -->
-    <div id="homeView" class="view">
-        <div class="top-nav">
-            <span class="nav-tab">Following</span>
-            <span class="nav-tab active">For You</span>
+    <div id="app-container">
+        
+        <!-- HOME SCREEN -->
+        <div id="home-screen" class="screen active">
+            <div class="video-feed-placeholder">
+                <p>🎥 Vertical Video Feed</p>
+                <div class="feed-actions">
+                    <button class="action-icon" onclick="openComments()">💬</button>
+                    <button class="action-icon">❤️</button>
+                    <button class="action-icon">↗️</button>
+                </div>
+            </div>
         </div>
-        <div class="main-feed">
-            <div class="video-placeholder">
-                <h2>OTA X</h2>
-                <p>Connect, create and share your world.</p>
-            </div>
-            
-            <!-- Right Side Action Buttons -->
-            <div class="right-actions">
-                <button class="action-btn">❤️ <br>12.4K</button>
-                <button class="action-btn" id="openCommentsBtn">💬 <br>840</button>
-                <button class="action-btn">↗️ <br>Share</button>
-                <button class="action-btn">⭐ <br>Save</button>
-            </div>
 
-            <!-- Creator Info -->
-            <div class="creator-info">
-                <div class="avatar">O</div>
-                <span class="username">@OTAcreator 🔴</span>
-                <p class="caption">Welcome to OTA X — connect, create and share your world.</p>
+        <!-- FRIENDS SCREEN -->
+        <div id="friends-screen" class="screen">
+            <div style="padding: 20px; text-align: center;">
+                <h2>Friends Feed</h2>
+                <p style="color: #777; margin-top: 20px;">Catch up with content from people you follow.</p>
             </div>
         </div>
-    </div>
 
-    <!-- VIEW 2: PROFILE PAGE -->
-    <div id="profileView" class="view hidden">
-        <div class="profile-header">
-            <button class="back-arrow" data-target="home">❮</button>
-            <span>Profile</span>
-            <span>⚙️</span>
-        </div>
-        <div class="profile-content">
-            <div class="profile-avatar-large">O</div>
-            <h2>@OTAcreator 🔴</h2>
-            <p class="profile-bio">Welcome to my OTA X profile.</p>
-            <div class="profile-stats">
-                <div><strong>0</strong><span>Following</span></div>
-                <div><strong>0</strong><span>Followers</span></div>
-                <div><strong>0</strong><span>Likes</span></div>
-            </div>
-            <div class="profile-buttons">
-                <button class="profile-btn">Edit profile</button>
-                <button class="profile-btn">Share profile</button>
+        <!-- INBOX SCREEN -->
+        <div id="inbox-screen" class="screen">
+            <div style="padding: 20px;">
+                <h2>Inbox</h2>
+                <p style="color: #777; margin-top: 20px;">Notifications and direct messages will appear here.</p>
             </div>
         </div>
-    </div>
 
-    <!-- VIEW 3: CREATE / CAMERA STUDIO -->
-    <div id="createView" class="view hidden">
-        <div class="create-header">
-            <button class="close-create" data-target="home">✕</button>
-            <span>Create</span>
-            <span>🎵 Add sound</span>
-        </div>
-        <div class="create-camera-box">
-            <div class="camera-center-icon">📷</div>
-            <div class="camera-controls-right">
-                <button>✨ Effects</button>
-                <button>🔘 Filters</button>
-                <button>⚡ Speed</button>
-                <button>⏱️ Timer</button>
+        <!-- PROFILE SCREEN -->
+        <div id="profile-screen" class="screen">
+            <div class="profile-header">
+                <div class="profile-avatar"></div>
+                <h3>@username</h3>
+                <div class="profile-stats">
+                    <div><span>244</span>Following</div>
+                    <div><span>303</span>Followers</div>
+                    <div><span>1,117</span>Likes</div>
+                </div>
+                <p style="font-size: 13px; color: #aaa; text-align: center;">Building custom frontend experiences ✨</p>
             </div>
         </div>
-        <div class="create-bottom-bar">
-            <label class="create-upload-option">
-                ⬆️ Upload
-                <input type="file" hidden>
-            </label>
-            <div class="shutter-btn"></div>
-            <div class="create-upload-option">
-                🖼️ Photo
-            </div>
-        </div>
-    </div>
 
-    <!-- COMMENTS POPUP MODAL -->
-    <div id="commentModal" class="modal hidden">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>840 Comments</h3>
-                <span id="closeComments" class="close-modal">✕</span>
+        <!-- COMMENTS MODAL POPUP -->
+        <div id="comments-modal">
+            <div class="comments-header">
+                <span>142 comments</span>
+                <button class="close-comments" onclick="closeComments()">&times;</button>
             </div>
             <div class="comments-list">
                 <div class="comment-item">
-                    <strong>@OTAcreator 🔴</strong>
-                    <p>Welcome to OTA X!</p>
+                    <div class="comment-user">BlackGoldFilmProduction</div>
+                    <div>Money is life 💸</div>
                 </div>
                 <div class="comment-item">
-                    <strong>@CreatorOne</strong>
-                    <p>This looks amazing.</p>
+                    <div class="comment-user">Elisa_67</div>
+                    <div>c'est des faux ?</div>
                 </div>
             </div>
-            <div class="comment-input-bar">
-                <input type="text" placeholder="Add comment...">
-                <button class="tool-icon">📷</button>
-                <button class="tool-icon">😊</button>
-                <button class="send-btn">Send</button>
-            </div>
         </div>
+
+        <!-- BOTTOM NAVIGATION BAR -->
+        <nav class="bottom-nav">
+            <button class="nav-item active" onclick="switchScreen('home-screen', this)">🏠<span>Home</span></button>
+            <button class="nav-item" onclick="switchScreen('friends-screen', this)">👥<span>Friends</span></button>
+            <button class="create-btn-nav" onclick="alert('Open Camera Studio')">+</button>
+            <button class="nav-item" onclick="switchScreen('inbox-screen', this)">📥<span>Inbox</span></button>
+            <button class="nav-item" onclick="switchScreen('profile-screen', this)">👤<span>Profile</span></button>
+        </nav>
+
     </div>
 
-    <!-- FIXED BOTTOM NAVIGATION BAR -->
-    <div class="bottom-nav">
-        <a href="#" class="nav-item active" data-target="home">
-            <span>🏠</span>
-            <small>Home</small>
-        </a>
-        <a href="#" class="nav-item" data-target="friends">
-            <span>👥</span>
-            <small>Friends</small>
-        </a>
-        <a href="#" class="nav-item create-btn" data-target="create">
-            <span>+</span>
-        </a>
-        <a href="#" class="nav-item" data-target="inbox">
-            <span>💬</span>
-            <small>Inbox</small>
-        </a>
-        <a href="#" class="nav-item" data-target="profile">
-            <span>👤</span>
-            <small>Profile</small>
-        </a>
-    </div>
+    <script>
+        function switchScreen(screenId, element) {
+            // Hide all screens
+            document.querySelectorAll('.screen').forEach(screen => {
+                screen.classList.remove('active');
+            });
+            // Show target screen
+            document.getElementById(screenId).classList.add('active');
+            
+            // Update active nav styling
+            document.querySelectorAll('.bottom-nav .nav-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            if(element) element.classList.add('active');
+        }
 
-    <script src="script.js"></script>
+        function openComments() {
+            document.getElementById('comments-modal').classList.add('open');
+        }
+
+        function closeComments() {
+            document.getElementById('comments-modal').classList.remove('open');
+        }
+    </script>
 </body>
 </html>

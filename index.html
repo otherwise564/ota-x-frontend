@@ -2,202 +2,357 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
   <title>OTA X</title>
+
   <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<!-- =====================================================
-     OTA X APP
-===================================================== -->
-
-<div id="app">
-
-  <!-- ================= HOME / FEED ================= -->
+  <!-- =========================
+       HOME SCREEN
+  ========================== -->
 
   <main id="homeScreen" class="screen active">
 
     <header class="top-header">
-      <button class="icon-btn" aria-label="Following">Following</button>
+
+      <button
+        class="icon-btn"
+        aria-label="Following"
+        onclick="feedTab('following')"
+      >
+        Following
+      </button>
 
       <div class="feed-tabs">
-        <button class="feed-tab">Following</button>
-        <button class="feed-tab active">For You</button>
+
+        <button
+          class="feed-tab"
+          onclick="feedTab('following')"
+        >
+          Following
+        </button>
+
+        <button
+          class="feed-tab active"
+          onclick="feedTab('for-you')"
+        >
+          For You
+        </button>
+
       </div>
 
-      <button class="icon-btn" onclick="openSearch()" aria-label="Search">
+      <button
+        class="icon-btn"
+        onclick="openSearch()"
+        aria-label="Search"
+      >
         ⌕
       </button>
+
     </header>
+
+
+    <!-- FEED -->
 
     <section class="feed">
 
       <!-- POST 1 -->
+
       <article class="post">
-        <div class="post-background post-bg-1"></div>
 
-        <div class="ota-watermark">OTA X</div>
+        <div class="post-background post-bg-1">
 
-        <div class="post-content">
-
-          <div class="post-info">
-            <div class="creator-name">
-              @creator.profile
-              <span class="verified-badge">✓</span>
-            </div>
-
-            <div class="creator-category">
-              Digital Creator
-            </div>
-
-            <p>
-              Welcome to OTA X — connect, create and share your world.
-            </p>
-          </div>
-
-          <div class="post-actions">
-
-            <button class="creator-avatar">
-              <span>OC</span>
-              <b class="follow-plus">+</b>
-            </button>
-
-            <button onclick="toggleLike(this)">
-              <span class="action-icon">♡</span>
-              <small>12.4K</small>
-            </button>
-
-            <button onclick="openComments()">
-              <span class="action-icon">◌</span>
-              <small class="comment-count">840</small>
-            </button>
-
-            <button onclick="sharePost()">
-              <span class="action-icon">↗</span>
-              <small>Share</small>
-            </button>
-
-            <button>
-              <span class="action-icon">▢</span>
-              <small>Save</small>
-            </button>
-
+          <div class="ota-watermark">
+            OTA X
           </div>
 
         </div>
+
+        <div class="post-gradient"></div>
+
+        <div class="post-info">
+
+          <div class="creator-line">
+
+            <strong class="creator-name">
+              @OTAcreator
+            </strong>
+
+            <span class="verified-badge">
+              ✓
+            </span>
+
+            <button
+              class="follow-button"
+              onclick="followCreator(this)"
+            >
+              Follow
+            </button>
+
+          </div>
+
+          <p class="creator-category">
+            Digital Creator
+          </p>
+
+          <p class="post-caption">
+            Welcome to OTA X — connect, create and share your world.
+          </p>
+
+          <div class="music-line">
+            ♪ Original sound · OTA X
+          </div>
+
+        </div>
+
+
+        <!-- POST ACTIONS -->
+
+        <div class="post-actions">
+
+          <button
+            class="action-avatar"
+            onclick="openProfile()"
+            aria-label="Creator profile"
+          >
+            <span>OTA</span>
+          </button>
+
+          <button
+            class="action-button like-button"
+            onclick="toggleLike(this)"
+          >
+            <span class="action-icon">♡</span>
+            <small>12.4K</small>
+          </button>
+
+          <button
+            class="action-button"
+            onclick="openComments()"
+          >
+            <span class="action-icon">💬</span>
+            <small class="comment-count">840</small>
+          </button>
+
+          <button
+            class="action-button"
+            onclick="sharePost()"
+          >
+            <span class="action-icon">↗</span>
+            <small>Share</small>
+          </button>
+
+          <button
+            class="action-button"
+            onclick="toggleSave(this)"
+          >
+            <span class="action-icon">🔖</span>
+            <small>Save</small>
+          </button>
+
+        </div>
+
       </article>
 
 
       <!-- POST 2 -->
+
       <article class="post">
-        <div class="post-background post-bg-2"></div>
 
-        <div class="ota-watermark">OTA X</div>
+        <div class="post-background post-bg-2">
 
-        <div class="post-content">
-
-          <div class="post-info">
-            <div class="creator-name">
-              @creator.two
-              <span class="verified-badge">✓</span>
-            </div>
-
-            <div class="creator-category">
-              Creator
-            </div>
-
-            <p>
-              Your world. Your people. Your stories.
-            </p>
-          </div>
-
-          <div class="post-actions">
-
-            <button class="creator-avatar">
-              <span>CT</span>
-              <b class="follow-plus">+</b>
-            </button>
-
-            <button onclick="toggleLike(this)">
-              <span class="action-icon">♡</span>
-              <small>8.7K</small>
-            </button>
-
-            <button onclick="openComments()">
-              <span class="action-icon">◌</span>
-              <small class="comment-count">421</small>
-            </button>
-
-            <button onclick="sharePost()">
-              <span class="action-icon">↗</span>
-              <small>Share</small>
-            </button>
-
-            <button>
-              <span class="action-icon">▢</span>
-              <small>Save</small>
-            </button>
-
+          <div class="ota-watermark">
+            OTA X
           </div>
 
         </div>
+
+        <div class="post-gradient"></div>
+
+        <div class="post-info">
+
+          <div class="creator-line">
+
+            <strong class="creator-name">
+              @otaxworld
+            </strong>
+
+            <span class="verified-badge">
+              ✓
+            </span>
+
+            <button
+              class="follow-button"
+              onclick="followCreator(this)"
+            >
+              Follow
+            </button>
+
+          </div>
+
+          <p class="creator-category">
+            OTA X Creator
+          </p>
+
+          <p class="post-caption">
+            Your world. Your creativity. Your community.
+          </p>
+
+          <div class="music-line">
+            ♪ Original sound · OTA X
+          </div>
+
+        </div>
+
+
+        <div class="post-actions">
+
+          <button
+            class="action-avatar"
+            onclick="openProfile()"
+            aria-label="Creator profile"
+          >
+            <span>OX</span>
+          </button>
+
+          <button
+            class="action-button like-button"
+            onclick="toggleLike(this)"
+          >
+            <span class="action-icon">♡</span>
+            <small>8.7K</small>
+          </button>
+
+          <button
+            class="action-button"
+            onclick="openComments()"
+          >
+            <span class="action-icon">💬</span>
+            <small class="comment-count">421</small>
+          </button>
+
+          <button
+            class="action-button"
+            onclick="sharePost()"
+          >
+            <span class="action-icon">↗</span>
+            <small>Share</small>
+          </button>
+
+          <button
+            class="action-button"
+            onclick="toggleSave(this)"
+          >
+            <span class="action-icon">🔖</span>
+            <small>Save</small>
+          </button>
+
+        </div>
+
       </article>
 
 
       <!-- POST 3 -->
+
       <article class="post">
-        <div class="post-background post-bg-3"></div>
 
-        <div class="ota-watermark">OTA X</div>
+        <div class="post-background post-bg-3">
 
-        <div class="post-content">
-
-          <div class="post-info">
-            <div class="creator-name">
-              @creator.three
-            </div>
-
-            <div class="creator-category">
-              Digital Creator
-            </div>
-
-            <p>
-              Create something people remember.
-            </p>
-          </div>
-
-          <div class="post-actions">
-
-            <button class="creator-avatar">
-              <span>CR</span>
-              <b class="follow-plus">+</b>
-            </button>
-
-            <button onclick="toggleLike(this)">
-              <span class="action-icon">♡</span>
-              <small>5.2K</small>
-            </button>
-
-            <button onclick="openComments()">
-              <span class="action-icon">◌</span>
-              <small class="comment-count">216</small>
-            </button>
-
-            <button onclick="sharePost()">
-              <span class="action-icon">↗</span>
-              <small>Share</small>
-            </button>
-
-            <button>
-              <span class="action-icon">▢</span>
-              <small>Save</small>
-            </button>
-
+          <div class="ota-watermark">
+            OTA X
           </div>
 
         </div>
+
+        <div class="post-gradient"></div>
+
+        <div class="post-info">
+
+          <div class="creator-line">
+
+            <strong class="creator-name">
+              @creatorx
+            </strong>
+
+            <span class="verified-badge">
+              ✓
+            </span>
+
+            <button
+              class="follow-button"
+              onclick="followCreator(this)"
+            >
+              Follow
+            </button>
+
+          </div>
+
+          <p class="creator-category">
+            Video Creator
+          </p>
+
+          <p class="post-caption">
+            Create something people will remember.
+          </p>
+
+          <div class="music-line">
+            ♪ Original sound · OTA X
+          </div>
+
+        </div>
+
+
+        <div class="post-actions">
+
+          <button
+            class="action-avatar"
+            onclick="openProfile()"
+            aria-label="Creator profile"
+          >
+            <span>CX</span>
+          </button>
+
+          <button
+            class="action-button like-button"
+            onclick="toggleLike(this)"
+          >
+            <span class="action-icon">♡</span>
+            <small>5.3K</small>
+          </button>
+
+          <button
+            class="action-button"
+            onclick="openComments()"
+          >
+            <span class="action-icon">💬</span>
+            <small class="comment-count">190</small>
+          </button>
+
+          <button
+            class="action-button"
+            onclick="sharePost()"
+          >
+            <span class="action-icon">↗</span>
+            <small>Share</small>
+          </button>
+
+          <button
+            class="action-button"
+            onclick="toggleSave(this)"
+          >
+            <span class="action-icon">🔖</span>
+            <small>Save</small>
+          </button>
+
+        </div>
+
       </article>
 
     </section>
@@ -205,92 +360,145 @@
   </main>
 
 
-  <!-- =====================================================
-       CREATE / CAMERA
-  ====================================================== -->
+  <!-- =========================
+       CREATE / CAMERA SCREEN
+  ========================== -->
 
-  <section id="createScreen" class="screen camera-screen">
+  <section
+    id="createScreen"
+    class="screen camera-screen"
+  >
+
+    <!-- CAMERA TOP -->
 
     <div class="camera-top">
 
-      <button class="camera-close" onclick="closeCreate()">
+      <button
+        class="camera-close"
+        onclick="closeCreate()"
+        aria-label="Close"
+      >
         ×
       </button>
 
-      <button class="sound-pill" onclick="addSound()">
+      <button
+        class="sound-pill"
+        onclick="addSound()"
+      >
         ♪&nbsp; Add sound
       </button>
 
-      <button class="camera-flip" onclick="flipCamera()">
+      <button
+        class="camera-flip"
+        onclick="flipCamera()"
+        aria-label="Flip camera"
+      >
         ↻
       </button>
 
     </div>
 
 
-    <!-- RIGHT CAMERA TOOLS -->
+    <!-- CAMERA TOOLS -->
 
     <div class="camera-tools">
 
-      <button onclick="cameraTool('effects')">
+      <button
+        onclick="cameraTool('effects')"
+      >
         <span>✦</span>
         <small>Effects</small>
       </button>
 
-      <button onclick="cameraTool('timer')">
+      <button
+        onclick="cameraTool('timer')"
+      >
         <span>◷</span>
         <small>Timer</small>
       </button>
 
-      <button onclick="cameraTool('layout')">
+      <button
+        onclick="cameraTool('layout')"
+      >
         <span>▦</span>
         <small>Layout</small>
       </button>
 
-      <button onclick="cameraTool('filters')">
+      <button
+        onclick="cameraTool('filters')"
+      >
         <span>◐</span>
         <small>Filters</small>
       </button>
 
-      <button onclick="expandCameraTools()">
+      <button
+        onclick="expandCameraTools()"
+        aria-label="More camera tools"
+      >
         <span>⌄</span>
       </button>
 
     </div>
 
 
-    <!-- CAMERA CENTER -->
+    <!-- CAMERA AREA -->
 
     <div class="camera-stage">
 
       <div class="camera-message">
-        <span id="cameraStatus">Camera ready</span>
+
+        <span id="cameraStatus">
+          Camera ready
+        </span>
+
       </div>
 
     </div>
 
 
-    <!-- CAMERA MODES -->
+    <!-- CAMERA BOTTOM -->
 
     <div class="camera-bottom">
 
+      <!-- DURATION SELECTOR -->
+
       <div class="camera-mode-selector">
 
-        <button>10m</button>
-        <button>60s</button>
-        <button class="active">15s</button>
-        <button>PHOTO</button>
-        <button>TEMPLATE</button>
+        <button onclick="cameraDuration('10m')">
+          10m
+        </button>
+
+        <button onclick="cameraDuration('60s')">
+          60s
+        </button>
+
+        <button
+          class="active"
+          onclick="cameraDuration('15s')"
+        >
+          15s
+        </button>
+
+        <button onclick="cameraDuration('photo')">
+          PHOTO
+        </button>
+
+        <button onclick="cameraDuration('template')">
+          TEMPLATE
+        </button>
 
       </div>
 
+
+      <!-- CAPTURE ROW -->
 
       <div class="capture-row">
 
         <button
           class="media-preview"
           onclick="chooseMedia('left')"
-          aria-label="Gallery">
+          aria-label="Gallery"
+        >
           <span>▧</span>
           <small>Gallery</small>
         </button>
@@ -299,7 +507,8 @@
         <button
           class="record-button"
           onclick="toggleRecording()"
-          aria-label="Record">
+          aria-label="Record"
+        >
           <span></span>
         </button>
 
@@ -307,7 +516,8 @@
         <button
           class="media-preview"
           onclick="chooseMedia('right')"
-          aria-label="Media">
+          aria-label="Media"
+        >
           <span>▣</span>
           <small>Media</small>
         </button>
@@ -315,19 +525,26 @@
       </div>
 
 
-      <!-- CAMERA BOTTOM TABS -->
+      <!-- CAMERA TABS -->
 
       <div class="camera-tabs">
 
-        <button onclick="cameraBottomTab('live')">
+        <button
+          onclick="cameraBottomTab('live')"
+        >
           LIVE
         </button>
 
-        <button class="active" onclick="cameraBottomTab('post')">
+        <button
+          class="active"
+          onclick="cameraBottomTab('post')"
+        >
           POST
         </button>
 
-        <button class="active-create" onclick="cameraBottomTab('create')">
+        <button
+          onclick="cameraBottomTab('create')"
+        >
           CREATE
         </button>
 
@@ -338,24 +555,40 @@
   </section>
 
 
-  <!-- =====================================================
-       INBOX
-  ====================================================== -->
+  <!-- =========================
+       INBOX SCREEN
+  ========================== -->
 
-  <section id="inboxScreen" class="screen inbox-screen">
+  <section
+    id="inboxScreen"
+    class="screen inbox-screen"
+  >
+
+    <!-- INBOX HEADER -->
 
     <header class="inbox-header">
 
-      <button class="icon-btn">
-        ◀
+      <button
+        class="inbox-icon-button"
+        onclick="openInboxMenu()"
+        aria-label="Inbox menu"
+      >
+        ◉
       </button>
 
       <div class="inbox-title">
+
         <strong>Inbox</strong>
+
         <span class="activity-dot"></span>
+
       </div>
 
-      <button class="icon-btn" onclick="openInboxSearch()">
+      <button
+        class="inbox-icon-button"
+        onclick="openInboxSearch()"
+        aria-label="Search inbox"
+      >
         ⌕
       </button>
 
@@ -364,191 +597,415 @@
 
     <!-- STORIES -->
 
-    <div class="story-row">
+    <section class="story-section">
 
-      <div class="story create-story">
+      <div class="story-row">
 
-        <div class="story-avatar create-avatar">
-          <span>+</span>
-        </div>
+        <!-- CREATE STORY -->
 
-        <span>Create</span>
+        <button
+          class="story-item create-story"
+          onclick="createStory()"
+        >
 
-        <div class="story-prompt">
-          Spill the tea
-        </div>
+          <div class="create-avatar">
+
+            <span>+</span>
+
+          </div>
+
+          <div class="story-prompt">
+            Spill the tea
+          </div>
+
+          <strong>
+            Your story
+          </strong>
+
+        </button>
+
+
+        <!-- STORY 1 -->
+
+        <button
+          class="story-item"
+          onclick="openStory('Alex')"
+        >
+
+          <div class="story-avatar story-ring">
+            <span>AL</span>
+          </div>
+
+          <strong>Alex</strong>
+
+        </button>
+
+
+        <!-- STORY 2 -->
+
+        <button
+          class="story-item"
+          onclick="openStory('Jay')"
+        >
+
+          <div class="story-avatar story-ring">
+            <span>JY</span>
+          </div>
+
+          <strong>Jay</strong>
+
+        </button>
+
+
+        <!-- STORY 3 -->
+
+        <button
+          class="story-item"
+          onclick="openStory('Mia')"
+        >
+
+          <div class="story-avatar story-ring">
+            <span>MI</span>
+          </div>
+
+          <strong>Mia</strong>
+
+        </button>
+
+
+        <!-- STORY 4 -->
+
+        <button
+          class="story-item"
+          onclick="openStory('Kris')"
+        >
+
+          <div class="story-avatar story-ring">
+            <span>KR</span>
+          </div>
+
+          <strong>Kris</strong>
+
+        </button>
+
+
+        <!-- STORY 5 -->
+
+        <button
+          class="story-item"
+          onclick="openStory('Tony')"
+        >
+
+          <div class="story-avatar story-ring">
+            <span>TO</span>
+          </div>
+
+          <strong>Tony</strong>
+
+        </button>
 
       </div>
 
-
-      <div class="story">
-        <div class="story-avatar glowing-avatar">A</div>
-        <span>Alex</span>
-      </div>
-
-      <div class="story">
-        <div class="story-avatar glowing-avatar">J</div>
-        <span>Jay</span>
-      </div>
-
-      <div class="story">
-        <div class="story-avatar glowing-avatar">M</div>
-        <span>Mia</span>
-      </div>
-
-      <div class="story">
-        <div class="story-avatar glowing-avatar">K</div>
-        <span>Kris</span>
-      </div>
-
-      <div class="story">
-        <div class="story-avatar glowing-avatar">T</div>
-        <span>Tony</span>
-      </div>
-
-    </div>
+    </section>
 
 
-    <!-- ALERT -->
+    <!-- ACTIVITY ALERT -->
 
-    <div id="inboxAlert" class="inbox-alert">
+    <div
+      id="inboxAlert"
+      class="inbox-alert"
+    >
 
       <span>
         New followers has moved.
-        Find it in Activity.
+        Find it in Activity
       </span>
 
-      <button onclick="dismissInboxAlert()">
+      <button
+        onclick="dismissInboxAlert()"
+        aria-label="Dismiss"
+      >
         ×
       </button>
 
     </div>
 
 
-    <!-- ACTIVITY -->
+    <!-- MESSAGE LIST -->
 
-    <div class="message-list">
+    <section class="message-list">
 
-      <div class="message-row activity-row">
+
+      <!-- ACTIVITY -->
+
+      <button
+        class="message-row activity-row"
+        onclick="openActivity()"
+      >
 
         <div class="message-avatar activity-avatar">
           ♡
         </div>
 
-        <div class="message-text">
-          <strong>Activity</strong>
-          <p>New likes, followers and comments</p>
+        <div class="message-content">
+
+          <strong>
+            Activity
+          </strong>
+
+          <p>
+            New likes, comments and followers
+          </p>
+
         </div>
 
-        <span class="unread-badge">3</span>
+        <span class="unread-badge">
+          2
+        </span>
 
-      </div>
+      </button>
 
 
-      <div class="message-row">
+      <!-- OTA X -->
+
+      <button
+        class="message-row"
+        onclick="openChat('OTA X')"
+      >
+
+        <div class="message-avatar ota-avatar">
+          X
+        </div>
+
+        <div class="message-content">
+
+          <strong>
+            OTA X
+          </strong>
+
+          <p>
+            Welcome to OTA X
+          </p>
+
+        </div>
+
+        <span class="message-time">
+          Now
+        </span>
+
+      </button>
+
+
+      <!-- ALEX -->
+
+      <button
+        class="message-row"
+        onclick="openChat('Alex')"
+      >
 
         <div class="message-avatar">
-          O
+          AL
         </div>
 
-        <div class="message-text">
-          <strong>OTA X</strong>
-          <p>Welcome to OTA X</p>
+        <div class="message-content">
+
+          <strong>
+            Alex
+          </strong>
+
+          <p>
+            sent a sticker
+          </p>
+
         </div>
 
-        <span class="message-time">Now</span>
+        <span class="message-time">
+          2m
+        </span>
 
-      </div>
-
-
-      <div class="message-row">
-
-        <div class="message-avatar glowing-avatar">
-          A
-        </div>
-
-        <div class="message-text">
-          <strong>Alex</strong>
-          <p>sent a sticker</p>
-        </div>
-
-        <span class="message-time">2m</span>
-
-        <button class="message-camera">
-          ▣
+        <button
+          class="quick-camera"
+          onclick="event.stopPropagation(); openMessageCamera('Alex')"
+          aria-label="Camera"
+        >
+          📷
         </button>
 
-      </div>
+      </button>
 
 
-      <div class="message-row">
+      <!-- JAY -->
 
-        <div class="message-avatar glowing-avatar">
-          J
+      <button
+        class="message-row"
+        onclick="openChat('Jay')"
+      >
+
+        <div class="message-avatar">
+          JY
         </div>
 
-        <div class="message-text">
-          <strong>Jay</strong>
-          <p>Seen</p>
+        <div class="message-content">
+
+          <strong>
+            Jay
+          </strong>
+
+          <p>
+            Seen
+          </p>
+
         </div>
 
-        <span class="message-time">15m</span>
+        <span class="message-time">
+          15m
+        </span>
 
-        <button class="message-camera">
-          ▣
+        <button
+          class="quick-camera"
+          onclick="event.stopPropagation(); openMessageCamera('Jay')"
+          aria-label="Camera"
+        >
+          📷
         </button>
 
-      </div>
+      </button>
 
 
-      <div class="message-row">
+      <!-- MIA -->
 
-        <div class="message-avatar glowing-avatar">
-          M
+      <button
+        class="message-row"
+        onclick="openChat('Mia')"
+      >
+
+        <div class="message-avatar">
+          MI
         </div>
 
-        <div class="message-text">
-          <strong>Mia</strong>
-          <p>That video was amazing</p>
+        <div class="message-content">
+
+          <strong>
+            Mia
+          </strong>
+
+          <p>
+            That video was amazing
+          </p>
+
         </div>
 
-        <span class="message-time">1h</span>
+        <span class="message-time">
+          1h
+        </span>
 
-        <button class="message-camera">
-          ▣
+        <button
+          class="quick-camera"
+          onclick="event.stopPropagation(); openMessageCamera('Mia')"
+          aria-label="Camera"
+        >
+          📷
         </button>
 
-      </div>
+      </button>
 
-    </div>
+
+      <!-- MORE MESSAGE -->
+
+      <button
+        class="message-row"
+        onclick="openChat('Kris')"
+      >
+
+        <div class="message-avatar">
+          KR
+        </div>
+
+        <div class="message-content">
+
+          <strong>
+            Kris
+          </strong>
+
+          <p>
+            sent you a message
+          </p>
+
+        </div>
+
+        <span class="message-time">
+          2h
+        </span>
+
+        <button
+          class="quick-camera"
+          onclick="event.stopPropagation(); openMessageCamera('Kris')"
+          aria-label="Camera"
+        >
+          📷
+        </button>
+
+      </button>
+
+
+    </section>
 
   </section>
+    <!-- =========================
+       PROFILE SCREEN
+  ========================== -->
 
+  <section
+    id="profileScreen"
+    class="screen profile-screen"
+  >
 
-  <!-- =====================================================
-       PROFILE
-  ====================================================== -->
-
-  <section id="profileScreen" class="screen profile-screen">
+    <!-- PROFILE HEADER -->
 
     <header class="profile-header">
 
-      <button class="icon-btn">
+      <button
+        class="profile-header-button"
+        onclick="editProfile()"
+        aria-label="Edit profile"
+      >
         ✎
       </button>
 
-      <div class="profile-account">
-        <div class="mini-avatar">OC</div>
-        <span class="account-badge">1</span>
-      </div>
+      <button
+        class="profile-account"
+        onclick="switchAccount()"
+      >
 
-      <div class="profile-header-actions">
+        <span class="mini-avatar">
+          OTA
+        </span>
 
-        <button class="icon-btn">
-          ♧
+        <span class="account-name">
+          OTA X
+        </span>
+
+        <span class="account-badge">
+          1
+        </span>
+
+      </button>
+
+      <div class="profile-header-right">
+
+        <button
+          class="profile-header-button"
+          onclick="addFriends()"
+          aria-label="Add friends"
+        >
+          ♙
         </button>
 
-        <button class="icon-btn">
+        <button
+          class="profile-header-button"
+          onclick="openProfileMenu()"
+          aria-label="Profile menu"
+        >
           ☰
         </button>
 
@@ -557,55 +1014,95 @@
     </header>
 
 
-    <!-- PROFILE INFO -->
+    <!-- PROFILE MAIN -->
 
-    <div class="profile-main">
+    <div class="profile-content">
 
-      <div class="profile-avatar-wrapper">
+      <!-- AVATAR -->
 
-        <div class="profile-story-prompt">
-          Coffee or tea?
+      <div class="profile-avatar-section">
+
+        <div class="profile-avatar-wrapper">
+
+          <div class="profile-story-prompt">
+            Coffee or tea?
+          </div>
+
+          <div class="profile-avatar">
+            OTA
+          </div>
+
+          <button
+            class="profile-add"
+            onclick="addProfileStory()"
+            aria-label="Add story"
+          >
+            +
+          </button>
+
         </div>
-
-        <div class="profile-avatar">
-          OC
-        </div>
-
-        <button class="profile-add">
-          +
-        </button>
 
       </div>
 
 
-      <h2>
-        Digital Creator
-        <span class="verified-badge">✓</span>
-      </h2>
+      <!-- PROFILE NAME -->
+
+      <div class="profile-name-row">
+
+        <h2>
+          Digital Creator
+        </h2>
+
+        <span class="verified-badge">
+          ✓
+        </span>
+
+      </div>
 
       <p class="profile-username">
         @creator.profile
       </p>
 
 
-      <!-- STATS -->
+      <!-- PROFILE STATS -->
 
       <div class="profile-stats">
 
-        <div>
-          <strong>245</strong>
-          <span>Following</span>
-        </div>
+        <button onclick="showFollowing()">
 
-        <div>
-          <strong>48.6K</strong>
-          <span>Followers</span>
-        </div>
+          <strong>
+            245
+          </strong>
 
-        <div>
-          <strong>1.2M</strong>
-          <span>Likes</span>
-        </div>
+          <span>
+            Following
+          </span>
+
+        </button>
+
+        <button onclick="showFollowers()">
+
+          <strong>
+            48.6K
+          </strong>
+
+          <span>
+            Followers
+          </span>
+
+        </button>
+
+        <button onclick="showLikes()">
+
+          <strong>
+            1.2M
+          </strong>
+
+          <span>
+            Likes
+          </span>
+
+        </button>
 
       </div>
 
@@ -615,11 +1112,18 @@
       <div class="profile-bio">
 
         <p>
-          Digital Creator ✦<br>
-          Creating. Connecting. Sharing.
+          Create. Connect. Share. ✨
         </p>
 
-        <a href="#" onclick="return false;">
+        <p>
+          Building the next generation of social.
+        </p>
+
+        <a
+          href="https://otax.com"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           otax.com
         </a>
 
@@ -628,76 +1132,117 @@
 
       <!-- OTA X STUDIO -->
 
-      <button class="studio-card" onclick="openStudio()">
+      <button
+        class="studio-card"
+        onclick="openStudio()"
+      >
 
-        <span class="studio-icon">◈</span>
+        <div class="studio-icon">
+          ✦
+        </div>
 
-        <span>
-          <strong>OTA X Studio</strong>
-          <small>Analytics & creator tools</small>
+        <div class="studio-content">
+
+          <strong>
+            OTA X Studio
+          </strong>
+
+          <span>
+            Creator tools, analytics and monetization
+          </span>
+
+        </div>
+
+        <span class="studio-arrow">
+          ›
         </span>
-
-        <span class="studio-arrow">›</span>
 
       </button>
 
 
-      <!-- CONTENT TABS -->
+      <!-- PROFILE TABS -->
 
       <div class="profile-tabs">
 
-        <button class="active" onclick="profileTab('posts')">
+        <button
+          class="profile-tab active"
+          onclick="profileTab('posts')"
+        >
           ▦
         </button>
 
-        <button onclick="profileTab('drafts')">
-          ▤
+        <button
+          class="profile-tab"
+          onclick="profileTab('drafts')"
+        >
+          ▣
         </button>
 
-        <button onclick="profileTab('saved')">
-          ▢
+        <button
+          class="profile-tab"
+          onclick="profileTab('saved')"
+        >
+          🔖
         </button>
 
-        <button onclick="profileTab('liked')">
+        <button
+          class="profile-tab"
+          onclick="profileTab('liked')"
+        >
           ♡
         </button>
 
       </div>
 
 
-      <!-- CONTENT GRID -->
+      <!-- PROFILE GRID -->
 
-      <div id="profileGrid" class="profile-grid">
+      <div
+        id="profileGrid"
+        class="profile-grid"
+      >
 
-        <div class="profile-video">
-          <span>OTA X</span>
-          <small>12.4K</small>
-        </div>
+        <button
+          class="profile-video"
+          onclick="openProfilePost(1)"
+        >
+          <span>▶</span>
+        </button>
 
-        <div class="profile-video">
-          <span>OTA X</span>
-          <small>8.7K</small>
-        </div>
+        <button
+          class="profile-video"
+          onclick="openProfilePost(2)"
+        >
+          <span>▶</span>
+        </button>
 
-        <div class="profile-video">
-          <span>OTA X</span>
-          <small>5.2K</small>
-        </div>
+        <button
+          class="profile-video"
+          onclick="openProfilePost(3)"
+        >
+          <span>▶</span>
+        </button>
 
-        <div class="profile-video">
-          <span>OTA X</span>
-          <small>3.1K</small>
-        </div>
+        <button
+          class="profile-video"
+          onclick="openProfilePost(4)"
+        >
+          <span>▶</span>
+        </button>
 
-        <div class="profile-video">
-          <span>OTA X</span>
-          <small>2.8K</small>
-        </div>
+        <button
+          class="profile-video"
+          onclick="openProfilePost(5)"
+        >
+          <span>▶</span>
+        </button>
 
-        <div class="profile-video">
-          <span>OTA X</span>
-          <small>1.9K</small>
-        </div>
+        <button
+          class="profile-video"
+          onclick="openProfilePost(6)"
+        >
+          <span>▶</span>
+        </button>
 
       </div>
 
@@ -706,99 +1251,220 @@
   </section>
 
 
-  <!-- =====================================================
-       SEARCH
-  ====================================================== -->
+  <!-- =========================
+       SEARCH PANEL
+  ========================== -->
 
-  <section id="searchPanel" class="overlay-panel">
+  <section
+    id="searchPanel"
+    class="overlay-panel search-panel"
+  >
 
     <header class="panel-header">
 
-      <button onclick="closeSearch()">×</button>
+      <button
+        class="panel-close"
+        onclick="closeSearch()"
+      >
+        ×
+      </button>
 
-      <h2>Search</h2>
+      <h2>
+        Search
+      </h2>
+
+      <button
+        class="panel-search-button"
+        onclick="searchOTA()"
+      >
+        ⌕
+      </button>
 
     </header>
 
+
     <div class="search-box">
-      <span>⌕</span>
+
+      <span>
+        ⌕
+      </span>
+
       <input
         id="searchInput"
         type="search"
         placeholder="Search OTA X"
-        oninput="searchOTA(this.value)">
+        autocomplete="off"
+        onkeydown="handleSearchKey(event)"
+      >
+
+      <button
+        onclick="clearSearch()"
+        aria-label="Clear search"
+      >
+        ×
+      </button>
+
     </div>
 
-    <div class="trending">
 
-      <h3>Trending</h3>
+    <div class="search-section">
 
-      <button>#OTAX</button>
-      <button>#Creators</button>
-      <button>#ForYou</button>
-      <button>#Trending</button>
-      <button>#Africa</button>
+      <h3>
+        Trending
+      </h3>
+
+      <div class="trending-tags">
+
+        <button onclick="searchTag('#OTAX')">
+          #OTAX
+        </button>
+
+        <button onclick="searchTag('#Creators')">
+          #Creators
+        </button>
+
+        <button onclick="searchTag('#ForYou')">
+          #ForYou
+        </button>
+
+        <button onclick="searchTag('#Trending')">
+          #Trending
+        </button>
+
+        <button onclick="searchTag('#Africa')">
+          #Africa
+        </button>
+
+      </div>
+
+    </div>
+
+
+    <div
+      id="searchResults"
+      class="search-results"
+    >
 
     </div>
 
   </section>
 
 
-  <!-- =====================================================
-       COMMENTS
-  ====================================================== -->
+  <!-- =========================
+       COMMENTS PANEL
+  ========================== -->
 
-  <section id="commentsPanel" class="bottom-sheet">
+  <section
+    id="commentsPanel"
+    class="bottom-sheet comments-panel"
+  >
 
     <div class="sheet-handle"></div>
 
-    <header class="sheet-header">
+    <header class="comments-header">
 
-      <h3>Comments</h3>
+      <button
+        class="sheet-close"
+        onclick="closeComments()"
+      >
+        ×
+      </button>
 
-      <button onclick="closeComments()">×</button>
+      <h3>
+        Comments
+      </h3>
+
+      <span id="commentsTotal">
+        840
+      </span>
 
     </header>
 
 
-    <div id="commentsList" class="comments-list">
+    <div
+      id="commentsList"
+      class="comments-list"
+    >
 
-      <div class="comment">
+      <!-- COMMENT 1 -->
 
-        <div class="comment-avatar">A</div>
+      <div class="comment-item">
+
+        <div class="comment-avatar">
+          AL
+        </div>
 
         <div class="comment-body">
-          <strong>@alex</strong>
-          <p>This is amazing!</p>
-          <small>2m</small>
+
+          <strong>
+            @alex
+          </strong>
+
+          <p>
+            This is amazing 🔥
+          </p>
+
+          <div class="comment-meta">
+            2h · Reply
+          </div>
+
         </div>
+
+        <button
+          class="comment-like"
+          onclick="likeComment(this)"
+        >
+          ♡
+        </button>
 
       </div>
 
 
-      <div class="comment bot-comment">
+      <!-- COMMENT 2 -->
 
-        <div class="comment-avatar ota-avatar">O</div>
+      <div class="comment-item">
+
+        <div class="comment-avatar ota-comment-avatar">
+          X
+        </div>
 
         <div class="comment-body">
-          <strong>OTA X Assistant</strong>
-          <p>Thanks for joining the conversation.</p>
-          <small>Just now</small>
+
+          <strong>
+            OTA X Assistant
+          </strong>
+
+          <p>
+            Welcome to the OTA X community.
+          </p>
+
+          <div class="comment-meta">
+            1h · Reply
+          </div>
+
         </div>
+
+        <button
+          class="comment-like"
+          onclick="likeComment(this)"
+        >
+          ♡
+        </button>
 
       </div>
 
     </div>
 
 
-    <!-- SMALL COMMENT COMPOSER -->
+    <!-- COMMENT COMPOSER -->
 
     <div class="comment-composer">
 
       <button
         class="composer-mic"
         onclick="toggleVoiceComment()"
-        aria-label="Voice comment">
+        aria-label="Voice comment"
+      >
         🎙
       </button>
 
@@ -806,17 +1472,23 @@
         id="commentInput"
         type="text"
         placeholder="Add comment..."
-        onkeydown="handleCommentKey(event)">
+        autocomplete="off"
+        onkeydown="handleCommentKey(event)"
+      >
 
       <button
         class="composer-sticker"
-        onclick="toggleStickerPanel()">
+        onclick="toggleStickerPanel()"
+        aria-label="Sticker"
+      >
         ☺
       </button>
 
       <button
         class="composer-send"
-        onclick="sendComment()">
+        onclick="sendComment()"
+        aria-label="Send comment"
+      >
         ➤
       </button>
 
@@ -825,141 +1497,304 @@
   </section>
 
 
-  <!-- =====================================================
+  <!-- =========================
        STICKER PANEL
-  ====================================================== -->
+  ========================== -->
 
-  <div id="stickerPanel" class="sticker-panel">
+  <section
+    id="stickerPanel"
+    class="sticker-panel"
+  >
 
-    <div class="sticker-tabs">
+    <div class="sticker-header">
 
-      <button class="active">Stickers</button>
-      <button>GIF</button>
-      <button>Mine</button>
+      <button
+        class="sticker-tab active"
+        onclick="stickerTab('stickers')"
+      >
+        Stickers
+      </button>
+
+      <button
+        class="sticker-tab"
+        onclick="stickerTab('gif')"
+      >
+        GIF
+      </button>
+
+      <button
+        class="sticker-tab"
+        onclick="stickerTab('mine')"
+      >
+        Mine
+      </button>
+
+      <button
+        class="sticker-close"
+        onclick="toggleStickerPanel()"
+      >
+        ×
+      </button>
 
     </div>
 
-    <div class="sticker-grid">
 
-      <button onclick="sendSticker('😂')">😂</button>
-      <button onclick="sendSticker('🔥')">🔥</button>
-      <button onclick="sendSticker('❤️')">❤️</button>
-      <button onclick="sendSticker('🤣')">🤣</button>
-      <button onclick="sendSticker('👏')">👏</button>
-      <button onclick="sendSticker('😍')">😍</button>
-      <button onclick="sendSticker('😎')">😎</button>
-      <button onclick="sendSticker('💯')">💯</button>
+    <div
+      id="stickerGrid"
+      class="sticker-grid"
+    >
+
+      <button onclick="sendSticker('😂')">
+        😂
+      </button>
+
+      <button onclick="sendSticker('🔥')">
+        🔥
+      </button>
+
+      <button onclick="sendSticker('❤️')">
+        ❤️
+      </button>
+
+      <button onclick="sendSticker('🤣')">
+        🤣
+      </button>
+
+      <button onclick="sendSticker('👏')">
+        👏
+      </button>
+
+      <button onclick="sendSticker('😍')">
+        😍
+      </button>
+
+      <button onclick="sendSticker('😎')">
+        😎
+      </button>
+
+      <button onclick="sendSticker('💯')">
+        💯
+      </button>
 
     </div>
 
-  </div>
+  </section>
 
 
-  <!-- =====================================================
+  <!-- =========================
        CREATE QUICK MENU
-  ====================================================== -->
+  ========================== -->
 
-  <div id="createMenu" class="create-menu">
+  <div
+    id="createMenu"
+    class="create-menu"
+  >
 
-    <button onclick="openCreate(); closeCreateMenu();">
-      <span>▣</span>
-      Upload video
-    </button>
+    <div class="create-menu-backdrop"
+         onclick="closeCreateMenu()">
+    </div>
 
-    <button onclick="choosePhoto(); closeCreateMenu();">
-      <span>▧</span>
-      Upload photo
-    </button>
+    <div class="create-menu-card">
 
-    <button onclick="openCreate(); cameraBottomTab('live'); closeCreateMenu();">
-      <span>●</span>
-      Go LIVE
-    </button>
+      <button
+        onclick="chooseVideo()"
+      >
+        <span>🎬</span>
+
+        <div>
+          <strong>
+            Upload video
+          </strong>
+
+          <small>
+            Share a video from your device
+          </small>
+        </div>
+
+      </button>
+
+
+      <button
+        onclick="choosePhoto()"
+      >
+        <span>🖼</span>
+
+        <div>
+          <strong>
+            Upload photo
+          </strong>
+
+          <small>
+            Share a photo from your device
+          </small>
+        </div>
+
+      </button>
+
+
+      <button
+        onclick="tryGoLive()"
+      >
+        <span>🔴</span>
+
+        <div>
+          <strong>
+            Go LIVE
+          </strong>
+
+          <small>
+            Start a live session
+          </small>
+        </div>
+
+      </button>
+
+
+      <button
+        class="create-menu-cancel"
+        onclick="closeCreateMenu()"
+      >
+        Cancel
+      </button>
+
+    </div>
 
   </div>
 
 
-  <!-- =====================================================
+  <!-- =========================
        GLOBAL BOTTOM NAVIGATION
-  ====================================================== -->
+  ========================== -->
 
   <nav class="bottom-nav">
 
+    <!-- HOME -->
+
     <button
       class="nav-item active"
-      onclick="showScreen('homeScreen', this)">
+      onclick="showScreen('homeScreen')"
+    >
 
-      <span>⌂</span>
-      <small>Home</small>
+      <span class="nav-icon">
+        ⌂
+      </span>
+
+      <small>
+        Home
+      </small>
 
     </button>
 
+
+    <!-- FRIENDS -->
 
     <button
       class="nav-item"
-      onclick="showScreen('homeScreen', this)">
+      onclick="openFriends()"
+    >
 
-      <span>♧</span>
-      <small>Friends</small>
+      <span class="nav-icon nav-icon-badge">
 
-      <b class="nav-badge">2</b>
+        ♡
+
+        <b>
+          2
+        </b>
+
+      </span>
+
+      <small>
+        Friends
+      </small>
 
     </button>
 
+
+    <!-- CREATE -->
 
     <button
       class="nav-create"
-      onclick="toggleCreateMenu()">
+      onclick="toggleCreateMenu()"
+      aria-label="Create"
+    >
 
-      <span>+</span>
-
-    </button>
-
-
-    <button
-      class="nav-item"
-      onclick="showScreen('inboxScreen', this)">
-
-      <span>✉</span>
-      <small>Inbox</small>
-
-      <b class="nav-badge">3</b>
+      <span>
+        +
+      </span>
 
     </button>
 
 
+    <!-- INBOX -->
+
     <button
       class="nav-item"
-      onclick="showScreen('profileScreen', this)">
+      onclick="showScreen('inboxScreen')"
+    >
 
-      <span>♙</span>
-      <small>Profile</small>
+      <span class="nav-icon nav-icon-badge">
+
+        ♡
+
+        <b>
+          3
+        </b>
+
+      </span>
+
+      <small>
+        Inbox
+      </small>
+
+    </button>
+
+
+    <!-- PROFILE -->
+
+    <button
+      class="nav-item"
+      onclick="showScreen('profileScreen')"
+    >
+
+      <span class="nav-icon">
+        ♙
+      </span>
+
+      <small>
+        Profile
+      </small>
 
     </button>
 
   </nav>
 
-</div>
+
+  <!-- =========================
+       HIDDEN FILE INPUTS
+  ========================== -->
+
+  <input
+    id="videoInput"
+    type="file"
+    accept="video/*"
+    hidden
+    onchange="handleVideoSelected(event)"
+  >
+
+  <input
+    id="photoInput"
+    type="file"
+    accept="image/*"
+    hidden
+    onchange="handlePhotoSelected(event)"
+  >
 
 
-<!-- =====================================================
-     HIDDEN FILE INPUTS
-===================================================== -->
+  <!-- =========================
+       JAVASCRIPT
+  ========================== -->
 
-<input
-  id="videoInput"
-  type="file"
-  accept="video/*"
-  hidden>
-
-<input
-  id="photoInput"
-  type="file"
-  accept="image/*"
-  hidden>
-
-
-<script src="script.js"></script>
+  <script src="script.js"></script>
 
 </body>
           </html>

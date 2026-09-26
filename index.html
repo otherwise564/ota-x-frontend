@@ -2,511 +2,1102 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>OTA X</title>
 
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
-:root{
- --black:#050505;
- --dark:#101010;
- --card:#171717;
- --white:#fff;
- --gray:#999;
- --red:#e50914;
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
 }
-body{
- background:var(--black);
- color:var(--white);
- font-family:Arial,sans-serif;
- overflow:hidden;
-}
-button{font-family:inherit;color:inherit;border:0;background:none}
-.app{height:100vh;position:relative;background:#000}
 
-.feed{
- height:100vh;
- overflow-y:auto;
- scroll-snap-type:y mandatory;
+:root{
+  --red:#e00000;
+  --black:#050505;
+  --dark:#101010;
+  --card:#171717;
+  --white:#ffffff;
+  --gray:#999999;
+  --line:#292929;
 }
-.post{
- height:100vh;
- position:relative;
- scroll-snap-align:start;
- background:linear-gradient(135deg,#171717,#050505);
+
+body{
+  font-family:Arial,Helvetica,sans-serif;
+  background:var(--black);
+  color:var(--white);
+  overflow-x:hidden;
 }
-.post:nth-child(2){background:linear-gradient(135deg,#260808,#080808)}
-.post:nth-child(3){background:linear-gradient(135deg,#111,#230000)}
+
+button,
+input{
+  font:inherit;
+}
+
+button{
+  border:0;
+  cursor:pointer;
+}
+
+.app{
+  min-height:100vh;
+  background:var(--black);
+}
+
+.topbar{
+  position:fixed;
+  top:0;
+  left:0;
+  right:0;
+  height:58px;
+  background:rgba(5,5,5,.96);
+  border-bottom:1px solid #202020;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 16px;
+  z-index:50;
+}
 
 .logo{
- position:absolute;
- top:18px;
- left:18px;
- z-index:5;
- font-size:25px;
- font-weight:900;
- letter-spacing:-1px;
+  font-size:25px;
+  font-weight:900;
+  letter-spacing:-1px;
 }
-.logo span{color:var(--red)}
 
-.tabs{
- position:absolute;
- top:20px;
- left:50%;
- transform:translateX(-50%);
- display:flex;
- gap:22px;
- z-index:5;
- font-weight:bold;
+.logo span{
+  color:var(--red);
 }
-.tabs .active{border-bottom:2px solid #fff;padding-bottom:6px}
 
-.search-btn{
- position:absolute;
- right:18px;
- top:18px;
- z-index:5;
- font-size:25px;
+.top-search{
+  background:#181818;
+  border-radius:22px;
+  padding:9px 14px;
+  color:#aaa;
+  font-size:14px;
+  min-width:130px;
+}
+
+.feed{
+  padding-top:58px;
+  padding-bottom:78px;
+}
+
+.feed-tabs{
+  height:48px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:28px;
+  position:sticky;
+  top:58px;
+  z-index:20;
+  background:rgba(5,5,5,.94);
+  border-bottom:1px solid #202020;
+}
+
+.feed-tabs button{
+  background:none;
+  color:#888;
+  font-weight:700;
+  padding:14px 3px;
+}
+
+.feed-tabs button.active{
+  color:white;
+  border-bottom:2px solid var(--red);
+}
+
+.post{
+  min-height:650px;
+  border-bottom:1px solid #242424;
+  position:relative;
+  background:#090909;
+}
+
+.post-media{
+  height:570px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:
+    radial-gradient(circle at 50% 40%,#252525 0,#101010 38%,#050505 75%);
+  position:relative;
+  overflow:hidden;
+}
+
+.post-content{
+  text-align:center;
+  padding:20px;
+}
+
+.post-content h2{
+  font-size:28px;
+  margin-bottom:10px;
+}
+
+.post-content p{
+  color:#bbb;
 }
 
 .post-info{
- position:absolute;
- left:18px;
- bottom:105px;
- right:80px;
+  position:absolute;
+  left:15px;
+  right:88px;
+  bottom:78px;
+  z-index:5;
 }
-.post-info h3{margin-bottom:8px}
-.post-info p{color:#ddd;line-height:1.4}
+
+.creator{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin-bottom:9px;
+}
+
+.avatar{
+  width:42px;
+  height:42px;
+  border-radius:50%;
+  background:#222;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:21px;
+  border:1px solid #444;
+}
+
+.creator-name{
+  font-weight:800;
+}
+
+.verified{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:17px;
+  height:17px;
+  margin-left:4px;
+  border-radius:50%;
+  background:var(--red);
+  color:#000;
+  font-size:11px;
+  font-weight:900;
+}
+
+.caption{
+  font-size:14px;
+  line-height:1.45;
+}
 
 .actions{
- position:absolute;
- right:12px;
- bottom:100px;
- display:flex;
- flex-direction:column;
- gap:18px;
- align-items:center;
+  position:absolute;
+  right:12px;
+  bottom:72px;
+  display:flex;
+  flex-direction:column;
+  gap:18px;
+  z-index:6;
 }
+
 .action{
- text-align:center;
- font-size:12px;
+  background:none;
+  color:white;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:4px;
+  font-size:12px;
 }
+
 .action-icon{
- display:block;
- font-size:28px;
- margin-bottom:3px;
+  font-size:30px;
+  line-height:1;
 }
-.action.active .action-icon{color:var(--red)}
+
+.action.liked .action-icon{
+  color:var(--red);
+}
 
 .bottom-nav{
- position:fixed;
- bottom:0;
- left:0;
- right:0;
- height:72px;
- background:rgba(0,0,0,.94);
- border-top:1px solid #222;
- display:flex;
- justify-content:space-around;
- align-items:center;
- z-index:100;
+  position:fixed;
+  left:0;
+  right:0;
+  bottom:0;
+  height:72px;
+  background:rgba(7,7,7,.98);
+  border-top:1px solid #262626;
+  display:flex;
+  justify-content:space-around;
+  align-items:center;
+  z-index:100;
 }
+
 .nav{
- width:20%;
- text-align:center;
- font-size:11px;
+  background:none;
+  color:#888;
+  min-width:55px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:3px;
+  font-size:10px;
 }
-.nav-icon{font-size:25px;margin-bottom:3px}
-.nav.active{font-weight:bold}
+
+.nav.active{
+  color:white;
+}
+
+.nav-icon{
+  font-size:25px;
+  line-height:25px;
+}
+
 .create{
- width:45px;
- height:32px;
- margin:auto;
- border-radius:10px;
- background:#fff;
- color:#000;
- font-size:28px;
- line-height:30px;
+  width:43px;
+  height:32px;
+  border-radius:9px;
+  background:white;
+  color:#050505;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:27px;
+  font-weight:500;
 }
 
 .panel{
- position:fixed;
- inset:0;
- background:var(--black);
- z-index:200;
- transform:translateY(100%);
- transition:.25s;
- overflow-y:auto;
+  position:fixed;
+  inset:0;
+  background:var(--black);
+  z-index:200;
+  display:none;
+  overflow-y:auto;
+  padding-bottom:25px;
 }
-.panel.open{transform:translateY(0)}
+
+.panel.open{
+  display:block;
+}
 
 .panel-head{
- height:65px;
- display:flex;
- align-items:center;
- justify-content:space-between;
- padding:0 18px;
- border-bottom:1px solid #222;
- position:sticky;
- top:0;
- background:var(--black);
- z-index:3;
+  position:sticky;
+  top:0;
+  height:58px;
+  background:rgba(5,5,5,.97);
+  border-bottom:1px solid #262626;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 14px;
+  z-index:20;
 }
-.panel-head h2{font-size:19px}
-.back{font-size:35px}
 
-.panel-content{padding:18px 18px 100px}
+.panel-head h2{
+  font-size:19px;
+}
 
-.search-input{
- width:100%;
- padding:15px;
- border-radius:12px;
- border:1px solid #333;
- background:#171717;
- color:#fff;
- outline:none;
+.back{
+  background:none;
+  color:white;
+  font-size:32px;
 }
-.topic{
- padding:18px 0;
- border-bottom:1px solid #222;
+
+.panel-head button:last-child{
+  background:none;
+  color:white;
 }
-.topic strong,.topic small{display:block}
-.topic small{color:var(--gray);margin-top:5px}
+
+.search-box{
+  margin:15px;
+  background:#181818;
+  border:1px solid #292929;
+  border-radius:25px;
+  display:flex;
+  align-items:center;
+  padding:0 15px;
+}
+
+.search-box span{
+  font-size:23px;
+  color:#999;
+}
+
+.search-box input{
+  flex:1;
+  background:none;
+  border:0;
+  outline:0;
+  color:white;
+  padding:13px 10px;
+}
+
+.list{
+  padding:10px 15px;
+}
+
+.list-item{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:14px 0;
+  border-bottom:1px solid #202020;
+}
+
+.list-item strong{
+  flex:1;
+}
+
+.red-btn{
+  background:var(--red);
+  color:white;
+  padding:9px 15px;
+  border-radius:20px;
+  font-weight:700;
+}
+
+.dark-btn{
+  background:#222;
+  color:white;
+  padding:9px 15px;
+  border-radius:20px;
+}
+
+.empty{
+  text-align:center;
+  padding:80px 25px;
+  color:#777;
+}
 
 .create-camera{
- min-height:calc(100vh - 65px);
- background:#000;
- position:relative;
- padding-bottom:110px;
+  padding:8px;
 }
 
 .camera-preview{
- height:55vh;
- min-height:400px;
- background:linear-gradient(145deg,#151515,#030303);
- position:relative;
- overflow:hidden;
- display:flex;
- align-items:center;
- justify-content:center;
+  height:570px;
+  width:100%;
+  max-width:430px;
+  margin:auto;
+  background:#111;
+  border-radius:4px;
+  position:relative;
+  overflow:hidden;
+  border:1px solid #222;
 }
-.camera-preview video{
- width:100%;
- height:100%;
- object-fit:cover;
- display:none;
+
+#cameraVideo{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  background:#111;
+  display:none;
 }
+
 .camera-placeholder{
- font-size:55px;
- opacity:.7;
+  position:absolute;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:#555;
+  font-size:65px;
+  background:
+    radial-gradient(circle,#252525,#0b0b0b 65%);
 }
 
 .camera-top{
- position:absolute;
- top:15px;
- left:15px;
- right:15px;
- display:flex;
- justify-content:space-between;
- align-items:center;
- z-index:4;
+  position:absolute;
+  top:13px;
+  left:12px;
+  right:12px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
 }
+
 .camera-top button{
- font-size:25px;
- padding:8px;
+  background:rgba(0,0,0,.5);
+  color:white;
+  width:38px;
+  height:38px;
+  border-radius:50%;
 }
+
 .sound-btn{
- background:rgba(30,30,30,.85);
- border-radius:20px;
- padding:9px 15px!important;
- font-size:14px!important;
+  background:rgba(0,0,0,.6)!important;
+  color:white!important;
+  border-radius:20px!important;
+  padding:9px 13px!important;
+  width:auto!important;
+  height:auto!important;
 }
 
 .camera-side{
- position:absolute;
- right:12px;
- top:75px;
- display:flex;
- flex-direction:column;
- gap:12px;
- z-index:4;
+  position:absolute;
+  right:10px;
+  top:100px;
+  display:flex;
+  flex-direction:column;
+  gap:14px;
 }
+
 .camera-tool{
- width:48px;
- min-height:48px;
- border-radius:14px;
- background:rgba(20,20,20,.82);
- border:1px solid #333;
- font-size:12px;
+  background:rgba(0,0,0,.5);
+  color:white;
+  width:55px;
+  min-height:48px;
+  border-radius:12px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  font-size:9px;
+  gap:3px;
 }
+
 .camera-tool b{
- display:block;
- font-size:20px;
- margin-bottom:3px;
+  font-size:20px;
 }
 
 .camera-bottom{
- position:absolute;
- left:0;
- right:0;
- bottom:15px;
- z-index:5;
- text-align:center;
+  position:absolute;
+  bottom:13px;
+  left:12px;
+  right:12px;
 }
+
 .camera-modes{
- display:flex;
- justify-content:center;
- gap:35px;
- margin-bottom:15px;
- font-weight:bold;
+  display:flex;
+  justify-content:center;
+  gap:18px;
+  margin-bottom:15px;
 }
+
+.camera-mode{
+  background:none;
+  color:#aaa;
+  font-size:13px;
+}
+
 .camera-mode.active{
- border-bottom:2px solid #fff;
- padding-bottom:5px;
+  color:white;
+  font-weight:800;
 }
+
 .record-area{
- display:flex;
- align-items:center;
- justify-content:center;
- gap:25px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:34px;
 }
+
 .record-button{
- width:72px;
- height:72px;
- border-radius:50%;
- border:5px solid #fff;
- background:var(--red);
+  width:78px;
+  height:78px;
+  border-radius:50%;
+  background:white;
+  border:7px solid #777;
+  box-shadow:0 0 0 4px rgba(255,255,255,.8);
 }
+
 .record-button.recording{
- border-radius:18px;
+  background:var(--red);
 }
+
 .flip-button{
- width:48px;
- height:48px;
- border-radius:50%;
- background:#222;
- font-size:22px;
+  width:45px;
+  height:45px;
+  border-radius:50%;
+  background:rgba(0,0,0,.65);
+  color:white;
+  font-size:22px;
 }
+
 .upload-button{
- position:absolute;
- left:15px;
- bottom:22px;
- width:48px;
- height:48px;
- border-radius:12px;
- background:#222;
- font-size:22px;
+  position:absolute;
+  left:13px;
+  bottom:17px;
+  width:44px;
+  height:44px;
+  border-radius:9px;
+  background:rgba(0,0,0,.65);
+  color:white;
+  font-size:25px;
 }
-#create-file{display:none}
+
+#create-file{
+  display:none;
+}
 
 .create-tools{
- padding:18px;
- display:grid;
- grid-template-columns:repeat(3,1fr);
- gap:10px;
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px;
+  padding:14px;
+  max-width:650px;
+  margin:auto;
 }
+
 .tool-card{
- background:var(--card);
- border:1px solid #292929;
- border-radius:14px;
- padding:15px 8px;
- min-height:85px;
- text-align:center;
+  min-height:100px;
+  background:#151515;
+  border:1px solid #272727;
+  border-radius:14px;
+  color:white;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:5px;
 }
-.tool-icon{font-size:25px;margin-bottom:7px}
-.tool-card strong,.tool-card small{display:block}
-.tool-card small{color:var(--gray);font-size:11px;margin-top:4px}
 
-.voice-record{
- width:100px;
- height:100px;
- border-radius:50%;
- background:var(--red);
- margin:40px auto 20px;
- display:block;
- font-size:35px;
+.tool-card:hover{
+  border-color:var(--red);
 }
-.voice-status{text-align:center;color:var(--gray)}
 
-.message{
- padding:15px 0;
- border-bottom:1px solid #222;
+.tool-icon{
+  font-size:26px;
 }
-.message small{color:var(--gray)}
+
+.tool-card small{
+  color:#777;
+}
+
+.comments-list{
+  padding:12px 15px 100px;
+}
 
 .comment{
- padding:15px 0;
- border-bottom:1px solid #222;
-}
-.comment-input{
- display:flex;
- gap:8px;
- margin-top:20px;
-}
-.comment-input input{
- flex:1;
- background:#171717;
- border:1px solid #333;
- border-radius:20px;
- padding:12px 15px;
- color:#fff;
-}
-.send-btn{
- background:var(--red);
- border-radius:20px;
- padding:0 18px;
+  padding:12px 0;
 }
 
-.profile-head{text-align:center;padding:25px}
-.avatar{
- width:85px;
- height:85px;
- border-radius:50%;
- background:#222;
- margin:auto;
- display:flex;
- align-items:center;
- justify-content:center;
- font-size:35px;
+.comment-row{
+  display:flex;
+  gap:10px;
 }
-.follow{
- margin-top:15px;
- background:var(--red);
- padding:11px 35px;
- border-radius:8px;
- font-weight:bold;
+
+.comment-avatar{
+  width:38px;
+  height:38px;
+  min-width:38px;
+  border-radius:50%;
+  background:#202020;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+.comment-body{
+  flex:1;
+}
+
+.comment-name{
+  font-size:13px;
+  color:#aaa;
+  margin-bottom:4px;
+}
+
+.comment-text{
+  font-size:14px;
+  line-height:1.4;
+}
+
+.comment-actions{
+  display:flex;
+  gap:18px;
+  margin-top:7px;
+}
+
+.comment-actions button{
+  background:none;
+  color:#777;
+  font-size:11px;
+}
+
+.comment-input-wrap{
+  position:fixed;
+  left:0;
+  right:0;
+  bottom:0;
+  background:#080808;
+  border-top:1px solid #292929;
+  padding:9px 10px;
+  z-index:250;
+}
+
+.comment-input{
+  min-height:48px;
+  background:#181818;
+  border-radius:25px;
+  display:flex;
+  align-items:center;
+  padding:4px 7px;
+  gap:3px;
+}
+
+.comment-input input{
+  flex:1;
+  min-width:70px;
+  background:none;
+  border:0;
+  outline:0;
+  color:white;
+  padding:10px 6px;
+}
+
+.comment-input input::placeholder{
+  color:#777;
+}
+
+.comment-tool,
+.comment-mic{
+  background:none;
+  color:#aaa;
+  width:32px;
+  height:32px;
+  border-radius:50%;
+}
+
+.comment-tool{
+  font-size:17px;
+}
+
+.comment-mic{
+  font-size:17px;
+}
+
+.comment-mic.recording{
+  background:var(--red);
+  color:white;
+}
+
+.send-btn{
+  background:var(--red);
+  color:white;
+  border-radius:18px;
+  padding:8px 12px;
+  font-size:12px;
+  font-weight:700;
+}
+
+.voice-box{
+  margin:20px 15px;
+  padding:25px;
+  background:#151515;
+  border:1px solid #282828;
+  border-radius:18px;
+  text-align:center;
+}
+
+.voice-record{
+  width:70px;
+  height:70px;
+  border-radius:50%;
+  background:var(--red);
+  color:white;
+  font-size:28px;
+  margin:20px auto;
+}
+
+.profile-header{
+  text-align:center;
+  padding:25px 15px;
+}
+
+.profile-avatar{
+  width:90px;
+  height:90px;
+  border-radius:50%;
+  margin:auto;
+  background:#222;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:42px;
+  border:2px solid #333;
+}
+
+.profile-header h2{
+  margin-top:12px;
+}
+
+.profile-header p{
+  color:#888;
+  margin-top:5px;
+}
+
+.stats{
+  display:flex;
+  justify-content:center;
+  gap:40px;
+  margin:20px 0;
+}
+
+.stat{
+  text-align:center;
+}
+
+.stat strong{
+  display:block;
+  font-size:18px;
+}
+
+.stat span{
+  color:#888;
+  font-size:11px;
+}
+
+.profile-buttons{
+  display:flex;
+  justify-content:center;
+  gap:8px;
 }
 
 .setting{
- display:flex;
- justify-content:space-between;
- padding:18px 0;
- border-bottom:1px solid #222;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:18px 15px;
+  border-bottom:1px solid #222;
 }
-.switch{
- width:45px;
- height:24px;
- border-radius:20px;
- background:#444;
- padding:3px;
-}
-.switch:after{
- content:"";
- display:block;
- width:18px;
- height:18px;
- border-radius:50%;
- background:#fff;
- transition:.2s;
-}
-.switch.on{background:var(--red)}
-.switch.on:after{transform:translateX(21px)}
 
-@media(max-width:400px){
- .camera-preview{min-height:360px}
- .camera-tool{width:43px}
- .create-tools{gap:7px;padding:12px}
+.setting span{
+  color:#ddd;
+}
+
+.switch{
+  width:45px;
+  height:25px;
+  border-radius:20px;
+  background:#444;
+  position:relative;
+}
+
+.switch.on{
+  background:var(--red);
+}
+
+.switch::after{
+  content:"";
+  position:absolute;
+  width:19px;
+  height:19px;
+  top:3px;
+  left:3px;
+  background:white;
+  border-radius:50%;
+  transition:.2s;
+}
+
+.switch.on::after{
+  left:23px;
+}
+
+.notification{
+  padding:15px;
+  border-bottom:1px solid #222;
+  display:flex;
+  gap:10px;
+}
+
+.notification-text{
+  font-size:14px;
+  line-height:1.4;
+}
+
+.live-card{
+  margin:20px 15px;
+  padding:25px;
+  border-radius:18px;
+  background:#151515;
+  border:1px solid #292929;
+  text-align:center;
+}
+
+.live-dot{
+  width:12px;
+  height:12px;
+  display:inline-block;
+  border-radius:50%;
+  background:var(--red);
+  margin-right:6px;
+}
+
+.studio-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  padding:15px;
+}
+
+.studio-card{
+  background:#151515;
+  border:1px solid #292929;
+  padding:22px 10px;
+  border-radius:15px;
+  text-align:center;
+}
+
+.studio-card strong{
+  display:block;
+  font-size:20px;
+  margin-bottom:5px;
+}
+
+.studio-card small{
+  color:#777;
+}
+
+@media(max-width:380px){
+  .create-tools{
+    grid-template-columns:repeat(2,1fr);
+  }
+
+  .action-icon{
+    font-size:27px;
+  }
+
+  .camera-preview{
+    height:520px;
+  }
 }
 </style>
 </head>
 
 <body>
+
 <div class="app">
+
+<header class="topbar">
+  <div class="logo">OTA <span>X</span></div>
+  <button class="top-search" onclick="openPanel('searchPanel')">⌕ Search</button>
+</header>
 
 <main class="feed">
 
+<div class="feed-tabs">
+  <button class="active">For You</button>
+  <button>Following</button>
+  <button>Community</button>
+</div>
+
 <section class="post">
-<div class="logo">OTA <span>X</span></div>
-<div class="tabs"><span>Following</span><span class="active">For You</span></div>
-<button class="search-btn" onclick="openPanel('searchPanel')">⌕</button>
 
-<div class="post-info">
-<h3>@OTAcreator ✓</h3>
-<p>Welcome to OTA X — connect, create and share your world.</p>
+<div class="post-media">
+  <div class="post-content">
+    <h2>OTA X</h2>
+    <p>Connect, create and share your world.</p>
+  </div>
+
+  <div class="actions">
+
+    <button class="action" onclick="toggleLike(this)">
+      <span class="action-icon">♡</span>
+      <span>12.4K</span>
+    </button>
+
+    <button class="action" onclick="openPanel('commentsPanel')">
+      <span class="action-icon">◇</span>
+      <span>840</span>
+    </button>
+
+    <button class="action">
+      <span class="action-icon">↗</span>
+      <span>Share</span>
+    </button>
+
+    <button class="action">
+      <span class="action-icon">☆</span>
+      <span>Save</span>
+    </button>
+
+  </div>
+
+  <div class="post-info">
+
+    <div class="creator">
+      <div class="avatar">○</div>
+      <div class="creator-name">
+        @OTAcreator
+        <span class="verified">✓</span>
+      </div>
+    </div>
+
+    <div class="caption">
+      Welcome to OTA X — connect, create and share your world.
+    </div>
+
+  </div>
+
 </div>
 
-<div class="actions">
-<button class="action" onclick="toggleLike(this)">
-<span class="action-icon">♡</span><span>12.4K</span>
-</button>
-<button class="action" onclick="openPanel('commentsPanel')">
-<span class="action-icon">◇</span><span>840</span>
-</button>
-<button class="action"><span class="action-icon">↗</span><span>Share</span></button>
-<button class="action"><span class="action-icon">☆</span><span>Save</span></button>
-</div>
 </section>
 
 <section class="post">
-<div class="post-info">
-<h3>@AfricaCreators</h3>
-<p>Creators across Africa. One platform. OTA X.</p>
-</div>
-<div class="actions">
-<button class="action" onclick="toggleLike(this)"><span class="action-icon">♡</span><span>8.7K</span></button>
-<button class="action" onclick="openPanel('commentsPanel')"><span class="action-icon">◇</span><span>421</span></button>
-<button class="action"><span class="action-icon">↗</span><span>Share</span></button>
-<button class="action"><span class="action-icon">☆</span><span>Save</span></button>
-</div>
-</section>
 
-<section class="post">
-<div class="post-info">
-<h3>@OTAsports</h3>
-<p>Sports, music, entertainment and more.</p>
+<div class="post-media">
+  <div class="post-content">
+    <h2>Discover</h2>
+    <p>Find creators, communities and new content.</p>
+  </div>
+
+  <div class="actions">
+
+    <button class="action" onclick="toggleLike(this)">
+      <span class="action-icon">♡</span>
+      <span>8.7K</span>
+    </button>
+
+    <button class="action" onclick="openPanel('commentsPanel')">
+      <span class="action-icon">◇</span>
+      <span>420</span>
+    </button>
+
+    <button class="action">
+      <span class="action-icon">↗</span>
+      <span>Share</span>
+    </button>
+
+    <button class="action">
+      <span class="action-icon">☆</span>
+      <span>Save</span>
+    </button>
+
+  </div>
+
+  <div class="post-info">
+
+    <div class="creator">
+      <div class="avatar">○</div>
+      <div class="creator-name">
+        @OTAcreator
+        <span class="verified">✓</span>
+      </div>
+    </div>
+
+    <div class="caption">
+      Discover what is happening on OTA X.
+    </div>
+
+  </div>
+
 </div>
-<div class="actions">
-<button class="action" onclick="toggleLike(this)"><span class="action-icon">♡</span><span>15K</span></button>
-<button class="action" onclick="openPanel('commentsPanel')"><span class="action-icon">◇</span><span>920</span></button>
-<button class="action"><span class="action-icon">↗</span><span>Share</span></button>
-<button class="action"><span class="action-icon">☆</span><span>Save</span></button>
-</div>
+
 </section>
 
 </main>
 
 <nav class="bottom-nav">
-<button class="nav active"><div class="nav-icon">⌂</div><span>Home</span></button>
-<button class="nav" onclick="openPanel('friendsPanel')"><div class="nav-icon">♡</div><span>Friends</span></button>
-<button class="nav" onclick="openPanel('createPanel')"><div class="create">+</div><span>Create</span></button>
-<button class="nav" onclick="openPanel('inboxPanel')"><div class="nav-icon">◇</div><span>Inbox</span></button>
-<button class="nav" onclick="openPanel('profilePanel')"><div class="nav-icon">○</div><span>Profile</span></button>
+
+<button class="nav active">
+  <div class="nav-icon">⌂</div>
+  <span>Home</span>
+</button>
+
+<button class="nav" onclick="openPanel('friendsPanel')">
+  <div class="nav-icon">♡</div>
+  <span>Friends</span>
+</button>
+
+<button class="nav" onclick="openPanel('createPanel')">
+  <div class="create">+</div>
+  <span>Create</span>
+</button>
+
+<button class="nav" onclick="openPanel('inboxPanel')">
+  <div class="nav-icon">◇</div>
+  <span>Inbox</span>
+</button>
+
+<button class="nav" onclick="openPanel('profilePanel')">
+  <div class="nav-icon">○</div>
+  <span>Profile</span>
+</button>
+
 </nav>
-<!-- SEARCH -->
+
+     </div>
+ <!-- SEARCH -->
+
 <section class="panel" id="searchPanel">
+
 <div class="panel-head">
-<button class="back" onclick="closePanel('searchPanel')">‹</button>
-<h2>Search</h2><div></div>
+  <button class="back" onclick="closePanel('searchPanel')">‹</button>
+  <h2>Search</h2>
+  <span></span>
 </div>
-<div class="panel-content">
-<input class="search-input" placeholder="Search OTA X">
-<div class="topic"><strong>#OTAX</strong><small>Trending now</small></div>
-<div class="topic"><strong>#Africa</strong><small>Creators across Africa</small></div>
-<div class="topic"><strong>#Football</strong><small>Sports and football</small></div>
-<div class="topic"><strong>#Music</strong><small>Music and creators</small></div>
+
+<div class="search-box">
+  <span>⌕</span>
+  <input id="searchInput" type="text" placeholder="Search OTA X">
+</div>
+
+<div class="list">
+
+<div class="list-item">
+  <div class="avatar">○</div>
+  <strong>@OTAcreator</strong>
+  <button class="dark-btn">View</button>
+</div>
+
+<div class="list-item">
+  <div class="avatar">○</div>
+  <strong>Football</strong>
+  <button class="dark-btn">View</button>
+</div>
+
+<div class="list-item">
+  <div class="avatar">○</div>
+  <strong>Music</strong>
+  <button class="dark-btn">View</button>
+</div>
+
 </div>
 </section>
+
 
 <!-- FRIENDS -->
+
 <section class="panel" id="friendsPanel">
+
 <div class="panel-head">
-<button class="back" onclick="closePanel('friendsPanel')">‹</button>
-<h2>Friends</h2><div></div>
+  <button class="back" onclick="closePanel('friendsPanel')">‹</button>
+  <h2>Friends</h2>
+  <span></span>
 </div>
-<div class="panel-content">
-<div class="message"><strong>@creator1</strong><small> Suggested creator</small></div>
-<div class="message"><strong>@africa</strong><small> Suggested creator</small></div>
-<div class="message"><strong>@OTAsports</strong><small> Sports creator</small></div>
+
+<div class="list">
+
+<div class="list-item">
+  <div class="avatar">○</div>
+  <strong>@CreatorOne</strong>
+  <button class="red-btn">Follow</button>
+</div>
+
+<div class="list-item">
+  <div class="avatar">○</div>
+  <strong>@CreatorTwo</strong>
+  <button class="red-btn">Follow</button>
+</div>
+
+<div class="list-item">
+  <div class="avatar">○</div>
+  <strong>@CreatorThree</strong>
+  <button class="red-btn">Follow</button>
+</div>
+
 </div>
 </section>
 
-<!-- CREATE / CAMERA -->
+
+<!-- CREATE -->
+
 <section class="panel" id="createPanel">
 
 <div class="panel-head">
-<button class="back" onclick="closePanel('createPanel')">‹</button>
-<h2>Create</h2>
-<button onclick="openFile()">Upload</button>
+  <button class="back" onclick="closePanel('createPanel')">‹</button>
+  <h2>Create</h2>
+  <button class="sound-btn" onclick="openSound()">🎵 Add sound</button>
 </div>
 
 <div class="create-camera">
@@ -514,37 +1105,51 @@ button{font-family:inherit;color:inherit;border:0;background:none}
 <div class="camera-preview">
 
 <video id="cameraVideo" autoplay playsinline></video>
-<div class="camera-placeholder" id="cameraPlaceholder">🎥</div>
+
+<div class="camera-placeholder" id="cameraPlaceholder">
+  🎥
+</div>
 
 <div class="camera-top">
+
 <button onclick="closePanel('createPanel')">×</button>
-<button class="sound-btn">🎵 Add sound</button>
+
+<button class="sound-btn" onclick="openSound()">
+  🎵 Add sound
+</button>
+
 </div>
 
 <div class="camera-side">
 
 <button class="camera-tool">
-<b>✨</b>Effects
+  <b>✨</b>
+  Effects
 </button>
 
 <button class="camera-tool">
-<b>◉</b>Filters
+  <b>◉</b>
+  Filters
 </button>
 
 <button class="camera-tool">
-<b>⚡</b>Speed
+  <b>⚡</b>
+  Speed
 </button>
 
 <button class="camera-tool">
-<b>⏱</b>Timer
+  <b>⏱</b>
+  Timer
 </button>
 
 <button class="camera-tool" onclick="flipCamera()">
-<b>↻</b>Flip
+  <b>↻</b>
+  Flip
 </button>
 
 <button class="camera-tool" onclick="toggleFlash()">
-<b>⚡</b>Flash
+  <b>⚡</b>
+  Flash
 </button>
 
 </div>
@@ -552,451 +1157,946 @@ button{font-family:inherit;color:inherit;border:0;background:none}
 <div class="camera-bottom">
 
 <div class="camera-modes">
-<button class="camera-mode">Photo</button>
-<button class="camera-mode active">Video</button>
+
+<button class="camera-mode">
+  Photo
+</button>
+
+<button class="camera-mode active">
+  Video
+</button>
+
 </div>
 
 <div class="record-area">
 
-<button class="flip-button" onclick="flipCamera()">↻</button>
+<button class="flip-button" onclick="flipCamera()">
+  ↻
+</button>
 
-<button class="record-button" id="recordButton" onclick="toggleCameraRecord()"></button>
+<button
+  class="record-button"
+  id="recordButton"
+  onclick="toggleCameraRecord()">
+</button>
 
-<button class="flip-button" onclick="toggleFlash()">⚡</button>
+<button class="flip-button" onclick="toggleFlash()">
+  ⚡
+</button>
 
 </div>
 
-<input type="file" id="create-file" accept="image/*,video/*" onchange="handleUpload(event)">
+<input
+  type="file"
+  id="create-file"
+  accept="image/*,video/*"
+  onchange="handleUpload(event)"
+>
 
-<button class="upload-button" onclick="openFile()">↑</button>
+<button class="upload-button" onclick="openFile()">
+  ↑
+</button>
 
 </div>
+
 </div>
+
 
 <div class="create-tools">
 
 <button class="tool-card" onclick="openFile()">
-<div class="tool-icon">↑</div>
-<strong>Upload</strong>
-<small>Choose media</small>
+  <div class="tool-icon">↑</div>
+  <strong>Upload</strong>
+  <small>Choose media</small>
 </button>
 
 <button class="tool-card">
-<div class="tool-icon">🖼</div>
-<strong>Photo</strong>
-<small>Create photo</small>
+  <div class="tool-icon">🖼</div>
+  <strong>Photo</strong>
+  <small>Create photo</small>
 </button>
 
 <button class="tool-card">
-<div class="tool-icon">🎥</div>
-<strong>Video</strong>
-<small>Create video</small>
+  <div class="tool-icon">🎥</div>
+  <strong>Video</strong>
+  <small>Create video</small>
+</button>
+
+<button class="tool-card" onclick="openSound()">
+  <div class="tool-icon">🎵</div>
+  <strong>Sound</strong>
+  <small>Add sound</small>
 </button>
 
 <button class="tool-card">
-<div class="tool-icon">🎵</div>
-<strong>Sound</strong>
-<small>Add sound</small>
+  <div class="tool-icon">✨</div>
+  <strong>Effects</strong>
+  <small>Add effects</small>
 </button>
 
 <button class="tool-card">
-<div class="tool-icon">✨</div>
-<strong>Effects</strong>
-<small>Add effects</small>
+  <div class="tool-icon">◉</div>
+  <strong>Filters</strong>
+  <small>Change filter</small>
 </button>
 
 <button class="tool-card">
-<div class="tool-icon">◉</div>
-<strong>Filters</strong>
-<small>Change filter</small>
+  <div class="tool-icon">⚡</div>
+  <strong>Speed</strong>
+  <small>Adjust speed</small>
 </button>
 
 <button class="tool-card">
-<div class="tool-icon">⚡</div>
-<strong>Speed</strong>
-<small>Adjust speed</small>
-</button>
-
-<button class="tool-card">
-<div class="tool-icon">⏱</div>
-<strong>Timer</strong>
-<small>Set timer</small>
+  <div class="tool-icon">⏱</div>
+  <strong>Timer</strong>
+  <small>Set timer</small>
 </button>
 
 <button class="tool-card" onclick="toggleCameraRecord()">
-<div class="tool-icon">⏺</div>
-<strong>Record</strong>
-<small>Start recording</small>
+  <div class="tool-icon">⏺</div>
+  <strong>Record</strong>
+  <small>Start recording</small>
 </button>
 
 <button class="tool-card" onclick="flipCamera()">
-<div class="tool-icon">↻</div>
-<strong>Flip Camera</strong>
-<small>Switch camera</small>
+  <div class="tool-icon">↻</div>
+  <strong>Flip Camera</strong>
+  <small>Switch camera</small>
 </button>
 
 <button class="tool-card" onclick="toggleFlash()">
-<div class="tool-icon">⚡</div>
-<strong>Flash</strong>
-<small>Camera flash</small>
+  <div class="tool-icon">⚡</div>
+  <strong>Flash</strong>
+  <small>Camera flash</small>
 </button>
 
 </div>
+
 </div>
 </section>
 
-<!-- VOICE -->
-<section class="panel" id="voicePanel">
+
+<!-- SOUND -->
+
+<section class="panel" id="soundPanel">
+
 <div class="panel-head">
-<button class="back" onclick="closePanel('voicePanel')">‹</button>
-<h2>Voice</h2><div></div>
+  <button class="back" onclick="closePanel('soundPanel')">‹</button>
+  <h2>Add Sound</h2>
+  <span></span>
 </div>
-<div class="panel-content">
-<button class="voice-record" onclick="toggleRecording(this)">🎤</button>
-<div class="voice-status" id="voiceStatus">Tap to record</div>
+
+<div class="search-box">
+  <span>⌕</span>
+  <input type="text" placeholder="Search sounds">
 </div>
+
+<div class="list">
+
+<div class="list-item">
+  <strong>Original sound</strong>
+  <button class="red-btn" onclick="selectSound('Original sound')">
+    Use
+  </button>
+</div>
+
+<div class="list-item">
+  <strong>OTA X Sound</strong>
+  <button class="red-btn" onclick="selectSound('OTA X Sound')">
+    Use
+  </button>
+</div>
+
+<div class="list-item">
+  <strong>Trending Sound</strong>
+  <button class="red-btn" onclick="selectSound('Trending Sound')">
+    Use
+  </button>
+</div>
+
+</div>
+
 </section>
 
-<!-- STUDIO -->
-<section class="panel" id="studioPanel">
-<div class="panel-head">
-<button class="back" onclick="closePanel('studioPanel')">‹</button>
-<h2>OTA X Studio</h2><div></div>
-</div>
-<div class="panel-content">
-
-<button class="tool-card" style="width:100%;margin-bottom:10px">
-📊<br><strong>Analytics</strong><small>View your performance</small>
-</button>
-
-<button class="tool-card" style="width:100%;margin-bottom:10px">
-💰<br><strong>Creator Monetization</strong><small>Creator earning tools</small>
-</button>
-
-<button class="tool-card" style="width:100%;margin-bottom:10px">
-🎬<br><strong>Video Editor</strong><small>Edit your videos</small>
-</button>
-
-<button class="tool-card" style="width:100%;margin-bottom:10px">
-🔴<br><strong>LIVE Center</strong><small>LIVE tools</small>
-</button>
-
-<button class="tool-card" style="width:100%">
-📅<br><strong>Content Planner</strong><small>Plan your posts</small>
-</button>
-
-</div>
-</section>
-
-<!-- INBOX -->
-<section class="panel" id="inboxPanel">
-<div class="panel-head">
-<button class="back" onclick="closePanel('inboxPanel')">‹</button>
-<h2>Inbox</h2><div></div>
-</div>
-<div class="panel-content">
-<div class="message"><strong>@creator1</strong><p>Welcome to OTA X!</p><small>Message</small></div>
-<div class="message"><strong>@africa</strong><p>Let's connect.</p><small>Message</small></div>
-</div>
-</section>
 
 <!-- COMMENTS -->
+
 <section class="panel" id="commentsPanel">
+
 <div class="panel-head">
-<button class="back" onclick="closePanel('commentsPanel')">‹</button>
-<h2>Comments</h2><div></div>
+  <button class="back" onclick="closePanel('commentsPanel')">‹</button>
+  <h2>Comments</h2>
+  <span>840</span>
 </div>
 
-<div class="panel-content">
-
-<div class="comment">
-<strong>@creator1</strong>
-<p>OTA X is looking clean!</p>
-<br>
-<button>♡ Like</button>
-<button>↩ Reply</button>
-</div>
+<div class="comments-list" id="commentsList">
 
 <div class="comment">
-<strong>@africa</strong>
-<p>Can't wait to see this platform grow.</p>
-<br>
-<button>♡ Like</button>
-<button>↩ Reply</button>
+
+<div class="comment-row">
+
+<div class="comment-avatar">○</div>
+
+<div class="comment-body">
+
+<div class="comment-name">
+  @OTAcreator
+  <span class="verified">✓</span>
 </div>
+
+<div class="comment-text">
+  Welcome to OTA X!
+</div>
+
+<div class="comment-actions">
+  <button>♡ Like</button>
+  <button>Reply</button>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="comment">
+
+<div class="comment-row">
+
+<div class="comment-avatar">○</div>
+
+<div class="comment-body">
+
+<div class="comment-name">@CreatorOne</div>
+
+<div class="comment-text">
+  This looks amazing.
+</div>
+
+<div class="comment-actions">
+  <button>♡ Like</button>
+  <button>Reply</button>
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+<div class="comment-input-wrap">
 
 <div class="comment-input">
-<input id="commentText" placeholder="Add comment...">
-<button class="send-btn" onclick="sendComment()">Send</button>
+
+<div class="comment-avatar">
+  ○
+</div>
+
+<input
+  id="commentText"
+  type="text"
+  placeholder="Add comment..."
+>
+
+<button
+  class="comment-tool"
+  onclick="addPhotoToComment()">
+  🖼
+</button>
+
+<button
+  class="comment-tool"
+  onclick="addEmojiToComment()">
+  ☺
+</button>
+
+<button
+  class="comment-tool"
+  onclick="addMentionToComment()">
+  @
+</button>
+
+<!-- SMALL MICROPHONE -->
+
+<button
+  class="comment-mic"
+  id="commentMic"
+  onclick="toggleCommentVoice(this)">
+  🎤
+</button>
+
+<button
+  class="send-btn"
+  onclick="sendComment()">
+  Send
+</button>
+
 </div>
 
 </div>
+
 </section>
 
-<!-- NOTIFICATIONS -->
-<section class="panel" id="notificationsPanel">
+
+<!-- INBOX -->
+
+<section class="panel" id="inboxPanel">
+
 <div class="panel-head">
-<button class="back" onclick="closePanel('notificationsPanel')">‹</button>
-<h2>Notifications</h2><div></div>
+  <button class="back" onclick="closePanel('inboxPanel')">‹</button>
+  <h2>Inbox</h2>
+  <span></span>
 </div>
-<div class="panel-content">
-<div class="message"><strong>@creator1</strong> liked your post.</div>
-<div class="message"><strong>@africa</strong> started following you.</div>
-<div class="message"><strong>OTA X</strong> Welcome to your notifications.</div>
+
+<div class="list">
+
+<div class="list-item">
+  <div class="avatar">○</div>
+  <strong>@CreatorOne<br><small>Hey, welcome to OTA X</small></strong>
+  <span>›</span>
 </div>
+
+<div class="list-item">
+  <div class="avatar">○</div>
+  <strong>@FootballFan<br><small>Did you see the new post?</small></strong>
+  <span>›</span>
+</div>
+
+<div class="list-item">
+  <div class="avatar">○</div>
+  <strong>@MusicWorld<br><small>New message</small></strong>
+  <span>›</span>
+</div>
+
+</div>
+
 </section>
+
 
 <!-- PROFILE -->
+
 <section class="panel" id="profilePanel">
+
 <div class="panel-head">
-<button class="back" onclick="closePanel('profilePanel')">‹</button>
-<h2>Profile</h2>
-<button onclick="openPanel('settingsPanel')">⚙</button>
+  <button class="back" onclick="closePanel('profilePanel')">‹</button>
+  <h2>Profile</h2>
+  <button onclick="openPanel('settingsPanel')">⚙</button>
 </div>
 
-<div class="panel-content">
-<div class="profile-head">
-<div class="avatar">○</div>
-<h2 style="margin-top:12px">@OTAcreator</h2>
-<p style="color:#999;margin-top:6px">Creator on OTA X</p>
-<button class="follow">Follow</button>
+<div class="profile-header">
+
+<div class="profile-avatar">
+  ○
 </div>
 
-<div class="topic"><strong>Posts</strong><small>Your OTA X content</small></div>
-<div class="topic"><strong>Followers</strong><small>0 followers</small></div>
-<div class="topic"><strong>Following</strong><small>0 following</small></div>
+<h2>@OTAcreator <span class="verified">✓</span></h2>
+
+<p>Welcome to my OTA X profile.</p>
+
+<div class="stats">
+
+<div class="stat">
+  <strong>0</strong>
+  <span>Following</span>
 </div>
+
+<div class="stat">
+  <strong>0</strong>
+  <span>Followers</span>
+</div>
+
+<div class="stat">
+  <strong>0</strong>
+  <span>Likes</span>
+</div>
+
+</div>
+
+<div class="profile-buttons">
+  <button class="dark-btn">Edit profile</button>
+  <button class="dark-btn">Share profile</button>
+</div>
+
+</div>
+
 </section>
+
 
 <!-- SETTINGS -->
+
 <section class="panel" id="settingsPanel">
+
 <div class="panel-head">
-<button class="back" onclick="closePanel('settingsPanel')">‹</button>
-<h2>Settings</h2><div></div>
-</div>
-
-<div class="panel-content">
-
-<div class="setting">
-<span>Dark mode</span>
-<button class="switch on" id="themeToggle" onclick="toggleTheme()"></button>
+  <button class="back" onclick="closePanel('settingsPanel')">‹</button>
+  <h2>Settings</h2>
+  <span></span>
 </div>
 
 <div class="setting">
-<span>Notifications</span>
-<button class="switch on"></button>
+  <span>Dark mode</span>
+  <button
+    class="switch on"
+    id="themeSwitch"
+    onclick="toggleTheme(this)">
+  </button>
 </div>
 
 <div class="setting">
-<span>Privacy</span>
-<span>›</span>
+  <span>Notifications</span>
+  <button class="switch on"></button>
 </div>
 
 <div class="setting">
-<span>Community Guidelines</span>
-<span>›</span>
+  <span>Private account</span>
+  <button class="switch"></button>
 </div>
 
+<div class="setting">
+  <span>Creator tools</span>
+  <span>›</span>
 </div>
+
+<div class="setting">
+  <span>Community guidelines</span>
+  <span>›</span>
+</div>
+
+<div class="setting">
+  <span>Help and support</span>
+  <span>›</span>
+</div>
+
 </section>
 
+
+<!-- NOTIFICATIONS -->
+
+<section class="panel" id="notificationsPanel">
+
+<div class="panel-head">
+  <button class="back" onclick="closePanel('notificationsPanel')">‹</button>
+  <h2>Notifications</h2>
+  <span></span>
+</div>
+
+<div class="notification">
+
+<div class="avatar">○</div>
+
+<div class="notification-text">
+  <strong>@CreatorOne</strong> liked your post.
+</div>
+
+</div>
+
+<div class="notification">
+
+<div class="avatar">○</div>
+
+<div class="notification-text">
+  <strong>@CreatorTwo</strong> followed you.
+</div>
+
+</div>
+
+<div class="notification">
+
+<div class="avatar">○</div>
+
+<div class="notification-text">
+  You have a new OTA X notification.
+</div>
+
+</div>
+
+</section>
+
+
+<!-- CREATOR STUDIO -->
+
+<section class="panel" id="studioPanel">
+
+<div class="panel-head">
+  <button class="back" onclick="closePanel('studioPanel')">‹</button>
+  <h2>Creator Tools</h2>
+  <span></span>
+</div>
+
+<div class="studio-grid">
+
+<div class="studio-card">
+  <strong>0</strong>
+  <small>Views</small>
+</div>
+
+<div class="studio-card">
+  <strong>0</strong>
+  <small>Likes</small>
+</div>
+
+<div class="studio-card">
+  <strong>0</strong>
+  <small>Followers</small>
+</div>
+
+<div class="studio-card">
+  <strong>0</strong>
+  <small>Posts</small>
+</div>
+
+</div>
+
+<div class="live-card">
+
+<h2><span class="live-dot"></span>LIVE Center</h2>
+
+<p style="color:#888;margin:12px 0;">
+  LIVE access will be available according to OTA X requirements.
+</p>
+
+<button class="red-btn">
+  LIVE
+</button>
+
+</div>
+
+</section>
+
+
+<!-- VOICE -->
+
+<section class="panel" id="voicePanel">
+
+<div class="panel-head">
+  <button class="back" onclick="closePanel('voicePanel')">‹</button>
+  <h2>Voice</h2>
+  <span></span>
+</div>
+
+<div class="voice-box">
+
+<h3>OTA X Voice</h3>
+
+<p style="color:#888;margin-top:8px;">
+  Record a voice message.
+</p>
+
+<button
+  class="voice-record"
+  id="voiceRecord"
+  onclick="toggleVoice()">
+  🎤
+</button>
+
+<p id="voiceStatus" style="color:#777;">
+  Tap to record
+</p>
+
+</div>
+
+</section>
+
+
 <script>
-let cameraStream=null;
-let usingFront=true;
-let recording=false;
-let flashOn=false;
+
+let currentStream = null;
+let currentFacing = "user";
+let cameraRecording = false;
+let commentRecording = false;
+let voiceRecording = false;
+let flashOn = false;
+
+
+/* PANELS */
 
 function openPanel(id){
- document.getElementById(id).classList.add("open");
+
+  document.querySelectorAll(".panel").forEach(panel=>{
+    panel.classList.remove("open");
+  });
+
+  const panel=document.getElementById(id);
+
+  if(panel){
+    panel.classList.add("open");
+  }
+
+  if(id==="createPanel"){
+    startCamera();
+  }
 }
+
 
 function closePanel(id){
- document.getElementById(id).classList.remove("open");
 
- if(id==="createPanel"){
-   stopCamera();
- }
+  const panel=document.getElementById(id);
+
+  if(panel){
+    panel.classList.remove("open");
+  }
+
+  if(id==="createPanel"){
+    stopCamera();
+  }
 }
+
+
+/* LIKE */
 
 function toggleLike(button){
- button.classList.toggle("active");
- const icon=button.querySelector(".action-icon");
- if(button.classList.contains("active")){
-   icon.textContent="♥";
- }else{
-   icon.textContent="♡";
- }
+
+  button.classList.toggle("liked");
+
+  const icon=button.querySelector(".action-icon");
+
+  if(button.classList.contains("liked")){
+    icon.textContent="♥";
+  }else{
+    icon.textContent="♡";
+  }
 }
 
-function toggleRecording(button){
- const status=document.getElementById("voiceStatus");
 
- button.classList.toggle("recording");
-
- if(button.classList.contains("recording")){
-   button.textContent="⏹";
-   status.textContent="Recording voice...";
- }else{
-   button.textContent="🎤";
-   status.textContent="Voice recording saved";
- }
-}
-
-function toggleTheme(){
- document.body.classList.toggle("light-mode");
- document.getElementById("themeToggle").classList.toggle("on");
-}
-
-function openFile(){
- document.getElementById("create-file").click();
-}
-
-function handleUpload(event){
- const file=event.target.files[0];
- if(!file)return;
-
- const placeholder=document.getElementById("cameraPlaceholder");
-
- if(file.type.startsWith("image/")){
-   placeholder.textContent="🖼";
- }else if(file.type.startsWith("video/")){
-   placeholder.textContent="🎥";
- }
-}
+/* CAMERA */
 
 async function startCamera(){
 
- try{
+  try{
 
-  cameraStream=await navigator.mediaDevices.getUserMedia({
-   video:{facingMode:usingFront?"user":"environment"},
-   audio:true
-  });
+    if(currentStream){
+      currentStream.getTracks().forEach(track=>track.stop());
+    }
 
-  const video=document.getElementById("cameraVideo");
+    currentStream=await navigator.mediaDevices.getUserMedia({
+      video:{
+        facingMode:currentFacing
+      },
+      audio:true
+    });
 
-  video.srcObject=cameraStream;
-  video.style.display="block";
+    const video=document.getElementById("cameraVideo");
+    const placeholder=document.getElementById("cameraPlaceholder");
 
-  document.getElementById("cameraPlaceholder").style.display="none";
+    video.srcObject=currentStream;
+    video.style.display="block";
+    placeholder.style.display="none";
 
- }catch(error){
+  }catch(error){
 
-  document.getElementById("cameraPlaceholder").textContent="📷";
- }
+    console.log(error);
+
+    document.getElementById("cameraVideo").style.display="none";
+    document.getElementById("cameraPlaceholder").style.display="flex";
+
+  }
 
 }
+
 
 function stopCamera(){
 
- if(cameraStream){
+  if(currentStream){
 
-  cameraStream.getTracks().forEach(track=>track.stop());
-  cameraStream=null;
+    currentStream.getTracks().forEach(track=>{
+      track.stop();
+    });
 
- }
-
- const video=document.getElementById("cameraVideo");
-
- if(video){
-  video.srcObject=null;
-  video.style.display="none";
- }
-
- const placeholder=document.getElementById("cameraPlaceholder");
-
- if(placeholder){
-  placeholder.style.display="block";
-  placeholder.textContent="🎥";
- }
-
- recording=false;
-
- const record=document.getElementById("recordButton");
-
- if(record){
-  record.classList.remove("recording");
- }
+    currentStream=null;
+  }
 
 }
+
 
 async function flipCamera(){
 
- usingFront=!usingFront;
-
- if(cameraStream){
-
-  stopCamera();
-  await startCamera();
-
- }else{
+  currentFacing =
+    currentFacing==="user"
+    ? "environment"
+    : "user";
 
   await startCamera();
-
- }
 
 }
+
 
 function toggleFlash(){
 
- flashOn=!flashOn;
+  flashOn=!flashOn;
 
- const buttons=document.querySelectorAll(".camera-tool");
+  const preview=document.querySelector(".camera-preview");
 
- buttons.forEach(button=>{
-   if(button.textContent.includes("Flash")){
-     button.style.borderColor=flashOn?"#e50914":"#333";
-   }
- });
+  if(flashOn){
+
+    preview.style.border="2px solid white";
+    preview.style.boxShadow="0 0 35px rgba(255,255,255,.5)";
+
+  }else{
+
+    preview.style.border="1px solid #222";
+    preview.style.boxShadow="none";
+
+  }
 
 }
+
+
+/* CAMERA RECORD */
 
 function toggleCameraRecord(){
 
- const button=document.getElementById("recordButton");
+  cameraRecording=!cameraRecording;
 
- recording=!recording;
+  const button=document.getElementById("recordButton");
 
- if(recording){
+  if(cameraRecording){
 
-   button.classList.add("recording");
+    button.classList.add("recording");
 
- }else{
+  }else{
 
-   button.classList.remove("recording");
+    button.classList.remove("recording");
 
- }
+  }
 
 }
+
+
+/* UPLOAD */
+
+function openFile(){
+
+  document.getElementById("create-file").click();
+
+}
+
+
+function handleUpload(event){
+
+  const file=event.target.files[0];
+
+  if(!file){
+    return;
+  }
+
+  const video=document.getElementById("cameraVideo");
+  const placeholder=document.getElementById("cameraPlaceholder");
+
+  const url=URL.createObjectURL(file);
+
+  if(file.type.startsWith("video/")){
+
+    video.srcObject=null;
+    video.src=url;
+    video.controls=true;
+    video.style.display="block";
+    placeholder.style.display="none";
+
+  }else if(file.type.startsWith("image/")){
+
+    video.style.display="none";
+    placeholder.style.display="flex";
+
+    placeholder.style.backgroundImage=
+      `url("${url}")`;
+
+    placeholder.style.backgroundSize="cover";
+    placeholder.style.backgroundPosition="center";
+    placeholder.textContent="";
+
+  }
+
+}
+
+
+/* SOUND */
+
+function openSound(){
+
+  openPanel("soundPanel");
+
+}
+
+
+function selectSound(name){
+
+  alert(name+" selected for OTA X.");
+
+  closePanel("soundPanel");
+
+}
+
+
+/* COMMENTS */
+
+function toggleCommentVoice(button){
+
+  commentRecording=!commentRecording;
+
+  if(commentRecording){
+
+    button.classList.add("recording");
+    button.textContent="⏹";
+
+  }else{
+
+    button.classList.remove("recording");
+    button.textContent="🎤";
+
+  }
+
+}
+
 
 function sendComment(){
 
- const input=document.getElementById("commentText");
- const text=input.value.trim();
+  const input=document.getElementById("commentText");
 
- if(!text)return;
+  const text=input.value.trim();
 
- const comment=document.createElement("div");
- comment.className="comment";
- comment.innerHTML="<strong>@You</strong><p></p><br><button>♡ Like</button><button>↩ Reply</button>";
+  if(!text){
+    return;
+  }
 
- comment.querySelector("p").textContent=text;
+  const comment=document.createElement("div");
 
- document.querySelector("#commentsPanel .panel-content").insertBefore(
-   comment,
-   document.querySelector(".comment-input")
- );
+  comment.className="comment";
 
- input.value="";
+  comment.innerHTML=`
+
+    <div class="comment-row">
+
+      <div class="comment-avatar">
+        ○
+      </div>
+
+      <div class="comment-body">
+
+        <div class="comment-name">
+          @You
+        </div>
+
+        <div class="comment-text"></div>
+
+        <div class="comment-actions">
+          <button>♡ Like</button>
+          <button>Reply</button>
+        </div>
+
+      </div>
+
+    </div>
+
+  `;
+
+  comment.querySelector(".comment-text").textContent=text;
+
+  document
+    .getElementById("commentsList")
+    .appendChild(comment);
+
+  input.value="";
 
 }
 
-document.querySelector(".nav:nth-child(3)").addEventListener("click",function(){
- startCamera();
+
+function addMentionToComment(){
+
+  const input=document.getElementById("commentText");
+
+  input.value += "@";
+
+  input.focus();
+
+}
+
+
+function addEmojiToComment(){
+
+  const input=document.getElementById("commentText");
+
+  input.value += " 😊";
+
+  input.focus();
+
+}
+
+
+function addPhotoToComment(){
+
+  alert("OTA X photo comments will open here.");
+
+}
+
+
+/* VOICE */
+
+function toggleVoice(){
+
+  voiceRecording=!voiceRecording;
+
+  const button=document.getElementById("voiceRecord");
+  const status=document.getElementById("voiceStatus");
+
+  if(voiceRecording){
+
+    button.textContent="⏹";
+    status.textContent="Recording...";
+
+  }else{
+
+    button.textContent="🎤";
+    status.textContent="Tap to record";
+
+  }
+
+}
+
+
+/* THEME */
+
+function toggleTheme(button){
+
+  button.classList.toggle("on");
+
+}
+
+
+/* CLOSE PANEL WHEN ESC IS PRESSED */
+
+document.addEventListener("keydown",function(event){
+
+  if(event.key==="Escape"){
+
+    document
+      .querySelectorAll(".panel.open")
+      .forEach(panel=>{
+        panel.classList.remove("open");
+      });
+
+    stopCamera();
+
+  }
+
 });
+
+
+/* ENTER TO SEND COMMENT */
+
+document
+  .getElementById("commentText")
+  ?.addEventListener("keydown",function(event){
+
+    if(event.key==="Enter"){
+      sendComment();
+    }
+
+  });
 
 </script>
 
-</div>
 </body>
-  </html>
+ </html>
+     

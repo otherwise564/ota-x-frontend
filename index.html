@@ -1,1 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OTAX Platform</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="app-container">
 
+        <!-- AUTHENTICATION SCREEN -->
+        <div id="auth-screen" class="screen active">
+            <div class="auth-box">
+                <div>
+                    <div class="auth-logo">
+                        <span style="color: #000; text-shadow: 0 0 2px rgba(255,255,255,0.3);">O</span><span style="color: #fe2c55;">X</span>
+                    </div>
+                    <span id="geo-location-badge" class="geo-badge">📍 Detecting Region...</span>
+                </div>
+
+                <div id="form-container">
+                    <div class="auth-tabs">
+                        <button class="auth-tab active" id="tab-email" onclick="setAuthMode('email')">Email</button>
+                        <button class="auth-tab" id="tab-phone" onclick="setAuthMode('phone')">Phone</button>
+                    </div>
+
+                    <input type="email" id="auth-email" class="auth-input" placeholder="Email address" style="margin-bottom: 12px;">
+                    <input type="password" id="auth-password" class="auth-input" placeholder="Password" style="margin-bottom: 12px;">
+                    <button class="auth-btn" onclick="handleSignUp()" style="width: 100%;">Sign Up</button>
+                    <button class="auth-btn-secondary" onclick="handleSignIn()" style="width: 100%; margin-top: 8px;">Log In</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- HOME FEED SCREEN -->
+        <div id="home-screen" class="screen">
+            <div style="flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+                <h3>OTAX Smart Main Feed</h3>
+                <p style="color: #666; font-size: 12px; margin-top: 5px;">Swipe up for next video stream</p>
+            </div>
+        </div>
+
+        <!-- DISCOVERY / #TAG SCREEN -->
+        <div id="tag-screen" class="screen" style="padding: 15px; background: #121212;">
+            <h2 style="font-size: 18px; margin-bottom: 15px;"># Discovery & Tags</h2>
+            <input type="text" placeholder="Search #tags, trends..." class="auth-input" style="margin-bottom: 15px;">
+            <div style="display: flex; flex-direction: column; gap: 10px;">
+                <div style="background: #1f1f1f; padding: 12px; border-radius: 8px; border: 1px solid #333;" onclick="switchScreen('home-screen')">
+                    <h4 style="color: #25f4ee; font-size: 14px;">#OtaxDanceWave</h4>
+                    <p style="color: #888; font-size: 11px; margin-top: 3px;">1.4M posts</p>
+                </div>
+                <div style="background: #1f1f1f; padding: 12px; border-radius: 8px; border: 1px solid #333;">
+                    <h4 style="color: #25f4ee; font-size: 14px;">#AfrobeatsLive</h4>
+                    <p style="color: #888; font-size: 11px; margin-top: 3px;">890K posts</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- CAMERA / CREATE SCREEN -->
+        <div id="camera-screen" class="screen" style="background: #000;">
+            <div style="width: 100%; flex: 1; position: relative;">
+                <video id="live-camera" autoplay playsinline style="width: 100%; height: 100%; object-fit: cover;"></video>
+                <div style="position: absolute; top: 15px; left: 15px;">
+                    <span style="background: rgba(0,0,0,0.5); padding: 5px 10px; border-radius: 15px; font-size: 11px; color: #25f4ee; cursor: pointer;" onclick="switchScreen('editing-screen')">✨ Effects & Audio</span>
+                </div>
+            </div>
+            <div style="width: 100%; display: flex; justify-content: space-around; align-items: center; padding: 25px; background: #000;">
+                <button onclick="toggleCamera()" style="background: rgba(255,255,255,0.2); border: none; width: 45px; height: 45px; border-radius: 50%; color: #fff; cursor: pointer;">🔄</button>
+                <button onclick="switchScreen('editing-screen')" style="background: #fe2c55; border: none; width: 70px; height: 70px; border-radius: 50%; color: #fff; font-weight: bold; cursor: pointer;">⏺</button>
+                <button onclick="alert('Gallery uploaded')" style="background: rgba(255,255,255,0.2); border: none; width: 45px; height: 45px; border-radius: 50%; color: #fff; cursor: pointer;">📁</button>
+            </div>
+        </div>
+
+        <!-- EDITING STUDIO SCREEN -->
+        <div id="editing-screen" class="screen" style="background: #121212;">
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 15px; border-bottom: 1px solid #333;">
+                <button onclick="switchScreen('camera-screen')" style="background: none; border: none; color: #fff; font-size: 14px; cursor: pointer;">Cancel</button>
+                <span style="font-weight: bold; font-size: 14px;">Video Studio Editor</span>
+                <button onclick="alert('Video Published!')" style="background: #fe2c55; border: none; color: #fff; padding: 6px 14px; border-radius: 4px; font-size: 12px; font-weight: bold; cursor: pointer;">Post</button>
+            </div>
+            <div style="flex: 1; display: flex; justify-content: center; align-items: center; background: #000;">
+                <span style="color: #666; font-size: 13px;">[Clip Timeline Preview]</span>
+            </div>
+            <div style="padding: 15px; background: #1f1f1f; display: flex; justify-content: space-around;">
+                <button style="background: none; border: none; color: #fff; font-size: 12px; cursor: pointer;">🎵 Sounds</button>
+                <button style="background: none; border: none; color: #fff; font-size: 12px; cursor: pointer;">✍️ Text</button>
+                <button style="background: none; border: none; color: #fff; font-size: 12px; cursor: pointer;">🎨 Filters</button>
+            </div>
+        </div>
+
+        <!-- INBOX SCREEN -->
+        <div id="inbox-screen" class="screen" style="padding: 20px;">
+            <h2>Inbox</h2>
+            <p style="color: #777; margin-top: 10px;">Notifications and messages.</p>
+        </div>
+
+        <!-- PROFILE SCREEN -->
+        <div id="profile-screen" class="screen" style="background: #121212;">
+            <div style="display: flex; gap: 20px; align-items: center; padding: 25px 20px;">
+                <div style="width: 70px; height: 70px; background: #000; border: 2px solid #fe2c55; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
+                    <span style="font-size: 32px; color: #000; text-shadow: 0 0 2px #fff;">O</span><span style="font-size: 12px; color: #fe2c55;">X</span>
+                </div>
+                <div>
+                    <h3 id="profile-username" style="font-size: 16px;">@ΩDX3</h3>
+                    <span style="font-size: 13px; color: #aaa; margin-top: 4px; display: block;">0 Followers</span>
+                </div>
+            </div>
+            <div style="display: flex; border-bottom: 1px solid #333; margin-top: 15px;">
+                <button style="flex: 1; padding: 12px; background: none; border: none; color: #fff; font-weight: bold;">Videos</button>
+            </div>
+        </div>
+
+        <!-- BOTTOM NAVIGATION BAR -->
+        <nav class="bottom-nav" id="main-nav" style="display: none;">
+            <button class="nav-item active" onclick="switchScreen('home-screen', this)">🏠 <span>Home</span></button>
+            <button class="nav-item" onclick="switchScreen('tag-screen', this)"># <span>Discover</span></button>
+            <button class="create-btn-nav" onclick="switchScreen('camera-screen', this); startCamera();">+</button>
+            <button class="nav-item" onclick="switchScreen('inbox-screen', this)">💬 <span>Inbox</span></button>
+            <button class="nav-item" onclick="switchScreen('profile-screen', this)">👤 <span>Profile</span></button>
+        </nav>
+
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

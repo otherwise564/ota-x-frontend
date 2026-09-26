@@ -3,8 +3,278 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OTAx - TikTok Prototype</title>
-    <link rel="stylesheet" href="style.css">
+    <title>OTAX - Platform</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: #000;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        #app-container {
+            width: 100%;
+            max-width: 414px;
+            height: 100%;
+            max-height: 896px;
+            background-color: #121212;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .screen {
+            flex: 1;
+            display: none;
+            flex-direction: column;
+            overflow-y: auto;
+            position: relative;
+        }
+
+        .screen.active {
+            display: flex;
+        }
+
+        .screen-content {
+            padding: 20px;
+        }
+
+        /* Bottom Navigation Bar */
+        .bottom-nav {
+            height: 60px;
+            background-color: #000;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            border-top: 1px solid #222;
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            z-index: 100;
+        }
+
+        .nav-item {
+            background: none;
+            border: none;
+            color: #888;
+            font-size: 12px;
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .nav-item.active {
+            color: #fff;
+            font-weight: bold;
+        }
+
+        .create-btn-nav {
+            background: linear-gradient(to right, #fe2c55, #25f4ee);
+            color: #000;
+            border: none;
+            width: 45px;
+            height: 30px;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 18px;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Home Screen */
+        #home-screen {
+            background: #1a1a1a;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        .video-feed-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #2c1654, #000);
+            position: relative;
+        }
+
+        .feed-actions {
+            position: absolute;
+            right: 15px;
+            bottom: 100px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .action-icon {
+            background: rgba(0,0,0,0.4);
+            border: none;
+            color: #fff;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        /* Camera / Creation Studio Screen */
+        #camera-screen {
+            background: #000;
+            justify-content: space-between;
+            align-items: center;
+            padding: 30px 20px;
+        }
+
+        .camera-viewfinder {
+            width: 100%;
+            flex: 1;
+            background: #222;
+            border-radius: 12px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #777;
+            font-size: 16px;
+            margin-bottom: 20px;
+            border: 1px dashed #444;
+        }
+
+        .camera-controls {
+            width: 100%;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .capture-btn {
+            width: 75px;
+            height: 75px;
+            border-radius: 50%;
+            background: #fe2c55;
+            border: 4px solid #fff;
+            cursor: pointer;
+        }
+
+        .cam-tool-btn {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: #fff;
+            padding: 10px 15px;
+            border-radius: 20px;
+            font-size: 13px;
+            cursor: pointer;
+        }
+
+        /* Comments Modal */
+        #comments-modal {
+            position: absolute;
+            bottom: -100%;
+            left: 0;
+            width: 100%;
+            height: 60%;
+            background: #1f1f1f;
+            border-top-left-radius: 16px;
+            border-top-right-radius: 16px;
+            transition: bottom 0.3s ease-in-out;
+            z-index: 200;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #comments-modal.open {
+            bottom: 0;
+        }
+
+        .comments-header {
+            padding: 15px;
+            text-align: center;
+            border-bottom: 1px solid #333;
+            font-weight: bold;
+            position: relative;
+        }
+
+        .close-comments {
+            position: absolute;
+            right: 15px;
+            background: none;
+            border: none;
+            color: #fff;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        .comments-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .comment-item {
+            font-size: 14px;
+        }
+
+        .comment-user {
+            color: #aaa;
+            font-size: 12px;
+            margin-bottom: 3px;
+        }
+
+        /* Profile Screen */
+        #profile-screen {
+            padding: 20px;
+            background: #121212;
+        }
+
+        .profile-header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 20px;
+        }
+
+        .profile-avatar {
+            width: 90px;
+            height: 90px;
+            border-radius: 50%;
+            background: #333;
+            margin-bottom: 10px;
+        }
+
+        .profile-stats {
+            display: flex;
+            gap: 25px;
+            margin: 15px 0;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        .profile-stats span {
+            display: block;
+            font-weight: bold;
+            font-size: 16px;
+        }
+    </style>
 </head>
 <body>
 
@@ -13,7 +283,7 @@
         <!-- HOME SCREEN -->
         <div id="home-screen" class="screen active">
             <div class="video-feed-placeholder">
-                <p>🎥 Vertical Video Feed</p>
+                <p>🎥 OTAX Video Feed</p>
                 <div class="feed-actions">
                     <button class="action-icon" onclick="openComments()">💬</button>
                     <button class="action-icon">❤️</button>
@@ -26,7 +296,19 @@
         <div id="friends-screen" class="screen">
             <div class="screen-content">
                 <h2>Friends Feed</h2>
-                <p style="color: #777; margin-top: 20px;">Catch up with content from people you follow.</p>
+                <p style="color: #777; margin-top: 20px;">Catch up with content from your network.</p>
+            </div>
+        </div>
+
+        <!-- CAMERA / CREATION STUDIO SCREEN -->
+        <div id="camera-screen" class="screen">
+            <div class="camera-viewfinder">
+                <span>📷 Camera Viewfinder / Studio</span>
+            </div>
+            <div class="camera-controls">
+                <button class="cam-tool-btn">Flip</button>
+                <button class="capture-btn" onclick="alert('Media Captured!')"></button>
+                <button class="cam-tool-btn">Effects</button>
             </div>
         </div>
 
@@ -34,7 +316,7 @@
         <div id="inbox-screen" class="screen">
             <div class="screen-content">
                 <h2>Inbox</h2>
-                <p style="color: #777; margin-top: 20px;">Notifications and direct messages will appear here.</p>
+                <p style="color: #777; margin-top: 20px;">Notifications and messages.</p>
             </div>
         </div>
 
@@ -42,17 +324,17 @@
         <div id="profile-screen" class="screen">
             <div class="profile-header">
                 <div class="profile-avatar"></div>
-                <h3>@username</h3>
+                <h3>@otax_user</h3>
                 <div class="profile-stats">
                     <div><span>244</span>Following</div>
                     <div><span>303</span>Followers</div>
                     <div><span>1,117</span>Likes</div>
                 </div>
-                <p style="font-size: 13px; color: #aaa; text-align: center;">Building custom frontend experiences ✨</p>
+                <p style="font-size: 13px; color: #aaa; text-align: center;">Building the future of social interaction ✨</p>
             </div>
         </div>
 
-        <!-- COMMENTS MODAL POPUP -->
+        <!-- COMMENTS MODAL -->
         <div id="comments-modal">
             <div class="comments-header">
                 <span>142 comments</span>
@@ -60,12 +342,8 @@
             </div>
             <div class="comments-list">
                 <div class="comment-item">
-                    <div class="comment-user">BlackGoldFilmProduction</div>
-                    <div>Money is life 💸</div>
-                </div>
-                <div class="comment-item">
-                    <div class="comment-user">Elisa_67</div>
-                    <div>c'est des faux ?</div>
+                    <div class="comment-user">CommunityMember</div>
+                    <div>This platform layout is super clean 🔥</div>
                 </div>
             </div>
         </div>
@@ -74,13 +352,34 @@
         <nav class="bottom-nav">
             <button class="nav-item active" onclick="switchScreen('home-screen', this)">🏠<span>Home</span></button>
             <button class="nav-item" onclick="switchScreen('friends-screen', this)">👥<span>Friends</span></button>
-            <button class="create-btn-nav" onclick="alert('Open Camera Studio')">+</button>
+            <button class="create-btn-nav" onclick="switchScreen('camera-screen', this)">+</button>
             <button class="nav-item" onclick="switchScreen('inbox-screen', this)">📥<span>Inbox</span></button>
             <button class="nav-item" onclick="switchScreen('profile-screen', this)">👤<span>Profile</span></button>
         </nav>
 
     </div>
 
-    <script src="script.js"></script>
+    <script>
+        const switchScreen = (screenId, element) => {
+            document.querySelectorAll('.screen').forEach(screen => {
+                screen.classList.remove('active');
+            });
+            const targetScreen = document.getElementById(screenId);
+            if (targetScreen) targetScreen.classList.add('active');
+            
+            document.querySelectorAll('.bottom-nav .nav-item, .bottom-nav .create-btn-nav').forEach(item => {
+                item.classList.remove('active');
+            });
+            if (element) element.classList.add('active');
+        };
+
+        const openComments = () => {
+            document.getElementById('comments-modal').classList.add('open');
+        };
+
+        const closeComments = () => {
+            document.getElementById('comments-modal').classList.remove('open');
+        };
+    </script>
 </body>
 </html>

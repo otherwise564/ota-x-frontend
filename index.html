@@ -4,8 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>OTAX - Platform</title>
-    <!-- Include Supabase Client Library -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         * {
             box-sizing: border-box;
@@ -375,7 +373,7 @@
         <div id="auth-screen" class="screen active">
             <div class="auth-box">
                 <h2 style="margin-bottom: 10px;">Welcome to OTAX</h2>
-                <p style="color: #888; font-size: 13px; margin-bottom: 20px;">Sign in or create an account to start posting.</p>
+                <p style="color: #888; font-size: 13px; margin-bottom: 20px;">Connect to your Render backend to sign in.</p>
                 <input type="email" id="auth-email" class="auth-input" placeholder="Email address">
                 <input type="password" id="auth-password" class="auth-input" placeholder="Password">
                 <button class="auth-btn" onclick="handleSignUp()">Sign Up</button>
@@ -411,7 +409,7 @@
             </div>
             <div class="camera-controls">
                 <button class="cam-tool-btn" onclick="toggleCamera()">Flip</button>
-                <button class="capture-btn" onclick="uploadVideoRecord()"></button>
+                <button class="capture-btn" onclick="alert('Media Captured!')"></button>
                 <button class="cam-tool-btn" onclick="alert('Effects opened')">Effects</button>
             </div>
         </div>
@@ -457,7 +455,7 @@
             <div class="comments-list">
                 <div class="comment-item">
                     <div class="comment-user">CommunityMember</div>
-                    <div>This backend integration is amazing! 🔥</div>
+                    <div>Render backend connected successfully! 🔥</div>
                 </div>
             </div>
         </div>
@@ -474,54 +472,82 @@
     </div>
 
     <script>
-        // --- SUPABASE CONFIGURATION ---
-        // Replace these with your actual Supabase project URL and anon public key from supabase.com
-        const SUPABASE_URL = 'YOUR_SUPABASE_URL';
-        const SUPABASE_ANON_KEY = 'YOUR_SUPABASE_ANON_KEY';
-        
-        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+        // Render Backend API Base URL
+        const RENDER_API_URL = 'https://ota-x-backend.onrender.com';
 
         let mediaStream = null;
         let useFrontCamera = true;
 
-        // Check active session on load
-        window.addEventListener('DOMContentLoaded', async () => {
-            const { data: { session } } = await supabaseClient.auth.getSession();
-            if (session) {
-                onUserLoggedIn(session.user);
+        // Check if user has an active token on page load
+        window.addEventListener('DOMContentLoaded', () => {
+            const token = localStorage.getItem('otax_token');
+            const savedEmail = localStorage.getItem('otax_email');
+            if (token && savedEmail) {
+                onUserLoggedIn(savedEmail);
             }
         });
 
         async function handleSignUp() {
             const email = document.getElementById('auth-email').value;
             const password = document.getElementById('auth-password').value;
-            const { data, error } = await supabaseClient.auth.signUp({ email, password });
-            if (error) {
+            document.getElementById('auth-error').innerText = '';
+
+            try {
+                const response = await fetch(`${RENDER_API_URL}/api/auth/register`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.message || 'Registration failed');
+                }
+
+                alert('Account registered successfully! You can now log in.');
+            } catch (error) {
                 document.getElementById('auth-error').innerText = error.message;
-            } else {
-                alert('Account created! Check your email or log in.');
             }
         }
 
         async function handleSignIn() {
             const email = document.getElementById('auth-email').value;
             const password = document.getElementById('auth-password').value;
-            const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
-            if (error) {
+            document.getElementById('auth-error').innerText = '';
+
+            try {
+                const response = await fetch(`${RENDER_API_URL}/api/auth/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.message || 'Login failed');
+                }
+
+                // Save token & email locally
+                if (data.token) {
+                    localStorage.setItem('otax_token', data.token);
+                }
+                localStorage.setItem('otax_email', email);
+
+                onUserLoggedIn(email);
+            } catch (error) {
                 document.getElementById('auth-error').innerText = error.message;
-            } else {
-                onUserLoggedIn(data.user);
             }
         }
 
-        async function handleSignOut() {
-            await supabaseClient.auth.signOut();
+        function handleSignOut() {
+            localStorage.removeItem('otax_token');
+            localStorage.removeItem('otax_email');
             document.getElementById('main-nav').style.display = 'none';
             switchScreen('auth-screen');
         }
 
-        function onUserLoggedIn(user) {
-            document.getElementById('profile-username').innerText = '@' + user.email.split('@')[0];
+        function onUserLoggedIn(email) {
+            document.getElementById('profile-username').innerText = '@' + email.split('@')[0];
             document.getElementById('main-nav').style.display = 'flex';
             switchScreen('home-screen');
         }
@@ -568,10 +594,6 @@
             startCamera();
         };
 
-        const uploadVideoRecord = () => {
-            alert('Video capture triggered! Ready to push to Supabase Storage bucket.');
-        };
-
         const openComments = () => {
             document.getElementById('comments-modal').classList.add('open');
         };
@@ -581,4 +603,5 @@
         };
     </script>
 </body>
-</html>
+    </html>
+    

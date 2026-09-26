@@ -137,7 +137,7 @@
             class="action-button"
             onclick="openComments()"
           >
-            <span class="action-icon">💬</span>
+            <span class="action-icon">◇</span>
             <small class="comment-count">840</small>
           </button>
 
@@ -153,7 +153,7 @@
             class="action-button"
             onclick="toggleSave(this)"
           >
-            <span class="action-icon">🔖</span>
+            <span class="action-icon">☆</span>
             <small>Save</small>
           </button>
 
@@ -234,7 +234,7 @@
             class="action-button"
             onclick="openComments()"
           >
-            <span class="action-icon">💬</span>
+            <span class="action-icon">◇</span>
             <small class="comment-count">421</small>
           </button>
 
@@ -250,7 +250,7 @@
             class="action-button"
             onclick="toggleSave(this)"
           >
-            <span class="action-icon">🔖</span>
+            <span class="action-icon">☆</span>
             <small>Save</small>
           </button>
 
@@ -331,7 +331,7 @@
             class="action-button"
             onclick="openComments()"
           >
-            <span class="action-icon">💬</span>
+            <span class="action-icon">◇</span>
             <small class="comment-count">190</small>
           </button>
 
@@ -347,7 +347,7 @@
             class="action-button"
             onclick="toggleSave(this)"
           >
-            <span class="action-icon">🔖</span>
+            <span class="action-icon">☆</span>
             <small>Save</small>
           </button>
 
@@ -368,8 +368,6 @@
     id="createScreen"
     class="screen camera-screen"
   >
-
-    <!-- CAMERA TOP -->
 
     <div class="camera-top">
 
@@ -399,34 +397,24 @@
     </div>
 
 
-    <!-- CAMERA TOOLS -->
-
     <div class="camera-tools">
 
-      <button
-        onclick="cameraTool('effects')"
-      >
+      <button onclick="cameraTool('effects')">
         <span>✦</span>
         <small>Effects</small>
       </button>
 
-      <button
-        onclick="cameraTool('timer')"
-      >
+      <button onclick="cameraTool('timer')">
         <span>◷</span>
         <small>Timer</small>
       </button>
 
-      <button
-        onclick="cameraTool('layout')"
-      >
+      <button onclick="cameraTool('layout')">
         <span>▦</span>
         <small>Layout</small>
       </button>
 
-      <button
-        onclick="cameraTool('filters')"
-      >
+      <button onclick="cameraTool('filters')">
         <span>◐</span>
         <small>Filters</small>
       </button>
@@ -441,8 +429,6 @@
     </div>
 
 
-    <!-- CAMERA AREA -->
-
     <div class="camera-stage">
 
       <div class="camera-message">
@@ -456,11 +442,7 @@
     </div>
 
 
-    <!-- CAMERA BOTTOM -->
-
     <div class="camera-bottom">
-
-      <!-- DURATION SELECTOR -->
 
       <div class="camera-mode-selector">
 
@@ -489,8 +471,6 @@
 
       </div>
 
-
-      <!-- CAPTURE ROW -->
 
       <div class="capture-row">
 
@@ -525,13 +505,9 @@
       </div>
 
 
-      <!-- CAMERA TABS -->
-
       <div class="camera-tabs">
 
-        <button
-          onclick="cameraBottomTab('live')"
-        >
+        <button onclick="cameraBottomTab('live')">
           LIVE
         </button>
 
@@ -542,9 +518,7 @@
           POST
         </button>
 
-        <button
-          onclick="cameraBottomTab('create')"
-        >
+        <button onclick="cameraBottomTab('create')">
           CREATE
         </button>
 
@@ -563,8 +537,6 @@
     id="inboxScreen"
     class="screen inbox-screen"
   >
-
-    <!-- INBOX HEADER -->
 
     <header class="inbox-header">
 
@@ -595,13 +567,9 @@
     </header>
 
 
-    <!-- STORIES -->
-
     <section class="story-section">
 
       <div class="story-row">
-
-        <!-- CREATE STORY -->
 
         <button
           class="story-item create-story"
@@ -609,9 +577,7 @@
         >
 
           <div class="create-avatar">
-
             <span>+</span>
-
           </div>
 
           <div class="story-prompt">
@@ -624,8 +590,6 @@
 
         </button>
 
-
-        <!-- STORY 1 -->
 
         <button
           class="story-item"
@@ -641,8 +605,6 @@
         </button>
 
 
-        <!-- STORY 2 -->
-
         <button
           class="story-item"
           onclick="openStory('Jay')"
@@ -656,8 +618,6 @@
 
         </button>
 
-
-        <!-- STORY 3 -->
 
         <button
           class="story-item"
@@ -673,8 +633,6 @@
         </button>
 
 
-        <!-- STORY 4 -->
-
         <button
           class="story-item"
           onclick="openStory('Kris')"
@@ -688,8 +646,6 @@
 
         </button>
 
-
-        <!-- STORY 5 -->
 
         <button
           class="story-item"
@@ -708,8 +664,6 @@
 
     </section>
 
-
-    <!-- ACTIVITY ALERT -->
 
     <div
       id="inboxAlert"
@@ -731,12 +685,7 @@
     </div>
 
 
-    <!-- MESSAGE LIST -->
-
     <section class="message-list">
-
-
-      <!-- ACTIVITY -->
 
       <button
         class="message-row activity-row"
@@ -766,8 +715,6 @@
       </button>
 
 
-      <!-- OTA X -->
-
       <button
         class="message-row"
         onclick="openChat('OTA X')"
@@ -795,8 +742,6 @@
 
       </button>
 
-
-      <!-- ALEX -->
 
       <button
         class="message-row"
@@ -834,8 +779,6 @@
       </button>
 
 
-      <!-- JAY -->
-
       <button
         class="message-row"
         onclick="openChat('Jay')"
@@ -871,8 +814,6 @@
 
       </button>
 
-
-      <!-- MIA -->
 
       <button
         class="message-row"
@@ -910,8 +851,6 @@
       </button>
 
 
-      <!-- MORE MESSAGE -->
-
       <button
         class="message-row"
         onclick="openChat('Kris')"
@@ -946,7 +885,6 @@
         </button>
 
       </button>
-
 
     </section>
 
@@ -1018,8 +956,6 @@
 
     <div class="profile-content">
 
-      <!-- AVATAR -->
-
       <div class="profile-avatar-section">
 
         <div class="profile-avatar-wrapper">
@@ -1045,8 +981,6 @@
       </div>
 
 
-      <!-- PROFILE NAME -->
-
       <div class="profile-name-row">
 
         <h2>
@@ -1064,7 +998,15 @@
       </p>
 
 
-      <!-- PROFILE STATS -->
+      <!-- REAL PROFILE FOLLOW BUTTON -->
+
+      <button
+        class="profile-follow-btn"
+        onclick="followCreator(this)"
+      >
+        Follow
+      </button>
+
 
       <div class="profile-stats">
 
@@ -1107,8 +1049,6 @@
       </div>
 
 
-      <!-- BIO -->
-
       <div class="profile-bio">
 
         <p>
@@ -1129,8 +1069,6 @@
 
       </div>
 
-
-      <!-- OTA X STUDIO -->
 
       <button
         class="studio-card"
@@ -1182,7 +1120,7 @@
           class="profile-tab"
           onclick="profileTab('saved')"
         >
-          🔖
+          ☆
         </button>
 
         <button
@@ -1194,8 +1132,6 @@
 
       </div>
 
-
-      <!-- PROFILE GRID -->
 
       <div
         id="profileGrid"
@@ -1386,8 +1322,6 @@
       class="comments-list"
     >
 
-      <!-- COMMENT 1 -->
-
       <div class="comment-item">
 
         <div class="comment-avatar">
@@ -1419,8 +1353,6 @@
 
       </div>
 
-
-      <!-- COMMENT 2 -->
 
       <div class="comment-item">
 
@@ -1455,8 +1387,6 @@
 
     </div>
 
-
-    <!-- COMMENT COMPOSER -->
 
     <div class="comment-composer">
 
@@ -1590,15 +1520,16 @@
     class="create-menu"
   >
 
-    <div class="create-menu-backdrop"
-         onclick="closeCreateMenu()">
+    <div
+      class="create-menu-backdrop"
+      onclick="closeCreateMenu()"
+    >
     </div>
 
     <div class="create-menu-card">
 
-      <button
-        onclick="chooseVideo()"
-      >
+      <button onclick="chooseVideo()">
+
         <span>🎬</span>
 
         <div>
@@ -1614,9 +1545,8 @@
       </button>
 
 
-      <button
-        onclick="choosePhoto()"
-      >
+      <button onclick="choosePhoto()">
+
         <span>🖼</span>
 
         <div>
@@ -1632,9 +1562,8 @@
       </button>
 
 
-      <button
-        onclick="tryGoLive()"
-      >
+      <button onclick="tryGoLive()">
+
         <span>🔴</span>
 
         <div>
@@ -1668,8 +1597,6 @@
 
   <nav class="bottom-nav">
 
-    <!-- HOME -->
-
     <button
       class="nav-item active"
       onclick="showScreen('homeScreen')"
@@ -1685,8 +1612,6 @@
 
     </button>
 
-
-    <!-- FRIENDS -->
 
     <button
       class="nav-item"
@@ -1710,8 +1635,6 @@
     </button>
 
 
-    <!-- CREATE -->
-
     <button
       class="nav-create"
       onclick="toggleCreateMenu()"
@@ -1724,8 +1647,6 @@
 
     </button>
 
-
-    <!-- INBOX -->
 
     <button
       class="nav-item"
@@ -1748,8 +1669,6 @@
 
     </button>
 
-
-    <!-- PROFILE -->
 
     <button
       class="nav-item"
@@ -1797,4 +1716,4 @@
   <script src="script.js"></script>
 
 </body>
-          </html>
+    </html>

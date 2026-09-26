@@ -3,6 +3,7 @@
    PART 1 / 2
    ========================================================= */
 
+
 /* =========================================================
    GLOBAL STATE
    ========================================================= */
@@ -15,6 +16,19 @@ let recordedChunks = [];
 
 let currentFollowers = 48600;
 let liveApproved = false;
+
+
+/* =========================================================
+   OTA X CREATE / EDIT STATE
+   ========================================================= */
+
+let otaCameraStream = null;
+let otaMediaRecorder = null;
+let otaRecordedChunks = [];
+let otaCameraFacing = "user";
+let otaCreateMode = "video";
+let otaRecording = false;
+let otaCurrentMediaURL = null;
 
 
 /* =========================================================
@@ -99,7 +113,11 @@ function toggleLike(button) {
     count.textContent = formatNumber(number);
   } else {
     number--;
-    if (number < 0) number = 0;
+
+    if (number < 0) {
+      number = 0;
+    }
+
     count.textContent = formatNumber(number);
   }
 }
@@ -137,7 +155,10 @@ async function sharePost() {
     if (navigator.share) {
       await navigator.share(shareData);
     } else {
-      await navigator.clipboard.writeText(window.location.href);
+      await navigator.clipboard.writeText(
+        window.location.href
+      );
+
       showToast("Link copied");
     }
   } catch (error) {
@@ -180,9 +201,12 @@ function openSearch() {
   const input = document.getElementById("searchInput");
 
   if (input) {
-    setTimeout(() => input.focus(), 150);
+    setTimeout(() => {
+      input.focus();
+    }, 150);
   }
 }
+
 
 function closeSearch() {
   const panel = document.getElementById("searchPanel");
@@ -192,6 +216,7 @@ function closeSearch() {
     panel.style.display = "none";
   }
 }
+
 
 function clearSearch() {
   const input = document.getElementById("searchInput");
@@ -208,11 +233,13 @@ function clearSearch() {
   }
 }
 
+
 function handleSearchKey(event) {
   if (event.key === "Enter") {
     searchOTA();
   }
 }
+
 
 function searchOTA() {
   const input = document.getElementById("searchInput");
@@ -226,7 +253,8 @@ function searchOTA() {
     return;
   }
 
-  const results = document.getElementById("searchResults");
+  const results =
+    document.getElementById("searchResults");
 
   if (results) {
     results.innerHTML = `
@@ -244,8 +272,10 @@ function searchOTA() {
   }
 }
 
+
 function searchTag(tag) {
-  const input = document.getElementById("searchInput");
+  const input =
+    document.getElementById("searchInput");
 
   if (input) {
     input.value = tag;
@@ -260,7 +290,8 @@ function searchTag(tag) {
    ========================================================= */
 
 function openComments() {
-  const panel = document.getElementById("commentsPanel");
+  const panel =
+    document.getElementById("commentsPanel");
 
   if (!panel) return;
 
@@ -268,8 +299,10 @@ function openComments() {
   panel.style.display = "flex";
 }
 
+
 function closeComments() {
-  const panel = document.getElementById("commentsPanel");
+  const panel =
+    document.getElementById("commentsPanel");
 
   if (!panel) return;
 
@@ -279,14 +312,17 @@ function closeComments() {
   closeStickerPanel();
 }
 
+
 function handleCommentKey(event) {
   if (event.key === "Enter") {
     sendComment();
   }
 }
 
+
 function sendComment() {
-  const input = document.getElementById("commentInput");
+  const input =
+    document.getElementById("commentInput");
 
   if (!input) return;
 
@@ -294,11 +330,13 @@ function sendComment() {
 
   if (!text) return;
 
-  const list = document.querySelector(".comments-list");
+  const list =
+    document.querySelector(".comments-list");
 
   if (!list) return;
 
-  const comment = document.createElement("div");
+  const comment =
+    document.createElement("div");
 
   comment.className = "comment";
 
@@ -306,6 +344,7 @@ function sendComment() {
     <div class="comment-avatar">Y</div>
 
     <div class="comment-body">
+
       <div class="comment-name">
         You
       </div>
@@ -315,6 +354,7 @@ function sendComment() {
       </div>
 
       <div class="comment-actions">
+
         <button
           class="comment-action"
           onclick="likeComment(this)"
@@ -327,7 +367,9 @@ function sendComment() {
         >
           Reply
         </button>
+
       </div>
+
     </div>
   `;
 
@@ -337,6 +379,7 @@ function sendComment() {
 
   list.scrollTop = list.scrollHeight;
 }
+
 
 function likeComment(button) {
   if (!button) return;
@@ -369,23 +412,28 @@ function escapeHTML(value) {
    ========================================================= */
 
 function toggleStickerPanel() {
-  const panel = document.getElementById("stickerPanel");
+  const panel =
+    document.getElementById("stickerPanel");
 
   if (!panel) return;
 
   panel.classList.toggle("active");
 }
 
+
 function closeStickerPanel() {
-  const panel = document.getElementById("stickerPanel");
+  const panel =
+    document.getElementById("stickerPanel");
 
   if (!panel) return;
 
   panel.classList.remove("active");
 }
 
+
 function sendSticker(sticker) {
-  const input = document.getElementById("commentInput");
+  const input =
+    document.getElementById("commentInput");
 
   if (!input) return;
 
@@ -396,8 +444,10 @@ function sendSticker(sticker) {
   input.focus();
 }
 
+
 function stickerTab(tab) {
-  const tabs = document.querySelectorAll(".sticker-tab");
+  const tabs =
+    document.querySelectorAll(".sticker-tab");
 
   tabs.forEach((button) => {
     button.classList.remove("active");
@@ -421,10 +471,15 @@ function stickerTab(tab) {
 let voiceRecorder = null;
 let voiceChunks = [];
 
-function toggleVoiceComment() {
-  const button = document.querySelector(".composer-mic");
 
-  if (voiceRecorder && voiceRecorder.state === "recording") {
+function toggleVoiceComment() {
+  const button =
+    document.querySelector(".composer-mic");
+
+  if (
+    voiceRecorder &&
+    voiceRecorder.state === "recording"
+  ) {
     stopVoiceComment();
     return;
   }
@@ -432,9 +487,16 @@ function toggleVoiceComment() {
   startVoiceComment(button);
 }
 
+
 async function startVoiceComment(button) {
-  if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
-    showToast("Voice recording is not supported here");
+  if (
+    !navigator.mediaDevices ||
+    !navigator.mediaDevices.getUserMedia
+  ) {
+    showToast(
+      "Voice recording is not supported here"
+    );
+
     return;
   }
 
@@ -446,21 +508,31 @@ async function startVoiceComment(button) {
 
     voiceChunks = [];
 
-    voiceRecorder = new MediaRecorder(stream);
+    voiceRecorder =
+      new MediaRecorder(stream);
 
-    voiceRecorder.ondataavailable = (event) => {
-      if (event.data.size > 0) {
-        voiceChunks.push(event.data);
-      }
-    };
+    voiceRecorder.ondataavailable =
+      (event) => {
+
+        if (event.data.size > 0) {
+          voiceChunks.push(event.data);
+        }
+
+      };
+
 
     voiceRecorder.onstop = () => {
-      stream.getTracks().forEach((track) => {
-        track.stop();
-      });
+
+      stream.getTracks().forEach(
+        (track) => {
+          track.stop();
+        }
+      );
 
       addVoiceComment();
+
     };
+
 
     voiceRecorder.start();
 
@@ -468,12 +540,21 @@ async function startVoiceComment(button) {
       button.classList.add("recording");
     }
 
-    showToast("Recording voice comment...");
+    showToast(
+      "Recording voice comment..."
+    );
+
   } catch (error) {
+
     console.error(error);
-    showToast("Microphone permission was not available");
+
+    showToast(
+      "Microphone permission was not available"
+    );
+
   }
 }
+
 
 function stopVoiceComment() {
   if (
@@ -483,12 +564,14 @@ function stopVoiceComment() {
     voiceRecorder.stop();
   }
 
-  const button = document.querySelector(".composer-mic");
+  const button =
+    document.querySelector(".composer-mic");
 
   if (button) {
     button.classList.remove("recording");
   }
 }
+
 
 function addVoiceComment() {
   showToast("Voice comment recorded");
@@ -496,33 +579,39 @@ function addVoiceComment() {
 
 
 /* =========================================================
-   CREATE SCREEN
+   OLD CREATE SCREEN
    ========================================================= */
 
 function openCreate() {
   showScreen("createScreen");
 
-  const menu = document.getElementById("createMenu");
+  const menu =
+    document.getElementById("createMenu");
 
   if (menu) {
     menu.classList.remove("active");
   }
 }
 
+
 function closeCreate() {
   showScreen("homeScreen");
 }
 
+
 function toggleCreateMenu() {
-  const menu = document.getElementById("createMenu");
+  const menu =
+    document.getElementById("createMenu");
 
   if (!menu) return;
 
   menu.classList.toggle("active");
 }
 
+
 function closeCreateMenu() {
-  const menu = document.getElementById("createMenu");
+  const menu =
+    document.getElementById("createMenu");
 
   if (!menu) return;
 
@@ -531,345 +620,647 @@ function closeCreateMenu() {
 
 
 /* =========================================================
-   CAMERA
+   OTA X CREATE — OPEN
    ========================================================= */
 
-function addSound() {
-  showToast("Sound selector opened");
-}
+function openOtaCreate() {
 
-function flipCamera() {
-  showToast("Camera flipped");
-}
-
-function cameraTool(tool) {
-  const names = {
-    effects: "Effects",
-    timer: "Timer",
-    layout: "Layout",
-    filters: "Filters"
-  };
-
-  showToast(
-    (names[tool] || "Camera") + " selected"
-  );
-}
-
-function expandCameraTools() {
-  showToast("More camera tools");
-}
-
-function cameraDuration(duration) {
-  currentCameraMode = duration;
-
-  const buttons =
-    document.querySelectorAll(
-      ".camera-mode-selector button"
+  const screen =
+    document.getElementById(
+      "otaCreateScreen"
     );
 
-  buttons.forEach((button) => {
-    button.classList.remove("active");
+  if (!screen) {
+    showToast(
+      "OTA X Create screen is not connected"
+    );
 
-    const text =
-      button.textContent.trim().toLowerCase();
-
-    if (
-      text === duration.toLowerCase() ||
-      (duration === "photo" && text === "photo") ||
-      (duration === "template" && text === "template")
-    ) {
-      button.classList.add("active");
-    }
-  });
-}
-
-function cameraBottomTab(tab) {
-  const buttons =
-    document.querySelectorAll(".camera-tabs button");
-
-  buttons.forEach((button) => {
-    button.classList.remove("active");
-
-    if (
-      button.textContent.trim().toLowerCase() ===
-      tab.toLowerCase()
-    ) {
-      button.classList.add("active");
-    }
-  });
-
-  if (tab === "live") {
-    showToast("LIVE selected");
-  }
-
-  if (tab === "post") {
-    showToast("POST selected");
-  }
-
-  if (tab === "create") {
-    showToast("CREATE selected");
-  }
-}
-
-
-/* =========================================================
-   MEDIA SELECTION
-   ========================================================= */
-
-function chooseMedia(side) {
-  const input = document.getElementById("videoInput");
-
-  if (input) {
-    input.click();
-  }
-}
-
-function chooseVideo() {
-  const input = document.getElementById("videoInput");
-
-  if (input) {
-    input.click();
-  }
-}
-
-function choosePhoto() {
-  const input = document.getElementById("photoInput");
-
-  if (input) {
-    input.click();
-  }
-}
-
-function handleVideoSelected(event) {
-  const file =
-    event.target.files &&
-    event.target.files[0];
-
-  if (!file) return;
-
-  showToast(
-    "Video selected: " + file.name
-  );
-
-  const status =
-    document.getElementById("cameraStatus");
-
-  if (status) {
-    status.textContent =
-      "Video selected";
-  }
-}
-
-function handlePhotoSelected(event) {
-  const file =
-    event.target.files &&
-    event.target.files[0];
-
-  if (!file) return;
-
-  showToast(
-    "Photo selected: " + file.name
-  );
-
-  const status =
-    document.getElementById("cameraStatus");
-
-  if (status) {
-    status.textContent =
-      "Photo selected";
-  }
-}
-
-
-/* =========================================================
-   CAMERA RECORDING
-   ========================================================= */
-
-async function toggleRecording() {
-  if (isRecording) {
-    stopRecording();
     return;
   }
 
-  await startRecording();
+  screen.classList.add("active");
+
+  otaSetMode("video");
+
+  otaStartCamera();
 }
 
-async function startRecording() {
+
+/* =========================================================
+   OTA X CREATE — CLOSE
+   ========================================================= */
+
+function closeOtaCreate() {
+
+  const screen =
+    document.getElementById(
+      "otaCreateScreen"
+    );
+
+  if (screen) {
+    screen.classList.remove("active");
+  }
+
+  otaStopCamera();
+
+  otaRecording = false;
+
+  const button =
+    document.getElementById(
+      "otaRecordButton"
+    );
+
+  if (button) {
+    button.classList.remove(
+      "recording"
+    );
+  }
+}
+
+
+/* =========================================================
+   OTA X CAMERA
+   ========================================================= */
+
+async function otaStartCamera() {
+
   if (
     !navigator.mediaDevices ||
     !navigator.mediaDevices.getUserMedia
   ) {
-    showToast("Camera recording is not supported here");
+
+    showToast(
+      "Camera is not supported here"
+    );
+
     return;
   }
 
   try {
-    const stream =
+
+    otaStopCamera();
+
+    otaCameraStream =
       await navigator.mediaDevices.getUserMedia({
-        video: true,
+        video: {
+          facingMode: otaCameraFacing
+        },
         audio: true
       });
 
-    recordedChunks = [];
 
-    mediaRecorder =
-      new MediaRecorder(stream);
+    const video =
+      document.getElementById(
+        "otaCameraVideo"
+      );
 
-    mediaRecorder.ondataavailable = (event) => {
-      if (event.data.size > 0) {
-        recordedChunks.push(event.data);
-      }
-    };
 
-    mediaRecorder.onstop = () => {
-      stream.getTracks().forEach((track) => {
+    if (video) {
+
+      video.srcObject =
+        otaCameraStream;
+
+      video.muted = true;
+
+      video.playsInline = true;
+
+      await video.play().catch(
+        () => {}
+      );
+
+    }
+
+
+    const empty =
+      document.getElementById(
+        "otaCameraEmpty"
+      );
+
+    if (empty) {
+      empty.style.display = "none";
+    }
+
+
+  } catch (error) {
+
+    console.error(
+      "OTA X camera error:",
+      error
+    );
+
+    const empty =
+      document.getElementById(
+        "otaCameraEmpty"
+      );
+
+    if (empty) {
+      empty.style.display = "flex";
+    }
+
+    showToast(
+      "Camera permission was not available"
+    );
+
+  }
+}
+
+
+/* =========================================================
+   OTA X STOP CAMERA
+   ========================================================= */
+
+function otaStopCamera() {
+
+  if (otaCameraStream) {
+
+    otaCameraStream
+      .getTracks()
+      .forEach((track) => {
         track.stop();
       });
 
-      showToast("Recording finished");
-    };
+    otaCameraStream = null;
 
-    mediaRecorder.start();
+  }
 
-    isRecording = true;
+}
 
-    const recordButton =
-      document.querySelector(".record-button");
 
-    if (recordButton) {
-      recordButton.classList.add("recording");
-    }
+/* =========================================================
+   OTA X PHOTO / VIDEO MODE
+   ========================================================= */
 
-    const status =
-      document.getElementById("cameraStatus");
+function otaSetMode(mode) {
 
-    if (status) {
-      status.textContent = "Recording...";
-    };
+  otaCreateMode = mode;
+
+  const photo =
+    document.getElementById(
+      "otaPhotoMode"
+    );
+
+  const video =
+    document.getElementById(
+      "otaVideoMode"
+    );
+
+
+  if (photo) {
+
+    photo.classList.toggle(
+      "active",
+      mode === "photo"
+    );
+
+  }
+
+
+  if (video) {
+
+    video.classList.toggle(
+      "active",
+      mode === "video"
+    );
+
+  }
+
+}
+
+
+/* =========================================================
+   OTA X RECORD OR CAPTURE
+   ========================================================= */
+
+function otaRecordOrCapture() {
+
+  if (otaCreateMode === "photo") {
+
+    otaCapturePhoto();
+
+    return;
+  }
+
+
+  if (otaRecording) {
+
+    otaStopRecording();
+
+  } else {
+
+    otaStartRecording();
+
+  }
+
+}
+
+
+/* =========================================================
+   OTA X START RECORDING
+   ========================================================= */
+
+function otaStartRecording() {
+
+  if (!otaCameraStream) {
+
+    showToast(
+      "Camera is not ready yet"
+    );
+
+    return;
+  }
+
+
+  otaRecordedChunks = [];
+
+
+  try {
+
+    otaMediaRecorder =
+      new MediaRecorder(
+        otaCameraStream
+      );
 
   } catch (error) {
-    console.error(error);
-    showToast("Camera or microphone permission was not available");
+
+    showToast(
+      "Video recording is not supported here"
+    );
+
+    return;
+
   }
+
+
+  otaMediaRecorder.ondataavailable =
+    (event) => {
+
+      if (
+        event.data &&
+        event.data.size > 0
+      ) {
+
+        otaRecordedChunks.push(
+          event.data
+        );
+
+      }
+
+    };
+
+
+  otaMediaRecorder.onstop =
+    () => {
+
+      const blob =
+        new Blob(
+          otaRecordedChunks,
+          {
+            type:
+              otaMediaRecorder.mimeType ||
+              "video/webm"
+          }
+        );
+
+      otaOpenEditWithVideo(blob);
+
+    };
+
+
+  otaMediaRecorder.start();
+
+  otaRecording = true;
+
+
+  const button =
+    document.getElementById(
+      "otaRecordButton"
+    );
+
+  if (button) {
+
+    button.classList.add(
+      "recording"
+    );
+
+  }
+
+
+  showToast(
+    "Recording..."
+  );
+
 }
 
-function stopRecording() {
+
+/* =========================================================
+   OTA X STOP RECORDING
+   ========================================================= */
+
+function otaStopRecording() {
+
   if (
-    mediaRecorder &&
-    mediaRecorder.state === "recording"
+    otaMediaRecorder &&
+    otaMediaRecorder.state !==
+      "inactive"
   ) {
-    mediaRecorder.stop();
+
+    otaMediaRecorder.stop();
+
   }
 
-  isRecording = false;
+  otaRecording = false;
 
-  const recordButton =
-    document.querySelector(".record-button");
 
-  if (recordButton) {
-    recordButton.classList.remove("recording");
+  const button =
+    document.getElementById(
+      "otaRecordButton"
+    );
+
+  if (button) {
+
+    button.classList.remove(
+      "recording"
+    );
+
   }
 
-  const status =
-    document.getElementById("cameraStatus");
-
-  if (status) {
-    status.textContent = "Camera ready";
-  }
 }
 
 
 /* =========================================================
-   LIVE
+   OTA X TAKE PHOTO
    ========================================================= */
 
-function tryGoLive() {
-  if (currentFollowers < 1000) {
-    showToast(
-      "LIVE access is not available yet"
+function otaCapturePhoto() {
+
+  const video =
+    document.getElementById(
+      "otaCameraVideo"
     );
+
+
+  if (
+    !video ||
+    !video.videoWidth
+  ) {
+
+    showToast(
+      "Camera is not ready yet"
+    );
+
     return;
   }
 
-  if (!liveApproved) {
-    showToast(
-      "LIVE access requires OTA X approval"
+
+  const canvas =
+    document.createElement(
+      "canvas"
     );
+
+
+  canvas.width =
+    video.videoWidth;
+
+  canvas.height =
+    video.videoHeight;
+
+
+  const context =
+    canvas.getContext(
+      "2d"
+    );
+
+
+  if (
+    otaCameraFacing ===
+    "user"
+  ) {
+
+    context.translate(
+      canvas.width,
+      0
+    );
+
+    context.scale(
+      -1,
+      1
+    );
+
+  }
+
+
+  context.drawImage(
+    video,
+    0,
+    0,
+    canvas.width,
+    canvas.height
+  );
+
+
+  canvas.toBlob(
+    (blob) => {
+
+      if (blob) {
+        otaOpenEditWithImage(
+          blob
+        );
+      }
+
+    },
+    "image/jpeg",
+    0.92
+  );
+
+}
+
+
+/* =========================================================
+   OTA X UPLOAD
+   ========================================================= */
+
+function otaUploadMedia() {
+
+  const input =
+    document.getElementById(
+      "otaMediaInput"
+    );
+
+  if (input) {
+    input.click();
+  }
+
+}
+
+
+function otaHandleMedia(input) {
+
+  const file =
+    input.files &&
+    input.files[0];
+
+
+  if (!file) return;
+
+
+  if (
+    file.type.startsWith(
+      "video/"
+    )
+  ) {
+
+    otaOpenEditWithVideo(
+      file
+    );
+
+  } else if (
+    file.type.startsWith(
+      "image/"
+    )
+  ) {
+
+    otaOpenEditWithImage(
+      file
+    );
+
+  } else {
+
+    showToast(
+      "Please choose a photo or video"
+    );
+
+  }
+
+
+  input.value = "";
+}
+
+
+/* =========================================================
+   OTA X OPEN EDIT WITH VIDEO
+   ========================================================= */
+
+function otaOpenEditWithVideo(
+  blob
+) {
+
+  otaStopCamera();
+
+
+  const create =
+    document.getElementById(
+      "otaCreateScreen"
+    );
+
+  if (create) {
+    create.classList.remove(
+      "active"
+    );
+  }
+
+
+  const screen =
+    document.getElementById(
+      "otaEditScreen"
+    );
+
+  const video =
+    document.getElementById(
+      "otaEditVideo"
+    );
+
+  const image =
+    document.getElementById(
+      "otaEditImage"
+    );
+
+  const placeholder =
+    document.getElementById(
+      "otaPreviewPlaceholder"
+    );
+
+
+  if (
+    !screen ||
+    !video ||
+    !image ||
+    !placeholder
+  ) {
+
+    showToast(
+      "OTA X Edit screen is not connected"
+    );
+
     return;
   }
 
-  showToast("LIVE access approved");
+
+  if (otaCurrentMediaURL) {
+
+    URL.revokeObjectURL(
+      otaCurrentMediaURL
+    );
+
+  }
+
+
+  otaCurrentMediaURL =
+    URL.createObjectURL(
+      blob
+    );
+
+
+  video.src =
+    otaCurrentMediaURL;
+
+  video.style.display =
+    "block";
+
+  image.style.display =
+    "none";
+
+  placeholder.style.display =
+    "none";
+
+
+  screen.classList.add(
+    "active"
+  );
+
 }
 
 
 /* =========================================================
-   TOAST MESSAGE
+   OTA X OPEN EDIT WITH PHOTO
    ========================================================= */
 
-function showToast(message) {
-  let toast =
-    document.getElementById("otaToast");
+function otaOpenEditWithImage(
+  blob
+) {
 
-  if (!toast) {
-    toast = document.createElement("div");
-
-    toast.id = "otaToast";
-
-    toast.style.position = "fixed";
-    toast.style.left = "50%";
-    toast.style.bottom = "92px";
-    toast.style.transform = "translateX(-50%)";
-    toast.style.zIndex = "9999";
-    toast.style.padding = "10px 15px";
-    toast.style.borderRadius = "12px";
-    toast.style.background = "#ffffff";
-    toast.style.color = "#000000";
-    toast.style.fontSize = "12px";
-    toast.style.fontWeight = "700";
-    toast.style.boxShadow =
-      "0 5px 25px rgba(0,0,0,.4)";
-
-    document.body.appendChild(toast);
-  }
-
-  toast.textContent = message;
-  toast.style.display = "block";
-
-  clearTimeout(window.otaToastTimer);
-
-  window.otaToastTimer =
-    setTimeout(() => {
-      toast.style.display = "none";
-    }, 2200);
-}
+  otaStopCamera();
 
 
-/* =========================================================
-   NUMBER FORMAT
-   ========================================================= */
+  const create =
+    document.getElementById(
+      "otaCreateScreen"
+    );
 
-function formatNumber(number) {
-  if (number >= 1000000) {
-    return (
-      (number / 1000000)
-        .toFixed(1)
-        .replace(".0", "") +
-      "M"
+  if (create) {
+    create.classList.remove(
+      "active"
     );
   }
 
-  if (number >= 1000) {
-    return (
-      (number / 1000)
-        .toFixed(1)
-        .replace(".0", "") +
-      "K"
-    );
-  }
 
-  return String(number);
-     }
-/* =========================================================
+  const screen =
+    document.getElementById(
+      "otaEditScreen"
+    );
+
+  const video =
+    document.getElemen
+   /* =========================================================
    OTA X — SCRIPT.JS
    PART 2 / 2
    ========================================================= */
@@ -883,44 +1274,64 @@ function openInbox() {
   showScreen("inboxScreen");
 }
 
+
 function closeInbox() {
   showScreen("homeScreen");
 }
+
 
 function openInboxMenu() {
   showToast("Inbox menu opened");
 }
 
+
 function openInboxSearch() {
   showToast("Inbox search opened");
 }
 
+
 function dismissInboxAlert() {
+
   const alert =
-    document.getElementById("inboxAlert");
+    document.getElementById(
+      "inboxAlert"
+    );
 
   if (alert) {
-    alert.style.display = "none";
+    alert.style.display =
+      "none";
   }
+
 }
+
 
 function openActivity() {
   showToast("Activity opened");
 }
 
+
 function openChat(name) {
+
   showToast(
     "Opening chat" +
-    (name ? " with " + name : "")
+    (name
+      ? " with " + name
+      : "")
   );
+
 }
 
+
 function openMessageCamera(name) {
+
   showToast(
     "Camera for" +
-    (name ? " " + name : "") +
+    (name
+      ? " " + name
+      : "") +
     " opened"
   );
+
 }
 
 
@@ -929,19 +1340,31 @@ function openMessageCamera(name) {
    ========================================================= */
 
 function createStory() {
-  showToast("Create your story");
-}
-
-function openStory(name) {
   showToast(
-    "Opening" +
-    (name ? " " + name : "") +
-    "'s story"
+    "Create your story"
   );
 }
 
+
+function openStory(name) {
+
+  showToast(
+    "Opening" +
+    (name
+      ? " " + name
+      : "") +
+    "'s story"
+  );
+
+}
+
+
 function addProfileStory() {
-  showToast("Add a profile story");
+
+  showToast(
+    "Add a profile story"
+  );
+
 }
 
 
@@ -950,39 +1373,65 @@ function addProfileStory() {
    ========================================================= */
 
 function openProfile() {
-  showScreen("profileScreen");
+  showScreen(
+    "profileScreen"
+  );
 }
+
 
 function closeProfile() {
-  showScreen("homeScreen");
+  showScreen(
+    "homeScreen"
+  );
 }
+
 
 function editProfile() {
-  showToast("Edit profile opened");
+  showToast(
+    "Edit profile opened"
+  );
 }
+
 
 function switchAccount() {
-  showToast("Account switcher opened");
+  showToast(
+    "Account switcher opened"
+  );
 }
+
 
 function addFriends() {
-  showToast("Find friends");
+  showToast(
+    "Find friends"
+  );
 }
+
 
 function openProfileMenu() {
-  showToast("Profile menu opened");
+  showToast(
+    "Profile menu opened"
+  );
 }
+
 
 function showFollowing() {
-  showToast("Following list opened");
+  showToast(
+    "Following list opened"
+  );
 }
+
 
 function showFollowers() {
-  showToast("Followers list opened");
+  showToast(
+    "Followers list opened"
+  );
 }
 
+
 function showLikes() {
-  showToast("Likes opened");
+  showToast(
+    "Likes opened"
+  );
 }
 
 
@@ -991,48 +1440,105 @@ function showLikes() {
    ========================================================= */
 
 function profileTab(tab) {
+
   const buttons =
-    document.querySelectorAll(".profile-tab");
+    document.querySelectorAll(
+      ".profile-tab"
+    );
 
-  buttons.forEach((button) => {
-    button.classList.remove("active");
-  });
 
-  buttons.forEach((button) => {
-    const value =
-      button.getAttribute("data-tab");
-
-    const text =
-      button.textContent.trim().toLowerCase();
-
-    if (
-      value === tab ||
-      text === tab.toLowerCase()
-    ) {
-      button.classList.add("active");
+  buttons.forEach(
+    (button) => {
+      button.classList.remove(
+        "active"
+      );
     }
-  });
+  );
+
+
+  buttons.forEach(
+    (button) => {
+
+      const value =
+        button.getAttribute(
+          "data-tab"
+        );
+
+
+      const text =
+        button.textContent
+          .trim()
+          .toLowerCase();
+
+
+      if (
+        value === tab ||
+        text ===
+          tab.toLowerCase()
+      ) {
+
+        button.classList.add(
+          "active"
+        );
+
+      }
+
+    }
+  );
+
 
   showToast(
     tab.charAt(0).toUpperCase() +
     tab.slice(1) +
     " selected"
   );
-}
 
-function openProfilePost(index) {
-  showToast(
-    "Opening post " + (index || "")
-  );
 }
 
 
 /* =========================================================
-   OTA X STUDIO
+   SETTINGS
    ========================================================= */
 
-function openStudio() {
-  showToast("OTA X Studio opened");
+function openSettings() {
+  showScreen(
+    "settingsScreen"
+  );
+}
+
+
+function closeSettings() {
+  showScreen(
+    "profileScreen"
+  );
+}
+
+
+function openSetting(name) {
+
+  showToast(
+    (name || "Setting") +
+    " opened"
+  );
+
+}
+
+
+/* =========================================================
+   NOTIFICATIONS
+   ========================================================= */
+
+function openNotifications() {
+  showScreen(
+    "notificationsScreen"
+  );
+}
+
+
+function closeNotifications() {
+  showScreen(
+    "homeScreen"
+  );
 }
 
 
@@ -1041,138 +1547,106 @@ function openStudio() {
    ========================================================= */
 
 function openFriends() {
-  showToast("Friends opened");
+  showScreen(
+    "friendsScreen"
+  );
+}
+
+
+function closeFriends() {
+  showScreen(
+    "homeScreen"
+  );
 }
 
 
 /* =========================================================
-   CREATE MENU ACTIONS
+   CREATOR STUDIO
    ========================================================= */
 
-function openUploadVideo() {
-  chooseVideo();
-  closeCreateMenu();
+function openCreatorStudio() {
+  showScreen(
+    "creatorStudioScreen"
+  );
 }
 
-function openUploadPhoto() {
-  choosePhoto();
-  closeCreateMenu();
+
+function closeCreatorStudio() {
+  showScreen(
+    "profileScreen"
+  );
 }
 
 
 /* =========================================================
-   COMMENT COUNT
+   THEME
    ========================================================= */
 
-function updateCommentCount() {
-  const comments =
-    document.querySelectorAll(
-      ".comments-list .comment"
+function toggleTheme() {
+
+  document.body.classList.toggle(
+    "light-mode"
+  );
+
+
+  const isLight =
+    document.body.classList.contains(
+      "light-mode"
     );
 
-  const buttons =
-    document.querySelectorAll(
-      ".post-action"
+
+  localStorage.setItem(
+    "otaTheme",
+    isLight
+      ? "light"
+      : "dark"
+  );
+
+}
+
+
+/* =========================================================
+   LOAD SAVED THEME
+   ========================================================= */
+
+function loadSavedTheme() {
+
+  const saved =
+    localStorage.getItem(
+      "otaTheme"
     );
 
-  buttons.forEach((button) => {
-    const text =
-      button.textContent.toLowerCase();
 
-    if (text.includes("comment")) {
-      const count =
-        button.querySelector(".action-count");
+  if (saved === "light") {
 
-      if (count) {
-        count.textContent =
-          formatNumber(comments.length);
-      }
-    }
-  });
-}
+    document.body.classList.add(
+      "light-mode"
+    );
 
-
-/* =========================================================
-   STICKER PHOTO / VIDEO
-   ========================================================= */
-
-function chooseStickerPhoto() {
-  showToast("Choose a photo for your sticker");
-}
-
-function createPhotoSticker() {
-  showToast("Photo sticker created");
-}
-
-function chooseStickerVideo() {
-  showToast("Choose a video for your sticker");
-}
-
-function createVideoSticker() {
-  showToast("Video sticker created");
-}
-
-
-/* =========================================================
-   CREATE SCREEN SHORTCUTS
-   ========================================================= */
-
-function openCamera() {
-  openCreate();
-}
-
-
-/* =========================================================
-   SIMPLE SETTINGS ACTIONS
-   ========================================================= */
-
-function toggleDarkMode() {
-  document.body.classList.toggle("light-mode");
-
-  if (
-    document.body.classList.contains("light-mode")
-  ) {
-    showToast("Light mode enabled");
-  } else {
-    showToast("Dark mode enabled");
   }
+
 }
 
 
 /* =========================================================
-   CLICK OUTSIDE STICKER PANEL
+   PANEL CLOSE HELPERS
    ========================================================= */
 
-document.addEventListener(
-  "click",
-  function (event) {
-    const panel =
-      document.getElementById("stickerPanel");
+function closePanelById(id) {
 
-    if (!panel) return;
+  const panel =
+    document.getElementById(id);
 
-    if (!panel.classList.contains("active")) {
-      return;
-    }
+  if (!panel) return;
 
-    const clickedSticker =
-      event.target.closest(
-        ".composer-sticker"
-      );
+  panel.classList.remove(
+    "active"
+  );
 
-    const clickedPanel =
-      event.target.closest(
-        "#stickerPanel"
-      );
+  panel.style.display =
+    "none";
 
-    if (
-      !clickedSticker &&
-      !clickedPanel
-    ) {
-      closeStickerPanel();
-    }
-  }
-);
+}
 
 
 /* =========================================================
@@ -1181,82 +1655,122 @@ document.addEventListener(
 
 document.addEventListener(
   "keydown",
-  function (event) {
-    if (event.key !== "Escape") {
+  function(event) {
+
+    if (
+      event.key !== "Escape"
+    ) {
       return;
     }
 
+
+    const otaEdit =
+      document.getElementById(
+        "otaEditScreen"
+      );
+
+
+    const otaCreate =
+      document.getElementById(
+        "otaCreateScreen"
+      );
+
+
+    if (
+      otaEdit &&
+      otaEdit.classList.contains(
+        "active"
+      )
+    ) {
+
+      otaEdit.classList.remove(
+        "active"
+      );
+
+      return;
+
+    }
+
+
+    if (
+      otaCreate &&
+      otaCreate.classList.contains(
+        "active"
+      )
+    ) {
+
+      closeOtaCreate();
+
+      return;
+
+    }
+
+
     closeSearch();
+
     closeComments();
+
     closeStickerPanel();
-    closeCreateMenu();
+
   }
 );
 
 
 /* =========================================================
-   PREVENT BUTTON DOUBLE ACTION
-   ========================================================= */
-
-document.addEventListener(
-  "click",
-  function (event) {
-    const button =
-      event.target.closest("button");
-
-    if (!button) return;
-
-    button.classList.add("ota-clicked");
-
-    setTimeout(() => {
-      button.classList.remove("ota-clicked");
-    }, 150);
-  }
-);
-
-
-/* =========================================================
-   INITIAL OTA X STATE
+   PAGE LOAD
    ========================================================= */
 
 document.addEventListener(
   "DOMContentLoaded",
-  function () {
+  function() {
 
-    showScreen("homeScreen");
+    loadSavedTheme();
 
-    const searchPanel =
-      document.getElementById("searchPanel");
-
-    if (searchPanel) {
-      searchPanel.classList.remove("active");
-      searchPanel.style.display = "none";
-    }
-
-    const commentsPanel =
-      document.getElementById("commentsPanel");
-
-    if (commentsPanel) {
-      commentsPanel.classList.remove("active");
-      commentsPanel.style.display = "none";
-    }
-
-    const stickerPanel =
-      document.getElementById("stickerPanel");
-
-    if (stickerPanel) {
-      stickerPanel.classList.remove("active");
-    }
-
-    const createMenu =
-      document.getElementById("createMenu");
-
-    if (createMenu) {
-      createMenu.classList.remove("active");
-    }
-
-    console.log(
-      "OTA X frontend initialized successfully."
-    );
   }
+);
+
+
+/* =========================================================
+   OTA X CAMERA CLEANUP
+   ========================================================= */
+
+window.addEventListener(
+  "beforeunload",
+  function() {
+
+    otaStopCamera();
+
+
+    if (
+      otaCurrentMediaURL
+    ) {
+
+      URL.revokeObjectURL(
+        otaCurrentMediaURL
+      );
+
+    }
+
+  }
+);
+
+
+/* =========================================================
+   OTA X CREATE BUTTON HELPER
+   =========================================================
+   
+   Your Create + button should use:
+
+   onclick="openOtaCreate()"
+
+   Do NOT change the + icon itself.
+   ========================================================= */
+
+
+/* =========================================================
+   OTA X READY
+   ========================================================= */
+
+console.log(
+  "OTA X Script loaded successfully."
 );

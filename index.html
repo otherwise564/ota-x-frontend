@@ -31,11 +31,9 @@
 
 
   <!-- FEED -->
-
   <main class="feed">
 
     <!-- POST 1 -->
-
     <section class="post video1">
 
       <div class="watermark">
@@ -94,7 +92,6 @@
 
 
     <!-- POST 2 -->
-
     <section class="post video2">
 
       <div class="watermark">
@@ -153,7 +150,6 @@
 
 
     <!-- POST 3 -->
-
     <section class="post video3">
 
       <div class="watermark">
@@ -214,7 +210,6 @@
 
 
   <!-- BOTTOM NAV -->
-
   <nav class="bottom-nav">
 
     <button class="nav active">
@@ -246,7 +241,6 @@
 
 
   <!-- SEARCH -->
-
   <section class="search-panel" id="searchPanel">
 
     <div class="search-header">
@@ -290,7 +284,6 @@
 
 
   <!-- COMMENTS -->
-
   <section class="comments" id="comments">
 
     <div class="comments-head">
@@ -357,7 +350,6 @@
 
 
     <!-- STICKER PANEL -->
-
     <div class="sticker-panel" id="stickerPanel">
 
       <div class="sticker-tabs">
@@ -409,6 +401,7 @@
 
       </div>
 
+
       <input
         type="file"
         id="stickerPhotoInput"
@@ -429,7 +422,6 @@
 
 
     <!-- COMMENT COMPOSER -->
-
     <div class="comment-composer">
 
       <button
@@ -464,16 +456,21 @@
 
     </div>
 
+
     <div class="recording-status" id="recordingStatus">
+
       Recording voice comment...
-      <button onclick="stopVoiceComment()">Stop</button>
+
+      <button onclick="stopVoiceComment()">
+        Stop
+      </button>
+
     </div>
 
   </section>
 
 
   <!-- CREATE -->
-
   <section class="create-panel" id="createPanel">
 
     <div class="create-head">
@@ -491,7 +488,9 @@
 
       <button class="create-option">
 
-        <div class="create-option-icon">🎥</div>
+        <div class="create-option-icon">
+          🎥
+        </div>
 
         <div>
           <strong>Upload video</strong>
@@ -503,7 +502,9 @@
 
       <button class="create-option">
 
-        <div class="create-option-icon">🖼️</div>
+        <div class="create-option-icon">
+          🖼️
+        </div>
 
         <div>
           <strong>Upload photo</strong>
@@ -513,15 +514,23 @@
       </button>
 
 
-      <button class="create-option live-option" onclick="tryGoLive()">
+      <button
+        class="create-option live-option"
+        onclick="tryGoLive()"
+      >
 
-        <div class="create-option-icon live-icon">🔴</div>
+        <div class="create-option-icon live-icon">
+          🔴
+        </div>
 
         <div>
+
           <strong>Go LIVE</strong>
+
           <small id="liveStatus">
             Reach 1,000 followers to apply for LIVE
           </small>
+
         </div>
 
       </button>
@@ -532,12 +541,13 @@
 
 
   <!-- LIVE APPROVAL MESSAGE -->
-
   <section class="live-message" id="liveMessage">
 
     <div class="live-message-box">
 
-      <div class="live-message-icon">🔴</div>
+      <div class="live-message-icon">
+        🔴
+      </div>
 
       <h2>OTA X LIVE</h2>
 
@@ -553,7 +563,6 @@
 
 
   <!-- INBOX -->
-
   <section class="inbox" id="inbox">
 
     <div class="inbox-head">
@@ -574,7 +583,9 @@
 
     <div class="conversation">
 
-      <div class="inbox-avatar">A</div>
+      <div class="inbox-avatar">
+        A
+      </div>
 
       <div class="conversation-info">
 
@@ -593,7 +604,9 @@
 
     <div class="conversation">
 
-      <div class="inbox-avatar">O</div>
+      <div class="inbox-avatar">
+        O
+      </div>
 
       <div class="conversation-info">
 
@@ -613,7 +626,6 @@
 
 
   <!-- PROFILE -->
-
   <section class="profile" id="profile">
 
     <div class="profile-head">
@@ -634,32 +646,50 @@
       </div>
 
       <div class="profile-name">
+
         OTA Creator
-        <span class="verified">✓</span>
+
+        <span class="verified">
+          ✓
+        </span>
+
       </div>
 
       <div class="profile-handle">
         @OTAcreator
       </div>
 
+
       <div class="stats">
 
         <div class="stat">
+
           <strong>12</strong>
+
           <span>Following</span>
+
         </div>
 
+
         <div class="stat">
+
           <strong>48.6K</strong>
+
           <span>Followers</span>
+
         </div>
 
+
         <div class="stat">
+
           <strong>1.2M</strong>
+
           <span>Likes</span>
+
         </div>
 
       </div>
+
 
       <button class="edit">
         Edit profile
@@ -687,1653 +717,4 @@
 <script src="script.js"></script>
 
 </body>
-  </html>
-  * {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-:root {
-  --black: #050505;
-  --white: #ffffff;
-  --red: #e50914;
-  --gray: #a8a8a8;
-}
-
-html,
-body {
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  background: var(--black);
-  font-family: Arial, Helvetica, sans-serif;
-  color: var(--white);
-}
-
-button {
-  border: 0;
-  background: none;
-  color: inherit;
-  font-family: inherit;
-  cursor: pointer;
-}
-
-.app {
-  width: 100%;
-  height: 100vh;
-  position: relative;
-  background: #000;
-  overflow: hidden;
-}
-
-/* FEED */
-
-.feed {
-  width: 100%;
-  height: 100vh;
-  overflow-y: scroll;
-  scroll-snap-type: y mandatory;
-  scrollbar-width: none;
-}
-
-.feed::-webkit-scrollbar {
-  display: none;
-}
-
-.post {
-  width: 100%;
-  height: 100vh;
-  position: relative;
-  scroll-snap-align: start;
-  overflow: hidden;
-}
-
-.video1 {
-  background:
-    radial-gradient(circle at 65% 35%, rgba(229,9,20,.55), transparent 30%),
-    linear-gradient(135deg, #030303, #1c0203, #600007);
-}
-
-.video2 {
-  background:
-    radial-gradient(circle at 35% 30%, rgba(255,255,255,.16), transparent 28%),
-    linear-gradient(145deg, #050505, #181818, #500006);
-}
-
-.video3 {
-  background:
-    radial-gradient(circle at 70% 25%, rgba(229,9,20,.6), transparent 30%),
-    linear-gradient(135deg, #090909, #310003, #020202);
-}
-
-.post::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background:
-    linear-gradient(
-      to bottom,
-      rgba(0,0,0,.45),
-      transparent 25%,
-      transparent 55%,
-      rgba(0,0,0,.82)
-    );
-  pointer-events: none;
-}
-
-/* TOP */
-
-.top {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 76px;
-  z-index: 20;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.logo {
-  position: absolute;
-  left: 18px;
-  font-size: 24px;
-  font-weight: 900;
-  letter-spacing: -1px;
-}
-
-.logo-x {
-  color: var(--red);
-  font-size: 29px;
-  font-style: italic;
-  margin-left: 2px;
-}
-
-.feed-tabs {
-  display: flex;
-  align-items: center;
-  gap: 24px;
-  font-size: 15px;
-  font-weight: 700;
-}
-
-.feed-tab {
-  color: rgba(255,255,255,.65);
-  position: relative;
-}
-
-.feed-tab.active {
-  color: white;
-}
-
-.feed-tab.active::after {
-  content: "";
-  position: absolute;
-  height: 3px;
-  width: 22px;
-  border-radius: 5px;
-  background: var(--red);
-  bottom: -9px;
-  left: 50%;
-  transform: translateX(-50%);
-}
-
-.search {
-  position: absolute;
-  right: 17px;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background: rgba(0,0,0,.35);
-  border: 1px solid rgba(255,255,255,.18);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 23px;
-}
-
-/* WATERMARK */
-
-.watermark {
-  position: absolute;
-  top: 47%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-size: 32px;
-  font-weight: 900;
-  opacity: .12;
-  pointer-events: none;
-}
-
-.watermark span {
-  color: var(--red);
-}
-
-/* ACTIONS */
-
-.actions {
-  position: absolute;
-  right: 12px;
-  bottom: 104px;
-  z-index: 10;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 17px;
-}
-
-.creator-avatar {
-  width: 49px;
-  height: 49px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #eeeeee, #555555);
-  border: 2px solid white;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #111;
-  font-size: 19px;
-  font-weight: 900;
-}
-
-.follow {
-  width: 23px;
-  height: 23px;
-  border-radius: 50%;
-  background: var(--red);
-  border: 2px solid white;
-  margin-top: -23px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 900;
-}
-
-.action {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 4px;
-  font-size: 11px;
-  font-weight: 700;
-  text-shadow: 0 2px 6px #000;
-}
-
-.action-icon {
-  width: 46px;
-  height: 46px;
-  border-radius: 15px;
-  background: rgba(0,0,0,.42);
-  border: 1px solid rgba(255,255,255,.15);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 22px;
-  backdrop-filter: blur(7px);
-}
-
-.action.active .action-icon {
-  color: var(--red);
-  border-color: rgba(229,9,20,.7);
-}
-
-.save-icon {
-  width: 18px;
-  height: 21px;
-  border: 2px solid white;
-  border-radius: 4px;
-  position: relative;
-}
-
-.save-icon::after {
-  content: "";
-  position: absolute;
-  bottom: -2px;
-  left: 3px;
-  width: 8px;
-  height: 8px;
-  background: #000;
-  border-left: 2px solid white;
-  border-bottom: 2px solid white;
-  transform: rotate(-45deg);
-}
-
-/* POST INFO */
-
-.post-info {
-  position: absolute;
-  left: 16px;
-  right: 85px;
-  bottom: 88px;
-  z-index: 10;
-}
-
-.username {
-  font-size: 17px;
-  font-weight: 800;
-  margin-bottom: 9px;
-}
-
-.verified {
-  display: inline-flex;
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  background: var(--red);
-  color: black;
-  align-items: center;
-  justify-content: center;
-  font-size: 11px;
-  font-weight: 900;
-  margin-left: 3px;
-}
-
-.caption {
-  font-size: 14px;
-  line-height: 1.4;
-  margin-bottom: 10px;
-}
-
-.sound {
-  font-size: 13px;
-  color: #ddd;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-/* NAV */
-
-.bottom-nav {
-  position: fixed;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 67px;
-  z-index: 30;
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  background: rgba(0,0,0,.94);
-  border-top: 1px solid rgba(255,255,255,.08);
-}
-
-.nav {
-  width: 20%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 5px;
-  color: #8e8e8e;
-  font-size: 10px;
-}
-
-.nav.active {
-  color: white;
-}
-
-.nav-icon {
-  width: 24px;
-  height: 24px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 21px;
-}
-
-.create {
-  width: 48px;
-  height: 35px;
-  border-radius: 12px;
-  background: white;
-  color: black;
-  font-size: 25px;
-  font-weight: 900;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: relative;
-}
-
-.create::before {
-  content: "";
-  position: absolute;
-  left: -5px;
-  top: 3px;
-  width: 7px;
-  height: 29px;
-  border-radius: 7px;
-  background: var(--red);
-}
-
-/* SEARCH */
-
-.search-panel {
-  position: fixed;
-  inset: 0;
-  z-index: 100;
-  background: #050505;
-  display: none;
-  padding: 20px;
-}
-
-.search-panel.open {
-  display: block;
-}
-
-.search-header {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.back {
-  font-size: 30px;
-}
-
-.search-input {
-  flex: 1;
-  height: 46px;
-  border-radius: 25px;
-  background: #151515;
-  border: 1px solid #333;
-  color: white;
-  padding: 0 17px;
-  outline: none;
-  font-size: 15px;
-}
-
-.trending {
-  margin-top: 30px;
-}
-
-.trending h3 {
-  margin-bottom: 15px;
-}
-
-.topic {
-  padding: 15px;
-  background: #151515;
-  border-radius: 12px;
-  margin-bottom: 9px;
-}
-
-.topic small {
-  display: block;
-  color: var(--gray);
-  margin-top: 4px;
-}
-
-/* COMMENTS */
-
-.comments {
-  position: fixed;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 65%;
-  z-index: 200;
-  background: #101010;
-  border-radius: 22px 22px 0 0;
-  transform: translateY(100%);
-  transition: .25s;
-  display: flex;
-  flex-direction: column;
-}
-
-.comments.open {
-  transform: translateY(0);
-}
-
-.comments-head {
-  height: 58px;
-  min-height: 58px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 18px;
-  border-bottom: 1px solid #222;
-}
-
-.comments-head button {
-  font-size: 26px;
-  width: 35px;
-}
-
-.comments-title {
-  font-size: 14px;
-  font-weight: 800;
-}
-
-.comment-list {
-  flex: 1;
-  overflow-y: auto;
-  padding: 18px;
-}
-
-.comment {
-  display: flex;
-  gap: 10px;
-  margin-bottom: 20px;
-}
-
-.comment-photo {
-  width: 38px;
-  height: 38px;
-  min-width: 38px;
-  border-radius: 50%;
-  background: linear-gradient(135deg,#ddd,#555);
-  color: #111;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: bold;
-}
-
-.comment-body {
-  flex: 1;
-}
-
-.comment-name {
-  color: #999;
-  font-size: 12px;
-  margin-bottom: 4px;
-}
-
-.comment-text {
-  font-size: 14px;
-  line-height: 1.4;
-}
-
-.comment-tools {
-  display: flex;
-  gap: 13px;
-  margin-top: 7px;
-  color: #777;
-  font-size: 11px;
-}
-
-.comment-tools button {
-  color: #aaa;
-}
-
-/* COMMENT COMPOSER */
-
-.comment-composer {
-  min-height: 62px;
-  padding: 9px 12px;
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  background: #151515;
-  border-top: 1px solid #292929;
-}
-
-.composer-button {
-  width: 38px;
-  height: 38px;
-  border-radius: 50%;
-  background: #222;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 18px;
-}
-
-.comment-input {
-  flex: 1;
-  min-width: 0;
-  height: 40px;
-  border-radius: 21px;
-  background: #222;
-  border: 1px solid #333;
-  color: white;
-  padding: 0 14px;
-  outline: none;
-}
-
-.send-comment {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background: var(--red);
-  color: white;
-  font-size: 18px;
-}
-
-.recording-status {
-  display: none;
-  padding: 10px 15px;
-  background: #210005;
-  color: white;
-  font-size: 12px;
-  text-align: center;
-}
-
-.recording-status button {
-  margin-left: 10px;
-  color: var(--red);
-  font-weight: bold;
-}
-
-/* STICKERS */
-
-.sticker-panel {
-  display: none;
-  background: #151515;
-  border-top: 1px solid #292929;
-  padding: 12px;
-  max-height: 220px;
-  overflow-y: auto;
-}
-
-.sticker-panel.open {
-  display: block;
-}
-
-.sticker-tabs {
-  display: flex;
-  gap: 20px;
-  margin-bottom: 12px;
-}
-
-.sticker-tab {
-  color: #888;
-  padding-bottom: 5px;
-}
-
-.sticker-tab.active {
-  color: white;
-  border-bottom: 2px solid var(--red);
-}
-
-.sticker-grid {
-  display: grid;
-  grid-template-columns: repeat(6,1fr);
-  gap: 8px;
-}
-
-.sticker-grid button {
-  height: 45px;
-  border-radius: 10px;
-  background: #222;
-  font-size: 24px;
-}
-
-.create-sticker-row {
-  display: flex;
-  gap: 8px;
-  margin-top: 12px;
-}
-
-.create-sticker-row button {
-  flex: 1;
-  background: #222;
-  border-radius: 10px;
-  padding: 10px 5px;
-  font-size: 11px;
-}
-
-/* CREATE PANEL */
-
-.create-panel {
-  position: fixed;
-  inset: 0;
-  z-index: 300;
-  background: #050505;
-  display: none;
-}
-
-.create-panel.open {
-  display: block;
-}
-
-.create-head {
-  height: 65px;
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  align-items: center;
-  padding: 0 18px;
-  border-bottom: 1px solid #222;
-  text-align: center;
-}
-
-.create-head button {
-  justify-self: start;
-  font-size: 27px;
-}
-
-.create-options {
-  padding: 20px;
-}
-
-.create-option {
-  width: 100%;
-  padding: 18px;
-  background: #151515;
-  border-radius: 15px;
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  margin-bottom: 12px;
-  text-align: left;
-  border: 1px solid #242424;
-}
-
-.create-option-icon {
-  width: 50px;
-  height: 50px;
-  border-radius: 13px;
-  background: #222;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 25px;
-}
-
-.create-option strong,
-.create-option small {
-  display: block;
-}
-
-.create-option small {
-  color: #888;
-  margin-top: 5px;
-}
-
-.live-option {
-  border-color: rgba(229,9,20,.35);
-}
-
-.live-icon {
-  color: var(--red);
-}
-
-/* LIVE MESSAGE */
-
-.live-message {
-  position: fixed;
-  inset: 0;
-  z-index: 400;
-  background: rgba(0,0,0,.8);
-  display: none;
-  align-items: center;
-  justify-content: center;
-  padding: 25px;
-}
-
-.live-message.open {
-  display: flex;
-}
-
-.live-message-box {
-  width: 100%;
-  max-width: 350px;
-  background: #151515;
-  border: 1px solid #333;
-  border-radius: 20px;
-  padding: 28px;
-  text-align: center;
-}
-
-.live-message-icon {
-  font-size: 42px;
-  margin-bottom: 12px;
-}
-
-.live-message-box h2 {
-  margin-bottom: 10px;
-}
-
-.live-message-box p {
-  color: #aaa;
-  line-height: 1.5;
-  font-size: 14px;
-  margin-bottom: 20px;
-}
-
-.live-message-box button {
-  background: var(--red);
-  padding: 11px 30px;
-  border-radius: 10px;
-}
-
-/* INBOX */
-
-.inbox {
-  position: fixed;
-  inset: 0;
-  z-index: 250;
-  background: #050505;
-  display: none;
-  overflow-y: auto;
-}
-
-.inbox.open {
-  display: block;
-}
-
-.inbox-head {
-  height: 65px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 18px;
-  border-bottom: 1px solid #222;
-}
-
-.inbox-head button {
-  font-size: 23px;
-}
-
-.inbox-search {
-  margin: 15px;
-  padding: 13px;
-  border-radius: 10px;
-  background: #151515;
-  color: #777;
-}
-
-.conversation {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 15px 18px;
-  border-bottom: 1px solid #181818;
-}
-
-.inbox-avatar {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  background: linear-gradient(135deg,#eee,#555);
-  color: #111;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: bold;
-}
-
-.conversation-info {
-  flex: 1;
-}
-
-.conversation-info strong,
-.conversation-info span {
-  display: block;
-}
-
-.conversation-info span {
-  color: #888;
-  font-size: 13px;
-  margin-top: 5px;
-}
-
-.conversation-time {
-  color: #777;
-  font-size: 11px;
-}
-
-/* PROFILE */
-
-.profile {
-  position: fixed;
-  inset: 0;
-  z-index: 150;
-  background: #050505;
-  display: none;
-  overflow-y: auto;
-}
-
-.profile.open {
-  display: block;
-}
-
-.profile-head {
-  height: 60px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 18px;
-}
-
-.profile-head button {
-  font-size: 30px;
-}
-
-.profile-main {
-  text-align: center;
-  padding: 20px;
-}
-
-.profile-photo {
-  width: 94px;
-  height: 94px;
-  border-radius: 50%;
-  margin: auto;
-  border: 3px solid var(--red);
-  background: linear-gradient(135deg,#eee,#444);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #111;
-  font-size: 28px;
-  font-weight: 900;
-}
-
-.profile-name {
-  margin-top: 12px;
-  font-size: 20px;
-  font-weight: 900;
-}
-
-.profile-handle {
-  color: #888;
-  margin-top: 4px;
-}
-
-.stats {
-  display: flex;
-  justify-content: center;
-  gap: 30px;
-  margin: 22px 0;
-}
-
-.stat strong {
-  display: block;
-  font-size: 18px;
-}
-
-.stat span {
-  color: #888;
-  font-size: 12px;
-}
-
-.edit {
-  padding: 10px 28px;
-  border: 1px solid #444;
-  border-radius: 8px;
-}
-
-.grid {
-  display: grid;
-  grid-template-columns: repeat(3,1fr);
-  gap: 2px;
-}
-
-.grid div {
-  aspect-ratio: 1;
-  background: linear-gradient(135deg,#260003,#a0000b);
-}
-
-.grid div:nth-child(2n) {
-  background: linear-gradient(135deg,#181818,#555);
-}
-
-/* DESKTOP */
-
-@media (min-width: 700px) {
-
-  .app {
-    max-width: 500px;
-    margin: auto;
-  }
-
-  .top,
-  .bottom-nav {
-    max-width: 500px;
-    left: 50%;
-    right: auto;
-    width: 100%;
-    transform: translateX(-50%);
-  }
-
-}
-/* =========================
-   OTA X BASIC FUNCTIONS
-========================= */
-
-function toggleLike(button) {
-
-  button.classList.toggle("active");
-
-  const icon = button.querySelector(".action-icon");
-
-  if (button.classList.contains("active")) {
-    icon.textContent = "♥";
-  } else {
-    icon.textContent = "♡";
-  }
-
-}
-
-
-/* =========================
-   SEARCH
-========================= */
-
-function openSearch() {
-
-  document
-    .getElementById("searchPanel")
-    .classList.add("open");
-
-}
-
-function closeSearch() {
-
-  document
-    .getElementById("searchPanel")
-    .classList.remove("open");
-
-}
-
-
-/* =========================
-   COMMENTS
-========================= */
-
-function openComments() {
-
-  document
-    .getElementById("comments")
-    .classList.add("open");
-
-}
-
-function closeComments() {
-
-  document
-    .getElementById("comments")
-    .classList.remove("open");
-
-}
-
-
-/* =========================
-   SEND TEXT COMMENT
-========================= */
-
-function sendComment() {
-
-  const input =
-    document.getElementById("commentInput");
-
-  const text =
-    input.value.trim();
-
-  if (!text) return;
-
-  const list =
-    document.getElementById("commentList");
-
-  const comment =
-    document.createElement("div");
-
-  comment.className = "comment";
-
-  comment.innerHTML = `
-    <div class="comment-photo">O</div>
-
-    <div class="comment-body">
-
-      <div class="comment-name">
-        @OTAcreator
-      </div>
-
-      <div class="comment-text">
-        ${escapeHTML(text)}
-      </div>
-
-      <div class="comment-tools">
-        <span>now</span>
-        <button>♡</button>
-        <button>Reply</button>
-      </div>
-
-    </div>
-  `;
-
-  list.appendChild(comment);
-
-  input.value = "";
-
-  updateCommentCount();
-
-  list.scrollTop = list.scrollHeight;
-
-}
-
-
-/* Enter key */
-
-function handleCommentKey(event) {
-
-  if (event.key === "Enter") {
-    sendComment();
-  }
-
-}
-
-
-/* Protect displayed text */
-
-function escapeHTML(text) {
-
-  const div =
-    document.createElement("div");
-
-  div.textContent = text;
-
-  return div.innerHTML;
-
-}
-
-
-/* Comment count */
-
-function updateCommentCount() {
-
-  const list =
-    document.getElementById("commentList");
-
-  const count =
-    list.querySelectorAll(".comment").length;
-
-  const countElement =
-    document.getElementById("commentCount");
-
-  const oldCount =
-    parseInt(countElement.textContent) || 840;
-
-  countElement.textContent =
-    oldCount + 1;
-
-}
-
-
-/* =========================
-   STICKERS
-========================= */
-
-function toggleStickerPanel() {
-
-  document
-    .getElementById("stickerPanel")
-    .classList.toggle("open");
-
-}
-
-
-/* Send emoji/sticker */
-
-function sendSticker(sticker) {
-
-  const list =
-    document.getElementById("commentList");
-
-  const comment =
-    document.createElement("div");
-
-  comment.className = "comment";
-
-  comment.innerHTML = `
-    <div class="comment-photo">O</div>
-
-    <div class="comment-body">
-
-      <div class="comment-name">
-        @OTAcreator
-      </div>
-
-      <div class="comment-text sticker-comment">
-        ${sticker}
-      </div>
-
-      <div class="comment-tools">
-        <span>now</span>
-        <button>♡</button>
-        <button>Reply</button>
-      </div>
-
-    </div>
-  `;
-
-  list.appendChild(comment);
-
-  document
-    .getElementById("stickerPanel")
-    .classList.remove("open");
-
-  updateCommentCount();
-
-  list.scrollTop = list.scrollHeight;
-
-}
-
-
-/* =========================
-   PHOTO STICKER
-========================= */
-
-function chooseStickerPhoto() {
-
-  document
-    .getElementById("stickerPhotoInput")
-    .click();
-
-}
-
-
-function createPhotoSticker(event) {
-
-  const file =
-    event.target.files[0];
-
-  if (!file) return;
-
-  const url =
-    URL.createObjectURL(file);
-
-  const list =
-    document.getElementById("commentList");
-
-  const comment =
-    document.createElement("div");
-
-  comment.className = "comment";
-
-  comment.innerHTML = `
-    <div class="comment-photo">O</div>
-
-    <div class="comment-body">
-
-      <div class="comment-name">
-        @OTAcreator
-      </div>
-
-      <div class="comment-text">
-
-        <img
-          src="${url}"
-          style="
-            max-width:150px;
-            max-height:150px;
-            border-radius:12px;
-            display:block;
-          "
-        >
-
-      </div>
-
-      <div class="comment-tools">
-        <span>now</span>
-        <button>♡</button>
-        <button>Reply</button>
-      </div>
-
-    </div>
-  `;
-
-  list.appendChild(comment);
-
-  updateCommentCount();
-
-  document
-    .getElementById("stickerPanel")
-    .classList.remove("open");
-
-}
-
-
-/* =========================
-   VIDEO STICKER
-========================= */
-
-function chooseStickerVideo() {
-
-  document
-    .getElementById("stickerVideoInput")
-    .click();
-
-}
-
-
-function createVideoSticker(event) {
-
-  const file =
-    event.target.files[0];
-
-  if (!file) return;
-
-  const url =
-    URL.createObjectURL(file);
-
-  const list =
-    document.getElementById("commentList");
-
-  const comment =
-    document.createElement("div");
-
-  comment.className = "comment";
-
-  comment.innerHTML = `
-    <div class="comment-photo">O</div>
-
-    <div class="comment-body">
-
-      <div class="comment-name">
-        @OTAcreator
-      </div>
-
-      <div class="comment-text">
-
-        <video
-          src="${url}"
-          controls
-          autoplay
-          loop
-          muted
-          playsinline
-          style="
-            width:150px;
-            max-height:180px;
-            border-radius:12px;
-            display:block;
-          "
-        ></video>
-
-      </div>
-
-      <div class="comment-tools">
-        <span>now</span>
-        <button>♡</button>
-        <button>Reply</button>
-      </div>
-
-    </div>
-  `;
-
-  list.appendChild(comment);
-
-  updateCommentCount();
-
-  document
-    .getElementById("stickerPanel")
-    .classList.remove("open");
-
-}
-
-
-/* =========================
-   VOICE COMMENTS
-========================= */
-
-let mediaRecorder = null;
-let audioChunks = [];
-let recordingStream = null;
-
-
-async function startVoiceComment() {
-
-  if (mediaRecorder &&
-      mediaRecorder.state === "recording") {
-
-    stopVoiceComment();
-    return;
-
-  }
-
-  try {
-
-    recordingStream =
-      await navigator.mediaDevices.getUserMedia({
-        audio: true
-      });
-
-    mediaRecorder =
-      new MediaRecorder(recordingStream);
-
-    audioChunks = [];
-
-    mediaRecorder.ondataavailable =
-      function(event) {
-
-        if (event.data.size > 0) {
-          audioChunks.push(event.data);
-        }
-
-      };
-
-
-    mediaRecorder.onstop =
-      function() {
-
-        const audioBlob =
-          new Blob(
-            audioChunks,
-            { type: "audio/webm" }
-          );
-
-        const audioURL =
-          URL.createObjectURL(audioBlob);
-
-        addVoiceComment(audioURL);
-
-      };
-
-
-    mediaRecorder.start();
-
-    document
-      .getElementById("recordingStatus")
-      .style.display = "block";
-
-    document
-      .getElementById("voiceButton")
-      .textContent = "⏹️";
-
-  }
-
-  catch (error) {
-
-    alert(
-      "OTA X needs microphone permission to record a voice comment."
-    );
-
-  }
-
-}
-
-
-function stopVoiceComment() {
-
-  if (!mediaRecorder) return;
-
-  if (mediaRecorder.state === "recording") {
-    mediaRecorder.stop();
-  }
-
-  if (recordingStream) {
-
-    recordingStream
-      .getTracks()
-      .forEach(track => track.stop());
-
-  }
-
-  document
-    .getElementById("recordingStatus")
-    .style.display = "none";
-
-  document
-    .getElementById("voiceButton")
-    .textContent = "🎤";
-
-}
-
-
-function addVoiceComment(audioURL) {
-
-  const list =
-    document.getElementById("commentList");
-
-  const comment =
-    document.createElement("div");
-
-  comment.className = "comment";
-
-  comment.innerHTML = `
-    <div class="comment-photo">O</div>
-
-    <div class="comment-body">
-
-      <div class="comment-name">
-        @OTAcreator
-      </div>
-
-      <div class="comment-text">
-
-        <audio
-          src="${audioURL}"
-          controls
-          style="width:210px;"
-        ></audio>
-
-      </div>
-
-      <div class="comment-tools">
-        <span>now</span>
-        <button>♡</button>
-        <button>Reply</button>
-      </div>
-
-    </div>
-  `;
-
-  list.appendChild(comment);
-
-  updateCommentCount();
-
-}
-
-
-/* =========================
-   CREATE MENU
-========================= */
-
-function openCreate() {
-
-  document
-    .getElementById("createPanel")
-    .classList.add("open");
-
-}
-
-function closeCreate() {
-
-  document
-    .getElementById("createPanel")
-    .classList.remove("open");
-
-}
-
-
-/* =========================
-   LIVE ELIGIBILITY
-========================= */
-
-/*
-   Demo account follower count.
-
-   Later this will come from the
-   OTA X backend/database.
-*/
-
-let currentFollowers = 48600;
-
-
-/*
-   Important:
-
-   1,000 followers does NOT automatically
-   approve someone for LIVE.
-
-   It only allows them to APPLY.
-
-   OTA X owner/admin approval is required.
-*/
-
-let liveApproved = false;
-
-
-function tryGoLive() {
-
-  const message =
-    document.getElementById("liveMessage");
-
-  const messageText =
-    document.getElementById("liveMessageText");
-
-
-  if (currentFollowers < 1000) {
-
-    messageText.textContent =
-      "You need at least 1,000 followers before you can apply for OTA X LIVE.";
-
-    message.classList.add("open");
-
-    return;
-
-  }
-
-
-  if (!liveApproved) {
-
-    messageText.textContent =
-      "You have reached 1,000 followers and can apply for LIVE. Your account must be reviewed and approved by OTA X before you can start a LIVE.";
-
-    message.classList.add("open");
-
-    return;
-
-  }
-
-
-  messageText.textContent =
-    "Your LIVE access is approved. The OTA X LIVE screen will open here.";
-
-  message.classList.add("open");
-
-}
-
-
-function closeLiveMessage() {
-
-  document
-    .getElementById("liveMessage")
-    .classList.remove("open");
-
-}
-
-
-/* =========================
-   INBOX
-========================= */
-
-function openInbox() {
-
-  document
-    .getElementById("inbox")
-    .classList.add("open");
-
-}
-
-function closeInbox() {
-
-  document
-    .getElementById("inbox")
-    .classList.remove("open");
-
-}
-
-
-/* =========================
-   PROFILE
-========================= */
-
-function openProfile() {
-
-  document
-    .getElementById("profile")
-    .classList.add("open");
-
-}
-
-function closeProfile() {
-
-  document
-    .getElementById("profile")
-    .classList.remove("open");
-
-}
-
-
-/* =========================
-   CLOSE COMMENTS BY OUTSIDE TAP
-========================= */
-
-document
-  .getElementById("comments")
-  .addEventListener(
-    "click",
-    function(event) {
-
-      if (event.target === this) {
-        closeComments();
-      }
-
-    }
-  );
+        </html>

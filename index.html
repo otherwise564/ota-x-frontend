@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>OTAX - Platform</title>
+    <!-- Include Supabase Client Library -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         * {
             box-sizing: border-box;
@@ -95,6 +97,44 @@
             align-items: center;
         }
 
+        /* Auth Screen */
+        #auth-screen {
+            background: #121212;
+            justify-content: center;
+            align-items: center;
+            padding: 30px;
+        }
+
+        .auth-box {
+            width: 100%;
+            max-width: 320px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            text-align: center;
+        }
+
+        .auth-input {
+            background: #1f1f1f;
+            border: 1px solid #333;
+            padding: 14px;
+            border-radius: 8px;
+            color: #fff;
+            font-size: 14px;
+            outline: none;
+        }
+
+        .auth-btn {
+            background: #fe2c55;
+            color: #fff;
+            border: none;
+            padding: 14px;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 15px;
+            cursor: pointer;
+        }
+
         /* Home Screen */
         #home-screen {
             background: #1a1a1a;
@@ -134,26 +174,32 @@
             font-size: 14px;
         }
 
-        /* Camera / Creation Studio Screen */
+        /* Camera Studio Screen */
         #camera-screen {
             background: #000;
             justify-content: space-between;
             align-items: center;
-            padding: 30px 20px;
+            padding: 20px;
         }
 
         .camera-viewfinder {
             width: 100%;
             flex: 1;
-            background: #222;
+            background: #000;
             border-radius: 12px;
+            overflow: hidden;
+            position: relative;
             display: flex;
             justify-content: center;
             align-items: center;
-            color: #777;
-            font-size: 16px;
-            margin-bottom: 20px;
-            border: 1px dashed #444;
+            margin-bottom: 15px;
+            border: 1px solid #333;
+        }
+
+        #live-camera {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
         .camera-controls {
@@ -242,7 +288,7 @@
 
         /* Profile Screen */
         #profile-screen {
-            padding: 20px;
+            padding: 0;
             background: #121212;
         }
 
@@ -250,15 +296,16 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            margin-top: 20px;
+            padding: 25px 20px 15px 20px;
         }
 
         .profile-avatar {
-            width: 90px;
-            height: 90px;
+            width: 85px;
+            height: 85px;
             border-radius: 50%;
             background: #333;
             margin-bottom: 10px;
+            border: 2px solid #444;
         }
 
         .profile-stats {
@@ -274,16 +321,73 @@
             font-weight: bold;
             font-size: 16px;
         }
+
+        .profile-tabs {
+            display: flex;
+            border-bottom: 1px solid #222;
+            width: 100%;
+        }
+
+        .profile-tab {
+            flex: 1;
+            text-align: center;
+            padding: 12px;
+            background: none;
+            border: none;
+            color: #777;
+            font-size: 14px;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+        }
+
+        .profile-tab.active {
+            color: #fff;
+            border-bottom-color: #fff;
+            font-weight: bold;
+        }
+
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2px;
+            padding: 2px;
+            padding-bottom: 70px;
+        }
+
+        .grid-item {
+            aspect-ratio: 9/16;
+            background: #222;
+            position: relative;
+            display: flex;
+            align-items: flex-end;
+            padding: 6px;
+            font-size: 11px;
+            color: #fff;
+            background: linear-gradient(135deg, #2a2a2a, #111);
+        }
     </style>
 </head>
 <body>
 
     <div id="app-container">
         
+        <!-- AUTHENTICATION SCREEN -->
+        <div id="auth-screen" class="screen active">
+            <div class="auth-box">
+                <h2 style="margin-bottom: 10px;">Welcome to OTAX</h2>
+                <p style="color: #888; font-size: 13px; margin-bottom: 20px;">Sign in or create an account to start posting.</p>
+                <input type="email" id="auth-email" class="auth-input" placeholder="Email address">
+                <input type="password" id="auth-password" class="auth-input" placeholder="Password">
+                <button class="auth-btn" onclick="handleSignUp()">Sign Up</button>
+                <button class="auth-btn" style="background: transparent; border: 1px solid #444;" onclick="handleSignIn()">Log In</button>
+                <p id="auth-error" style="color: #fe2c55; font-size: 12px; margin-top: 10px;"></p>
+            </div>
+        </div>
+
         <!-- HOME SCREEN -->
-        <div id="home-screen" class="screen active">
+        <div id="home-screen" class="screen">
             <div class="video-feed-placeholder">
-                <p>🎥 OTAX Video Feed</p>
+                <p>🎥 OTAX Live Feed</p>
                 <div class="feed-actions">
                     <button class="action-icon" onclick="openComments()">💬</button>
                     <button class="action-icon">❤️</button>
@@ -303,12 +407,12 @@
         <!-- CAMERA / CREATION STUDIO SCREEN -->
         <div id="camera-screen" class="screen">
             <div class="camera-viewfinder">
-                <span>📷 Camera Viewfinder / Studio</span>
+                <video id="live-camera" autoplay playsinline></video>
             </div>
             <div class="camera-controls">
-                <button class="cam-tool-btn">Flip</button>
-                <button class="capture-btn" onclick="alert('Media Captured!')"></button>
-                <button class="cam-tool-btn">Effects</button>
+                <button class="cam-tool-btn" onclick="toggleCamera()">Flip</button>
+                <button class="capture-btn" onclick="uploadVideoRecord()"></button>
+                <button class="cam-tool-btn" onclick="alert('Effects opened')">Effects</button>
             </div>
         </div>
 
@@ -324,13 +428,23 @@
         <div id="profile-screen" class="screen">
             <div class="profile-header">
                 <div class="profile-avatar"></div>
-                <h3>@otax_user</h3>
+                <h3 id="profile-username">@otax_user</h3>
                 <div class="profile-stats">
                     <div><span>244</span>Following</div>
                     <div><span>303</span>Followers</div>
                     <div><span>1,117</span>Likes</div>
                 </div>
-                <p style="font-size: 13px; color: #aaa; text-align: center;">Building the future of social interaction ✨</p>
+                <button onclick="handleSignOut()" style="background: #222; border: 1px solid #444; color: #fff; padding: 6px 15px; border-radius: 6px; font-size: 12px; margin-top: 10px; cursor: pointer;">Log Out</button>
+            </div>
+            <div class="profile-tabs">
+                <button class="profile-tab active">Videos</button>
+                <button class="profile-tab">Liked</button>
+                <button class="profile-tab">Saved</button>
+            </div>
+            <div class="video-grid">
+                <div class="grid-item">▶ 1.2k</div>
+                <div class="grid-item">▶ 450</div>
+                <div class="grid-item">▶ 3.1k</div>
             </div>
         </div>
 
@@ -343,16 +457,16 @@
             <div class="comments-list">
                 <div class="comment-item">
                     <div class="comment-user">CommunityMember</div>
-                    <div>This platform layout is super clean 🔥</div>
+                    <div>This backend integration is amazing! 🔥</div>
                 </div>
             </div>
         </div>
 
         <!-- BOTTOM NAVIGATION BAR -->
-        <nav class="bottom-nav">
+        <nav class="bottom-nav" id="main-nav" style="display: none;">
             <button class="nav-item active" onclick="switchScreen('home-screen', this)">🏠<span>Home</span></button>
             <button class="nav-item" onclick="switchScreen('friends-screen', this)">👥<span>Friends</span></button>
-            <button class="create-btn-nav" onclick="switchScreen('camera-screen', this)">+</button>
+            <button class="create-btn-nav" onclick="switchScreen('camera-screen', this); startCamera();">+</button>
             <button class="nav-item" onclick="switchScreen('inbox-screen', this)">📥<span>Inbox</span></button>
             <button class="nav-item" onclick="switchScreen('profile-screen', this)">👤<span>Profile</span></button>
         </nav>
@@ -360,6 +474,58 @@
     </div>
 
     <script>
+        // --- SUPABASE CONFIGURATION ---
+        // Replace these with your actual Supabase project URL and anon public key from supabase.com
+        const SUPABASE_URL = 'YOUR_SUPABASE_URL';
+        const SUPABASE_ANON_KEY = 'YOUR_SUPABASE_ANON_KEY';
+        
+        const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        let mediaStream = null;
+        let useFrontCamera = true;
+
+        // Check active session on load
+        window.addEventListener('DOMContentLoaded', async () => {
+            const { data: { session } } = await supabaseClient.auth.getSession();
+            if (session) {
+                onUserLoggedIn(session.user);
+            }
+        });
+
+        async function handleSignUp() {
+            const email = document.getElementById('auth-email').value;
+            const password = document.getElementById('auth-password').value;
+            const { data, error } = await supabaseClient.auth.signUp({ email, password });
+            if (error) {
+                document.getElementById('auth-error').innerText = error.message;
+            } else {
+                alert('Account created! Check your email or log in.');
+            }
+        }
+
+        async function handleSignIn() {
+            const email = document.getElementById('auth-email').value;
+            const password = document.getElementById('auth-password').value;
+            const { data, error } = await supabaseClient.auth.signInWithPassword({ email, password });
+            if (error) {
+                document.getElementById('auth-error').innerText = error.message;
+            } else {
+                onUserLoggedIn(data.user);
+            }
+        }
+
+        async function handleSignOut() {
+            await supabaseClient.auth.signOut();
+            document.getElementById('main-nav').style.display = 'none';
+            switchScreen('auth-screen');
+        }
+
+        function onUserLoggedIn(user) {
+            document.getElementById('profile-username').innerText = '@' + user.email.split('@')[0];
+            document.getElementById('main-nav').style.display = 'flex';
+            switchScreen('home-screen');
+        }
+
         const switchScreen = (screenId, element) => {
             document.querySelectorAll('.screen').forEach(screen => {
                 screen.classList.remove('active');
@@ -367,10 +533,43 @@
             const targetScreen = document.getElementById(screenId);
             if (targetScreen) targetScreen.classList.add('active');
             
-            document.querySelectorAll('.bottom-nav .nav-item, .bottom-nav .create-btn-nav').forEach(item => {
-                item.classList.remove('active');
-            });
-            if (element) element.classList.add('active');
+            if (element) {
+                document.querySelectorAll('.bottom-nav .nav-item, .bottom-nav .create-btn-nav').forEach(item => {
+                    item.classList.remove('active');
+                });
+                element.classList.add('active');
+            }
+
+            if (screenId !== 'camera-screen' && mediaStream) {
+                mediaStream.getTracks().forEach(track => track.stop());
+                mediaStream = null;
+            }
+        };
+
+        const startCamera = async () => {
+            try {
+                if (mediaStream) {
+                    mediaStream.getTracks().forEach(track => track.stop());
+                }
+                const constraints = {
+                    video: { facingMode: useFrontCamera ? 'user' : 'environment' },
+                    audio: true
+                };
+                mediaStream = await navigator.mediaDevices.getUserMedia(constraints);
+                const videoElement = document.getElementById('live-camera');
+                videoElement.srcObject = mediaStream;
+            } catch (error) {
+                console.error("Camera access denied or unavailable:", error);
+            }
+        };
+
+        const toggleCamera = () => {
+            useFrontCamera = !useFrontCamera;
+            startCamera();
+        };
+
+        const uploadVideoRecord = () => {
+            alert('Video capture triggered! Ready to push to Supabase Storage bucket.');
         };
 
         const openComments = () => {

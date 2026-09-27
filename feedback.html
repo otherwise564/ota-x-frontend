@@ -1,1 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OTA X - Feedback</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <main style="max-width: 600px; margin: 0 auto; padding: 40px 20px; font-family: sans-serif; color: #333; line-height: 1.6;">
+        <h1>OTA X Feedback</h1>
+        <p style="color: #666;">Your feedback helps us improve OTA X and build features that are useful for the community.</p>
 
+        <div style="background-color: #fffbeb; border-left: 4px solid #f59e0b; padding: 12px; margin: 20px 0; font-size: 14px; color: #92400e;">
+            <strong>Important:</strong> Do not include your password, payment information, or other sensitive information in your feedback.
+        </div>
+
+        <form id="feedbackForm" style="display: flex; flex-direction: column; gap: 16px;">
+            <div>
+                <label style="display: block; font-weight: 600; margin-bottom: 6px;">What would you like to share?</label>
+                <select style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px;">
+                    <option>Bugs or technical problems</option>
+                    <option>Features you would like to see</option>
+                    <option>Suggestions for improving OTA X</option>
+                    <option>Safety or content concerns</option>
+                    <option>General ideas about the platform</option>
+                </select>
+            </div>
+
+            <div>
+                <label style="display: block; font-weight: 600; margin-bottom: 6px;">Describe your issue or suggestion:</label>
+                <textarea rows="5" required placeholder="Provide as much useful information as possible..." style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 4px;"></textarea>
+            </div>
+
+            <button type="submit" style="background-color: #000; color: #fff; padding: 12px; border: none; border-radius: 4px; font-weight: 600; cursor: pointer;">
+                Submit Feedback
+            </button>
+        </form>
+
+        <div id="successMessage" style="display: none; background-color: #ecfdf5; color: #065f46; padding: 20px; border-radius: 4px; text-align: center; margin-top: 20px;">
+            Thank you! Your feedback has been successfully submitted.
+        </div>
+
+        <p style="margin-top: 40px;"><a href="index.html">&larr; Back to Home</a></p>
+    </main>
+
+    <script>
+        document.getElementById('feedbackForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            this.style.display = 'none';
+            document.getElementById('successMessage').style.display = 'block';
+        });
+    </script>
+</body>
+</html>

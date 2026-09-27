@@ -6,7 +6,7 @@
     <title>OTA X - Global Video Ecosystem</title>
     <!-- FontAwesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Custom TikTok-Standard Styling -->
+    <!-- Custom TikTok-Standard Styling with Electric Rotating Ring -->
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
         body { background-color: #0f0f0f; color: #ffffff; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
@@ -14,21 +14,71 @@
         .hidden { display: none !important; }
         
         /* Auth Screen Styling */
-        #auth-screen { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #121212; z-index: 100; display: flex; flex-direction: column; justify-content: space-between; padding: 30px 20px; }
-        .auth-header { text-align: center; margin-top: 40px; }
-        .auth-header h1 { font-size: 32px; font-weight: 800; color: #ff3b5c; letter-spacing: 1px; }
-        .auth-header p { color: #888; font-size: 14px; margin-top: 5px; }
-        .auth-body { display: flex; flex-direction: column; gap: 15px; }
+        #auth-screen { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #121212; z-index: 100; display: flex; flex-direction: column; justify-content: space-between; padding: 25px 20px; overflow-y: auto; }
+        
+        /* Rotating Electric Border Ring */
+        .auth-logo-container { display: flex; flex-direction: column; align-items: center; margin-top: 20px; }
+        .electric-ring-wrapper {
+            position: relative;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #000;
+        }
+        .electric-ring-wrapper::before {
+            content: '';
+            position: absolute;
+            inset: -3px;
+            border-radius: 50%;
+            background: conic-gradient(from 0deg, #ff3b5c, #00ffcc, #ff3b5c);
+            animation: rotateGlow 3s linear infinite;
+            z-index: 1;
+        }
+        .electric-ring-wrapper::after {
+            content: '';
+            position: absolute;
+            inset: 2px;
+            border-radius: 50%;
+            background: #121212;
+            z-index: 2;
+        }
+        @keyframes rotateGlow {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .electric-logo-inner {
+            position: relative;
+            z-index: 3;
+            font-size: 22px;
+            font-weight: 900;
+            letter-spacing: 1px;
+        }
+        .electric-logo-inner span:nth-child(1) { color: #fff; }
+        .electric-logo-inner span:nth-child(2) { color: #ff3b5c; }
+
+        .auth-body { display: flex; flex-direction: column; gap: 12px; margin-top: 5px; }
         .auth-tabs { display: flex; background: #1f1f1f; border-radius: 8px; padding: 4px; }
         .auth-tab-btn { flex: 1; background: transparent; border: none; color: #888; padding: 10px; font-weight: 600; border-radius: 6px; cursor: pointer; transition: 0.2s; }
         .auth-tab-btn.active { background: #333; color: #fff; }
-        .auth-input { width: 100%; background: #1f1f1f; border: 1px solid #333; border-radius: 8px; padding: 14px; color: #fff; font-size: 16px; outline: none; }
+        .auth-input { width: 100%; background: #1f1f1f; border: 1px solid #333; border-radius: 8px; padding: 13px; color: #fff; font-size: 15px; outline: none; }
         .auth-input:focus { border-color: #ff3b5c; }
-        .auth-btn { width: 100%; background: #ff3b5c; color: white; border: none; border-radius: 8px; padding: 14px; font-size: 16px; font-weight: 700; cursor: pointer; }
+        
+        .forgot-password-link { text-align: right; font-size: 12px; color: #888; cursor: pointer; margin-top: -4px; }
+        .forgot-password-link:hover { color: #ff3b5c; }
+
+        .auth-btn { width: 100%; background: #ff3b5c; color: white; border: none; border-radius: 8px; padding: 13px; font-size: 16px; font-weight: 700; cursor: pointer; }
         .auth-btn:hover { background: #e0314d; }
-        .auth-footer { text-align: center; font-size: 14px; color: #aaa; cursor: pointer; margin-bottom: 20px; }
+        
+        .auth-footer { text-align: center; font-size: 13px; color: #888; cursor: pointer; margin-top: 5px; }
+        .auth-footer span { color: #fff; text-decoration: underline; }
+        
+        .legal-footer-text { text-align: center; font-size: 11px; color: #666; line-height: 1.5; margin-top: 10px; }
+        .legal-footer-text a { color: #ff3b5c; text-decoration: underline; cursor: pointer; }
+
         #auth-warning { color: #ff3b5c; font-size: 13px; text-align: center; }
-        #detected-country-container { text-align: center; font-size: 12px; color: #666; margin-bottom: 10px; }
 
         /* Main App Tabs */
         #main-app { flex: 1; display: flex; flex-direction: column; position: relative; height: 100%; }
@@ -82,27 +132,37 @@
     <div class="app-container">
         <!-- Auth Screen -->
         <div id="auth-screen" class="active">
-            <div class="auth-header">
-                <h1>OTA X</h1>
-                <p>Global Video Ecosystem</p>
+            <div class="auth-logo-container">
+                <div class="electric-ring-wrapper">
+                    <div class="electric-logo-inner"><span>0</span><span>X</span></div>
+                </div>
             </div>
-            <div id="detected-country-container" class="hidden"></div>
+
             <div class="auth-body">
                 <div class="auth-tabs">
                     <button class="auth-tab-btn active" id="tab-email-btn">Email</button>
                     <button class="auth-tab-btn" id="tab-phone-btn">Phone</button>
                 </div>
                 <input type="email" id="auth-input" class="auth-input" placeholder="Email address">
-                <input type="password" id="auth-password" class="auth-input" placeholder="Secure Password (min 6 chars + symbol/number)">
+                <input type="password" id="auth-password" class="auth-input" placeholder="Password">
+                
+                <div class="forgot-password-link" id="forgot-password-btn">Forgot password?</div>
+                
                 <div id="auth-warning" class="hidden"></div>
-                <button class="auth-btn" id="next-auth-btn">Sign Up / Continue</button>
+                <button class="auth-btn" id="next-auth-btn">Log In</button>
             </div>
-            <div class="auth-footer" id="switch-mode-btn">Already have an account? Log In</div>
+
+            <div>
+                <div class="auth-footer" id="switch-mode-btn">Don't have an account? <span>Sign Up</span></div>
+                <!-- Dynamic Country Legal Text Footer -->
+                <div class="legal-footer-text" id="detected-country-container">
+                    By continuing from <span id="country-name-text">Nigeria</span>, you agree to OTA X <a id="open-terms">Terms of Service</a> and <a id="open-privacy">Privacy Policy</a>.
+                </div>
+            </div>
         </div>
 
         <!-- Main App Container -->
         <div id="main-app" class="hidden">
-            
             <!-- Feed Tab -->
             <div id="feed-tab" class="app-tab">
                 <div class="video-feed-item">
@@ -151,8 +211,8 @@
                     <p style="color: #888; font-size: 13px;">Coins Balance: <span id="user-coins" style="color: #ffd700; font-weight: bold;">5000</span></p>
                 </div>
                 <div style="display: flex; flex-direction: column; gap: 10px; padding: 0 10px;">
-                    <button class="auth-btn" style="background: #222;" id="open-terms">Terms of Service</button>
-                    <button class="auth-btn" style="background: #222;" id="open-privacy">Privacy Policy</button>
+                    <button class="auth-btn" style="background: #222;" id="open-terms-profile">Terms of Service</button>
+                    <button class="auth-btn" style="background: #222;" id="open-privacy-profile">Privacy Policy</button>
                     <button class="auth-btn" style="background: #222;" onclick="openAppealModal()">Moderation Appeal Center</button>
                 </div>
             </div>
@@ -234,5 +294,4 @@
     </div>
 
 </body>
-  </html>
-  
+</html>

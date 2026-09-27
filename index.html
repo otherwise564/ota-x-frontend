@@ -96,29 +96,24 @@
 
             <!-- Upload / Create Studio Tab -->
             <div id="upload-tab" class="app-tab hidden">
-                <div class="ota-studio-screen">
-                    <div class="ota-studio-header">
-                        <span>OTA X Studio & Camera</span>
-                        <button class="close-modal" data-tab="feed-tab"><i class="fa-solid fa-xmark"></i></button>
-                    </div>
-                    <div class="ota-form-group">
-                        <label class="ota-form-label">Caption & Hashtags</label>
-                        <textarea class="ota-text-input" id="post-caption" rows="3" placeholder="What's on your mind? Add hashtags..."></textarea>
-                    </div>
-                    <div class="ota-form-group">
-                        <label class="ota-form-label">Media File (Video/Image)</label>
-                        <input type="file" class="ota-file-picker" id="media-file-input" accept="image/*,video/*">
-                    </div>
-                    <div class="ota-form-group">
-                        <label class="ota-form-label">Sound Track</label>
-                        <select class="ota-select-input" id="selected-song">
-                            <option>Trending Afrobeats Wave</option>
-                            <option>OTA X Club Anthem</option>
-                            <option>Original Sound</option>
-                        </select>
-                    </div>
-                    <button class="ota-submit-action" id="publish-post-btn" onclick="alert('Post published to OTA X Feed successfully!')">Post to OTA X Feed</button>
+                <h2>Upload Video</h2>
+                <div class="upload-input-group">
+                    <label>Caption</label>
+                    <textarea id="post-caption" rows="3" placeholder="What's on your mind? Add hashtags..."></textarea>
                 </div>
+                <div class="upload-input-group">
+                    <label>Media File</label>
+                    <input type="file" id="media-file-input" accept="image/*,video/*">
+                </div>
+                <div class="upload-input-group">
+                    <label>Sound Track</label>
+                    <select id="selected-song">
+                        <option>Trending Afrobeats Wave</option>
+                        <option>OTA X Club Anthem</option>
+                        <option>Original Sound</option>
+                    </select>
+                </div>
+                <button class="auth-btn" id="publish-post-btn" onclick="alert('Post published to OTA X Feed successfully!')">Post to OTA X Feed</button>
             </div>
 
             <!-- Inbox Tab -->
@@ -137,63 +132,85 @@
                 </div>
             </div>
 
-            <!-- Profile Tab -->
+            <!-- Profile Tab Redesigned -->
             <div id="profile-tab" class="app-tab hidden">
-                <div class="ota-profile-container">
-                    <div class="ota-profile-nav">
-                        <span class="ota-handle">@OX_Creator</span>
-                        <button class="ota-menu-trigger" id="open-drawer-btn">
-                            <i class="fa-solid fa-bars"></i>
-                        </button>
+                <div class="profile-top-bar">
+                    <i class="fa-solid fa-user-plus"></i>
+                    <span style="font-weight: 700; font-size: 15px;">@OX_Creator</span>
+                    <div class="profile-top-right">
+                        <i class="fa-solid fa-qrcode"></i>
+                        <i class="fa-solid fa-bars" id="open-drawer-btn"></i>
+                    </div>
+                </div>
+
+                <div class="profile-main-info">
+                    <div class="profile-avatar-container">
+                        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150" alt="Avatar" class="profile-avatar-img">
+                        <div class="profile-avatar-badge"><i class="fa-solid fa-plus" style="font-size: 12px;"></i></div>
+                    </div>
+                    
+                    <div class="profile-username">OX_Creator <i class="fa-solid fa-circle-check" style="color: #00f2fe; font-size: 14px;"></i></div>
+                    <div class="profile-handle">@ox_creator</div>
+
+                    <div class="profile-stats-row">
+                        <div class="stat-box"><span class="stat-num">42</span><span class="stat-label">Following</span></div>
+                        <div class="stat-box"><span class="stat-num">1,340</span><span class="stat-label">Followers</span></div>
+                        <div class="stat-box"><span class="stat-num">24.5K</span><span class="stat-label">Likes</span></div>
                     </div>
 
-                    <div class="ota-profile-info">
-                        <div class="ota-avatar-ring">
-                            <i class="fa-solid fa-user"></i>
-                        </div>
-                        <div class="ota-stats-group">
-                            <div class="ota-stat"><strong>0</strong><span>Following</span></div>
-                            <div class="ota-stat"><strong>1</strong><span>Followers</span></div>
-                            <div class="ota-stat"><strong>0</strong><span>Likes</span></div>
-                        </div>
+                    <div class="profile-action-buttons">
+                        <button class="prof-btn">Edit profile</button>
+                        <button class="prof-btn">Share profile</button>
                     </div>
 
-                    <div class="ota-profile-content">
-                        <div class="ota-content-tabs">
-                            <button class="ota-tab-icon active"><i class="fa-solid fa-grip"></i></button>
-                            <button class="ota-tab-icon"><i class="fa-solid fa-heart"></i></button>
-                        </div>
-                        <div class="ota-grid-feed" id="user-posts-grid">
-                            <div class="ota-empty-post">No posts yet</div>
-                        </div>
+                    <div class="profile-bio">
+                        Creating global video ecosystems & viral content 🚀<br>
+                        <a href="#">ota-x-ecosystem.app</a>
                     </div>
+                </div>
 
-                    <!-- Slide-Out Menu Drawer -->
-                    <div id="profile-drawer" class="ota-drawer hidden">
-                        <div class="ota-drawer-top">
-                            <h3>Settings & Tools</h3>
-                            <button class="ota-close-drawer" id="close-drawer-btn"><i class="fa-solid fa-xmark"></i></button>
+                <div class="profile-content-tabs">
+                    <button class="prof-tab-icon active"><i class="fa-solid fa-grip"></i></button>
+                    <button class="prof-tab-icon"><i class="fa-solid fa-bookmark"></i></button>
+                    <button class="prof-tab-icon"><i class="fa-solid fa-heart"></i></button>
+                </div>
+
+                <div class="profile-grid-posts" id="user-posts-grid">
+                    <div class="grid-post-item" style="background-image: linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=300');">
+                        <span><i class="fa-solid fa-play"></i> 1.2K</span>
+                    </div>
+                    <div class="grid-post-item" style="background-image: linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1579783902614-a3fb3927b675?w=300');">
+                        <span><i class="fa-solid fa-play"></i> 3.4K</span>
+                    </div>
+                    <div class="grid-post-item" style="background-image: linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=300');">
+                        <span><i class="fa-solid fa-play"></i> 850</span>
+                    </div>
+                </div>
+
+                <!-- Slide-Out Menu Drawer -->
+                <div id="profile-drawer" class="modal hidden" style="align-items: flex-end;">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <span>Settings & Tools</span>
+                            <button class="close-modal" id="close-drawer-btn"><i class="fa-solid fa-xmark"></i></button>
                         </div>
-                        <div class="ota-drawer-links">
-                            <div class="ota-drawer-label">Assets</div>
-                            <div class="ota-drawer-row" id="drawer-balance" onclick="document.getElementById('gift-modal').classList.remove('hidden')">
-                                <div class="ota-row-left"><i class="fa-solid fa-wallet"></i><span>Balance & Gifts</span></div>
-                                <span class="ota-coin-badge"><span id="user-coins">5000</span> Coins</span>
-                            </div>
-
-                            <div class="ota-drawer-label" style="margin-top: 20px;">System & Legal</div>
-                            <div class="ota-drawer-row" id="open-terms-profile">
-                                <div class="ota-row-left"><i class="fa-solid fa-file-contract"></i><span>Terms of Service</span></div>
+                        <div class="profile-menu-list">
+                            <button class="profile-menu-btn" id="drawer-balance" onclick="document.getElementById('gift-modal').classList.remove('hidden')">
+                                <span style="display: flex; align-items: center; gap: 10px;"><i class="fa-solid fa-wallet" style="color: #ff3b5c;"></i> Balance & Gifts</span>
+                                <span style="color: #ff3b5c; font-weight: 700;"><span id="user-coins">5000</span> Coins <i class="fa-solid fa-chevron-right"></i></span>
+                            </button>
+                            <button class="profile-menu-btn" id="open-terms-profile">
+                                <span><i class="fa-solid fa-file-contract" style="color: #888;"></i> Terms of Service</span>
                                 <i class="fa-solid fa-chevron-right"></i>
-                            </div>
-                            <div class="ota-drawer-row" id="open-privacy-profile">
-                                <div class="ota-row-left"><i class="fa-solid fa-shield-halved"></i><span>Privacy Policy</span></div>
+                            </button>
+                            <button class="profile-menu-btn" id="open-privacy-profile">
+                                <span><i class="fa-solid fa-shield-halved" style="color: #888;"></i> Privacy Policy</span>
                                 <i class="fa-solid fa-chevron-right"></i>
-                            </div>
-                            <div class="ota-drawer-row" id="open-appeal-btn">
-                                <div class="ota-row-left"><i class="fa-solid fa-gavel"></i><span>Moderation Appeal Center</span></div>
+                            </button>
+                            <button class="profile-menu-btn" id="open-appeal-btn">
+                                <span><i class="fa-solid fa-gavel" style="color: #888;"></i> Moderation Appeal Center</span>
                                 <i class="fa-solid fa-chevron-right"></i>
-                            </div>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -210,12 +227,12 @@
                     <span>Friends</span>
                 </button>
                 <button class="bot-nav-btn upload-center-btn" data-tab="upload-tab">
-                    <div class="upload-plus-box"><i class="fa-solid fa-plus"></i></div>
+                    <div style="background: #ff3b5c; color: #fff; width: 36px; height: 26px; border-radius: 8px; display: flex; align-items: center; justify-content: center;"><i class="fa-solid fa-plus" style="font-size: 14px;"></i></div>
                 </button>
                 <button class="bot-nav-btn" data-tab="inbox-tab">
                     <div style="position: relative;">
                         <i class="fa-solid fa-comment-dots"></i>
-                        <span class="ota-notification-badge">4</span>
+                        <span style="position: absolute; top: -5px; right: -8px; background: #ff3b5c; color: #fff; font-size: 9px; padding: 2px 5px; border-radius: 10px;">4</span>
                     </div>
                     <span>Inbox</span>
                 </button>
@@ -265,7 +282,7 @@
             </div>
         </div>
 
-        <!-- Comments Drawer (Corrected with Send Button & Working Microphone) -->
+        <!-- Comments Drawer -->
         <div id="comment-section-container" class="modal hidden">
             <div class="modal-content" style="display: flex; flex-direction: column; height: 60vh;">
                 <div class="modal-header">
@@ -302,4 +319,4 @@
     <script src="script.js"></script>
 </body>
     </html>
-    
+                        

@@ -78,21 +78,33 @@ body { background-color: #0b0b0b; color: #ffffff; display: flex; justify-content
 #main-app { flex: 1; display: flex; flex-direction: column; position: relative; height: 100%; background: #000; }
 .app-tab { flex: 1; overflow-y: auto; position: relative; background: #000; padding-bottom: 70px; }
 
-/* Feed Tab */
+/* Top Header Bar */
+.top-header-bar { position: absolute; top: 0; left: 0; width: 100%; height: 50px; display: flex; justify-content: center; align-items: center; z-index: 20; background: linear-gradient(180deg, rgba(0,0,0,0.8) 0%, transparent 100%); pointer-events: none; }
+.top-nav-links { display: flex; gap: 20px; pointer-events: auto; }
+.top-nav-tab { color: #888; font-size: 15px; font-weight: 600; cursor: pointer; text-shadow: 0 1px 3px rgba(0,0,0,0.8); }
+.top-nav-tab.active { color: #fff; border-bottom: 2px solid #fff; padding-bottom: 2px; }
+.top-search-btn { position: absolute; right: 15px; background: none; border: none; color: #fff; font-size: 18px; cursor: pointer; pointer-events: auto; }
+
+/* Feed Tab Layout Fixes */
 .video-feed-item { width: 100%; height: 100%; position: relative; display: flex; flex-direction: column; justify-content: flex-end; background: linear-gradient(180deg, #111 0%, #000 100%); }
-.video-overlay-info { padding: 20px; position: absolute; bottom: 65px; left: 0; right: 80px; z-index: 2; text-shadow: 0 1px 4px rgba(0,0,0,0.9); }
+
+/* Metadata pushed up to clear the bottom navigation bar nicely */
+.video-overlay-info { padding: 15px; position: absolute; bottom: 70px; left: 0; right: 85px; z-index: 10; text-shadow: 0 1px 4px rgba(0,0,0,0.9); pointer-events: auto; }
 .video-overlay-info h3 { font-size: 17px; margin-bottom: 6px; font-weight: 700; color: #fff; }
 .video-overlay-info p { font-size: 14px; margin-bottom: 10px; color: #e0e0e0; line-height: 1.4; }
 .sound-tag { display: inline-flex; align-items: center; gap: 8px; font-size: 12px; background: rgba(255,255,255,0.1); backdrop-filter: blur(5px); padding: 5px 12px; border-radius: 20px; color: #fff; border: 1px solid rgba(255,255,255,0.08); }
 
-.right-action-bar { position: absolute; right: 12px; bottom: 85px; display: flex; flex-direction: column; align-items: center; gap: 20px; z-index: 3; }
-.action-btn { background: none; border: none; color: white; display: flex; flex-direction: column; align-items: center; gap: 5px; cursor: pointer; font-size: 24px; text-shadow: 0 2px 4px rgba(0,0,0,0.6); transition: transform 0.1s; }
+/* Right action bar layout and interaction fix */
+.right-action-bar { position: absolute; right: 12px; bottom: 75px; display: flex; flex-direction: column; align-items: center; gap: 16px; z-index: 25; pointer-events: auto; }
+.action-item-wrapper { display: flex; flex-direction: column; align-items: center; }
+.action-btn { background: rgba(0, 0, 0, 0.3); border: none; width: 45px; height: 45px; border-radius: 50%; color: white; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; font-size: 20px; text-shadow: 0 2px 4px rgba(0,0,0,0.6); transition: transform 0.1s, background 0.2s; pointer-events: auto; }
 .action-btn:active { transform: scale(0.9); }
-.action-btn span { font-size: 12px; font-weight: 600; color: #f1f1f1; }
+.action-btn i { pointer-events: none; }
+.action-btn span { font-size: 11px; font-weight: 600; color: #f1f1f1; margin-top: 3px; }
 .action-btn.active { color: #ff3b5c; }
 
 /* Bottom Navigation */
-.bottom-nav { position: absolute; bottom: 0; left: 0; width: 100%; height: 65px; background: #000000; border-top: 1px solid #1a1a1a; display: flex; justify-content: space-around; align-items: center; z-index: 10; backdrop-filter: blur(10px); }
+.bottom-nav { position: absolute; bottom: 0; left: 0; width: 100%; height: 65px; background: #000000; border-top: 1px solid #1a1a1a; display: flex; justify-content: space-around; align-items: center; z-index: 30; backdrop-filter: blur(10px); }
 .bot-nav-btn { background: none; border: none; color: #666; font-size: 20px; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 3px; transition: color 0.2s; }
 .bot-nav-btn span { font-size: 11px; font-weight: 500; }
 .bot-nav-btn.active { color: #ff3b5c; }
@@ -129,4 +141,4 @@ body { background-color: #0b0b0b; color: #ffffff; display: flex; justify-content
 .gift-item.selected { border-color: #ff3b5c; background: #26161b; }
 .gift-item i { font-size: 26px; color: #ffd700; margin-bottom: 8px; display: block; }
 .gift-item span { font-size: 12px; font-weight: 600; color: #ddd; }
-    
+           

@@ -85,6 +85,92 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
+    // Helper function for tab switching programmatically
+    window.switchToTab = function(tabId) {
+        document.querySelectorAll(".app-tab").forEach(tab => {
+            tab.classList.add("hidden");
+        });
+        const targetTab = document.getElementById(tabId);
+        if (targetTab) {
+            targetTab.classList.remove("hidden");
+        }
+        botNavButtons.forEach(b => {
+            if (b.getAttribute("data-tab") === tabId) {
+                b.classList.add("active");
+            } else {
+                b.classList.remove("active");
+            }
+        });
+    };
+
+    // --- UPLOAD & POST CREATION LOGIC ---
+    const publishBtn = document.getElementById("publish-post-btn");
+    
+    if (publishBtn) {
+        publishBtn.addEventListener("click", () => {
+            const captionInput = document.getElementById("post-caption");
+            const fileInput = document.getElementById("media-file-input");
+            const songSelect = document.getElementById("selected-song");
+            const feedTab = document.getElementById("feed-tab");
+
+            const captionText = captionInput ? captionInput.value.trim() : "New OTA X Post! 🔥";
+            const selectedSong = songSelect ? songSelect.value : "Trending Sound";
+            
+            // Default placeholder image if no file is selected
+            let mediaUrl = "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe";
+
+            if (fileInput && fileInput.files && fileInput.files[0]) {
+                mediaUrl = URL.createObjectURL(fileInput.files[0]);
+            }
+
+            // Create new feed item element
+            const newPostItem = document.createElement("div");
+            newPostItem.className = "video-feed-item";
+            newPostItem.innerHTML = `
+                <div class="video-placeholder" style="background-image: url('${mediaUrl}'); background-size: cover; background-position: center;">
+                    <div class="video-overlay-info">
+                        <h3>@OX_Global_Creator</h3>
+                        <p>${escapeHtml(captionText)}</p>
+                        <div class="sound-tag"><i class="fa-solid fa-music"></i> <span>${escapeHtml(selectedSong)}</span></div>
+                    </div>
+                    <div class="right-action-bar">
+                        <button class="action-btn like-btn" onclick="this.classList.toggle('active')"><i class="fa-solid fa-heart"></i><span>0</span></button>
+                        <button class="action-btn comment-btn"><i class="fa-solid fa-comment-dots"></i><span>0</span></button>
+                        <button class="action-btn gift-btn"><i class="fa-solid fa-gift"></i><span>Gift</span></button>
+                        <button class="action-btn share-btn"><i class="fa-solid fa-share"></i><span>0</span></button>
+                        <button class="action-btn download-btn" onclick="downloadWatermarkedContent('${mediaUrl}', 'OX_Global_Creator', false)">
+                            <i class="fa-solid fa-download"></i><span>Save</span>
+                        </button>
+                    </div>
+                </div>
+            `;
+
+            // Prepend new post to the top of the feed
+            if (feedTab) {
+                feedTab.insertBefore(newPostItem, feedTab.firstChild);
+            }
+
+            // Reset inputs
+            if (captionInput) captionInput.value = "";
+            if (fileInput) fileInput.value = "";
+
+            // Automatically switch back to Home feed tab
+            switchToTab('feed-tab');
+        });
+    }
+
+    // Helper function to prevent HTML injection in captions
+    function escapeHtml(text) {
+        const map = {
+            '&': '&amp;',
+            '<': '&lt;',
+            '>': '&gt;',
+            '"': '&quot;',
+            "'": '&#039;'
+        };
+        return text.replace(/[&<>"']/g, function(m) { return map[m]; });
+    }
+
     // Universal Gift Modal Controls
     const giftModal = document.getElementById("gift-modal");
     const triggerGiftModal = document.getElementById("trigger-gift-modal");
@@ -119,7 +205,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }
             if (currentCoins >= selectedGiftCost) {
                 currentCoins -= selectedGiftCost;
-                userCoinsDisplay.innerText = currentCoins.toLocaleString();
+                if (userCoinsDisplay) userCoinsDisplay.innerText = currentCoins.toLocaleString();
                 alert("OTA X Universal Gift sent worldwide successfully!");
                 giftModal.classList.add("hidden");
             } else {
@@ -342,4 +428,4 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     };
 });
-            
+                    

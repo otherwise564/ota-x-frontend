@@ -1,4 +1,21 @@
 document.addEventListener("DOMContentLoaded", () => {
+    // Auto-detect user country via IP
+    const countryContainer = document.getElementById("detected-country-container");
+    
+    if (countryContainer) {
+        fetch('https://ipapi.co/json/')
+            .then(response => response.json())
+            .then(data => {
+                if (data && data.country_name) {
+                    countryContainer.innerHTML = `<i class="fa-solid fa-location-dot"></i> Connected from ${data.country_name}`;
+                    countryContainer.classList.remove("hidden");
+                }
+            })
+            .catch(() => {
+                countryContainer.classList.add("hidden");
+            });
+    }
+
     // Auth Tab Switching (Email vs Phone)
     const tabEmailBtn = document.getElementById("tab-email-btn");
     const tabPhoneBtn = document.getElementById("tab-phone-btn");
@@ -34,7 +51,6 @@ document.addEventListener("DOMContentLoaded", () => {
             const val = authInput.value.trim();
             const pwd = authPassword.value.trim();
 
-            // Password security regex: at least 6 chars, contains letters and numbers/symbols
             const isPasswordSecure = pwd.length >= 6 && /[0-9#*!@$%^&+=]/.test(pwd);
 
             if (val.length < 4 || !isPasswordSecure) {
@@ -185,4 +201,4 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById("appeal-modal").classList.add("hidden");
     });
 });
-        
+                

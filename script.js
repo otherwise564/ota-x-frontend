@@ -156,31 +156,39 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // Legal Modals (Terms & Privacy)
+    // Legal Modals (Terms & Privacy) - Bulletproof Fix
     const legalModal = document.getElementById("legal-modal");
     const legalTitle = document.getElementById("legal-title");
     const legalBody = document.getElementById("legal-body");
     const closeLegal = document.getElementById("close-legal");
 
-    document.getElementById("open-terms").addEventListener("click", () => {
-        legalTitle.innerText = "OTA X Terms of Service";
-        legalBody.innerHTML = `
-            <p><strong>1. Global Access:</strong> OTA X is open to users worldwide for streaming, video posting, and universal gifting.</p><br>
-            <p><strong>2. Compliance:</strong> Users must respect security guidelines, community standards, and regional payout structures.</p>
-        `;
-        legalModal.classList.remove("hidden");
-    });
+    const openTermsBtn = document.getElementById("open-terms");
+    if (openTermsBtn) {
+        openTermsBtn.addEventListener("click", () => {
+            if (!legalModal) return;
+            legalTitle.innerText = "OTA X Terms of Service";
+            legalBody.innerHTML = `
+                <p><strong>1. Global Access:</strong> OTA X is open to users worldwide for streaming, video posting, and universal gifting.</p><br>
+                <p><strong>2. Compliance:</strong> Users must respect security guidelines, community standards, and regional payout structures.</p>
+            `;
+            legalModal.classList.remove("hidden");
+        });
+    }
 
-    document.getElementById("open-privacy").addEventListener("click", () => {
-        legalTitle.innerText = "OTA X Privacy Policy";
-        legalBody.innerHTML = `
-            <p><strong>1. Data Encryption:</strong> All communications and user records are safely stored with high-grade security.</p><br>
-            <p><strong>2. Worldwide Standards:</strong> We ensure absolute data protection across international servers.</p>
-        `;
-        legalModal.classList.remove("hidden");
-    });
+    const openPrivacyBtn = document.getElementById("open-privacy");
+    if (openPrivacyBtn) {
+        openPrivacyBtn.addEventListener("click", () => {
+            if (!legalModal) return;
+            legalTitle.innerText = "OTA X Privacy Policy";
+            legalBody.innerHTML = `
+                <p><strong>1. Data Encryption:</strong> All communications and user records are safely stored with high-grade security.</p><br>
+                <p><strong>2. Worldwide Standards:</strong> We ensure absolute data protection across international servers.</p>
+            `;
+            legalModal.classList.remove("hidden");
+        });
+    }
 
-    if (closeLegal) {
+    if (closeLegal && legalModal) {
         closeLegal.addEventListener("click", () => legalModal.classList.add("hidden"));
     }
 
@@ -201,4 +209,3 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById("appeal-modal").classList.add("hidden");
     });
 });
-                

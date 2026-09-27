@@ -85,16 +85,61 @@
             </div>
 
             <!-- Profile Tab -->
-            <div id="profile-tab" class="app-tab hidden">
-                <div class="profile-header">
-                    <div class="profile-avatar"><i class="fa-solid fa-user"></i></div>
-                    <h3>@OX_Creator</h3>
-                    <p style="color: #888; font-size: 13px;">Coins Balance: <span id="user-coins" style="color: #ffd700; font-weight: bold;">5000</span></p>
+            <div id="profile-tab" class="app-tab hidden" style="position: relative; overflow: hidden; display: flex; flex-direction: column;">
+                <!-- Top Bar with Menu Button -->
+                <div class="profile-top-bar">
+                    <span class="profile-username-display">@OX_Creator</span>
+                    <button id="open-drawer-btn" class="menu-icon-btn"><i class="fa-solid fa-bars"></i></button>
                 </div>
-                <div style="display: flex; flex-direction: column; gap: 10px; padding: 0 10px;">
-                    <button class="auth-btn" style="background: #222;" id="open-terms-profile">Terms of Service</button>
-                    <button class="auth-btn" style="background: #222;" id="open-privacy-profile">Privacy Policy</button>
-                    <button class="auth-btn" style="background: #222;" id="open-appeal-btn">Moderation Appeal Center</button>
+
+                <!-- Main Profile Header -->
+                <div class="profile-header-card">
+                    <div class="profile-avatar"><i class="fa-solid fa-user"></i></div>
+                    <div class="profile-stats-row">
+                        <div class="stat-box"><span>0</span><label>Following</label></div>
+                        <div class="stat-box"><span>1</span><label>Followers</label></div>
+                        <div class="stat-box"><span>0</span><label>Likes</label></div>
+                    </div>
+                </div>
+
+                <!-- Profile Content Tabs (Posts / Liked) -->
+                <div class="profile-content-section">
+                    <div class="profile-tabs-nav">
+                        <button class="tab-nav-item active"><i class="fa-solid fa-grip"></i></button>
+                        <button class="tab-nav-item"><i class="fa-solid fa-heart"></i></button>
+                    </div>
+                    <div class="profile-grid-container" id="user-posts-grid">
+                        <div style="text-align: center; color: #666; padding: 40px; grid-column: span 3; font-size: 14px;">No posts yet</div>
+                    </div>
+                </div>
+
+                <!-- Slide-out Menu Drawer (Hidden by default) -->
+                <div id="profile-drawer" class="profile-drawer hidden">
+                    <div class="drawer-header">
+                        <h3>Settings & Assets</h3>
+                        <button id="close-drawer-btn" class="close-drawer-btn"><i class="fa-solid fa-xmark"></i></button>
+                    </div>
+                    <div class="drawer-menu-list">
+                        <div class="drawer-section-title">Assets</div>
+                        <button class="drawer-menu-item" id="drawer-balance">
+                            <div class="item-left"><i class="fa-solid fa-wallet"></i> <span>Balance</span></div>
+                            <span class="drawer-subtext" style="color: #ffd700; font-weight: 600;"><span id="user-coins">5000</span> Coins</span>
+                        </button>
+
+                        <div class="drawer-section-title" style="margin-top: 15px;">Support & Legal</div>
+                        <button class="drawer-menu-item" id="open-terms-profile">
+                            <div class="item-left"><i class="fa-solid fa-file-contract"></i> <span>Terms of Service</span></div>
+                            <i class="fa-solid fa-chevron-right"></i>
+                        </button>
+                        <button class="drawer-menu-item" id="open-privacy-profile">
+                            <div class="item-left"><i class="fa-solid fa-shield-halved"></i> <span>Privacy Policy</span></div>
+                            <i class="fa-solid fa-chevron-right"></i>
+                        </button>
+                        <button class="drawer-menu-item" id="open-appeal-btn">
+                            <div class="item-left"><i class="fa-solid fa-gavel"></i> <span>Moderation Appeal Center</span></div>
+                            <i class="fa-solid fa-chevron-right"></i>
+                        </button>
+                    </div>
                 </div>
             </div>
 
@@ -200,5 +245,5 @@
     <!-- Link to your script file -->
     <script src="script.js"></script>
 </body>
-                    </html>
-            
+            </html>
+                                                                                                   

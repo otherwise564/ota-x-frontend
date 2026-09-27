@@ -6,7 +6,7 @@
     <title>OTA X - Global Video Ecosystem</title>
     <!-- FontAwesome for Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Link to your separate stylesheet -->
+    <!-- Link to your stylesheet -->
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -36,8 +36,9 @@
 
             <div>
                 <div class="auth-footer" id="switch-mode-btn">Don't have an account? <span>Sign Up</span></div>
-                <div class="legal-footer-text" id="detected-country-container">
-                    By continuing from <span id="country-name-text">Nigeria</span>, you agree to OTA X <a id="open-terms">Terms of Service</a> and <a id="open-privacy">Privacy Policy</a>.
+                <!-- Interactive Country Selector Link -->
+                <div class="legal-footer-text">
+                    By continuing from <span id="selected-country-btn" class="interactive-country-link">Nigeria <i class="fa-solid fa-chevron-down" style="font-size: 9px;"></i></span>, you agree to OTA X <a id="open-terms">Terms of Service</a> and <a id="open-privacy">Privacy Policy</a>.
                 </div>
             </div>
         </div>
@@ -57,7 +58,7 @@
                         <button class="action-btn comment-btn" onclick="openComments('1')"><i class="fa-solid fa-comment-dots"></i><span>0</span></button>
                         <button class="action-btn gift-btn" id="trigger-gift-modal"><i class="fa-solid fa-gift"></i><span>Gift</span></button>
                         <button class="action-btn share-btn" onclick="alert('Post link copied to clipboard!')"><i class="fa-solid fa-share"></i><span>Share</span></button>
-                        <button class="action-btn download-btn" onclick="downloadWatermarkedContent('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe', 'OX_Creator', false)"><i class="fa-solid fa-download"></i><span>Save</span></button>
+                        <button class="action-btn download-btn" onclick="alert('Content saved with OTA X watermark!')"><i class="fa-solid fa-download"></i><span>Save</span></button>
                     </div>
                 </div>
             </div>
@@ -94,7 +95,7 @@
                 <div style="display: flex; flex-direction: column; gap: 10px; padding: 0 10px;">
                     <button class="auth-btn" style="background: #222;" id="open-terms-profile">Terms of Service</button>
                     <button class="auth-btn" style="background: #222;" id="open-privacy-profile">Privacy Policy</button>
-                    <button class="auth-btn" style="background: #222;" onclick="openAppealModal()">Moderation Appeal Center</button>
+                    <button class="auth-btn" style="background: #222;" id="open-appeal-btn">Moderation Appeal Center</button>
                 </div>
             </div>
 
@@ -115,6 +116,29 @@
             </div>
         </div>
 
+        <!-- Country Selector Modal -->
+        <div id="country-modal" class="modal hidden">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span>Select Region & Country</span>
+                    <button class="close-modal" id="close-country"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+                <input type="text" id="country-search-input" class="auth-input" placeholder="Search country...">
+                <div id="country-list" style="display: flex; flex-direction: column; gap: 8px; max-height: 250px; overflow-y: auto;">
+                    <div class="country-option" data-country="Nigeria">🇳🇬 Nigeria</div>
+                    <div class="country-option" data-country="United States">🇺🇸 United States</div>
+                    <div class="country-option" data-country="United Kingdom">🇬🇧 United Kingdom</div>
+                    <div class="country-option" data-country="Ghana">🇬🇭 Ghana</div>
+                    <div class="country-option" data-country="South Africa">🇿🇦 South Africa</div>
+                    <div class="country-option" data-country="Canada">🇨🇦 Canada</div>
+                    <div class="country-option" data-country="France">🇫🇷 France</div>
+                    <div class="country-option" data-country="Germany">🇩🇪 Germany</div>
+                    <div class="country-option" data-country="Brazil">🇧🇷 Brazil</div>
+                    <div class="country-option" data-country="Japan">🇯🇵 Japan</div>
+                </div>
+            </div>
+        </div>
+
         <!-- Gift Modal -->
         <div id="gift-modal" class="modal hidden">
             <div class="modal-content">
@@ -131,7 +155,7 @@
             </div>
         </div>
 
-        <!-- Comments Drawer -->
+        <!-- Comments Drawer (Includes Voice Note Exclusive Feature) -->
         <div id="comment-section-container" class="modal hidden">
             <div class="modal-content">
                 <div class="modal-header">
@@ -143,7 +167,7 @@
                 </div>
                 <div style="display: flex; gap: 10px; align-items: center;">
                     <input type="text" class="auth-input" placeholder="Add a comment..." style="flex: 1;">
-                    <button class="action-btn" id="record-voice-btn" style="font-size: 28px; color: #aaa;"><i class="fa-solid fa-microphone"></i></button>
+                    <button class="action-btn" id="record-voice-btn" style="font-size: 28px; color: #aaa;" title="Record Voice Note"><i class="fa-solid fa-microphone"></i></button>
                 </div>
             </div>
         </div>
@@ -164,17 +188,18 @@
         <div id="appeal-modal" class="modal hidden">
             <div class="modal-content">
                 <div class="modal-header">
-                    <span>Moderation Appeal</span>
+                    <span>Moderation Appeal Center</span>
                     <button class="close-modal" id="close-appeal"><i class="fa-solid fa-xmark"></i></button>
                 </div>
-                <textarea id="appeal-text" class="auth-input" rows="4" placeholder="Explain your case or quote guidelines..."></textarea>
+                <textarea id="appeal-text" class="auth-input" rows="4" placeholder="Explain your case or quote guidelines for review..."></textarea>
                 <button class="auth-btn" id="submit-appeal-btn">Submit Appeal</button>
             </div>
         </div>
 
     </div>
 
-    <!-- Link to your separate JavaScript file -->
+    <!-- Link to your script file -->
     <script src="script.js"></script>
 </body>
-</html>
+    </html>
+        

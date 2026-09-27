@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // Auth Validation & Screen Transition
+    // Stronger Auth Validation (Min 6 characters, checks for numbers or symbols like #, *, !)
     const nextAuthBtn = document.getElementById("next-auth-btn");
     const authPassword = document.getElementById("auth-password");
     const authWarning = document.getElementById("auth-warning");
@@ -34,7 +34,10 @@ document.addEventListener("DOMContentLoaded", () => {
             const val = authInput.value.trim();
             const pwd = authPassword.value.trim();
 
-            if (val.length < 4 || pwd.length < 4) {
+            // Password security regex: at least 6 chars, contains letters and numbers/symbols
+            const isPasswordSecure = pwd.length >= 6 && /[0-9#*!@$%^&+=]/.test(pwd);
+
+            if (val.length < 4 || !isPasswordSecure) {
                 authWarning.classList.remove("hidden");
                 return;
             }
@@ -182,4 +185,4 @@ document.addEventListener("DOMContentLoaded", () => {
         document.getElementById("appeal-modal").classList.add("hidden");
     });
 });
-          
+        

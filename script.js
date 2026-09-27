@@ -198,5 +198,96 @@ document.addEventListener("DOMContentLoaded", () => {
             document.getElementById("appeal-modal").classList.add("hidden");
         });
     }
-});
+
+    // --- NEW: Password Show/Hide Eye Toggle ---
+    const togglePasswordBtn = document.getElementById("toggle-password-btn");
+    const authPasswordInput = document.getElementById("auth-password");
+
+    if (togglePasswordBtn && authPasswordInput) {
+        togglePasswordBtn.addEventListener("click", () => {
+            if (authPasswordInput.type === "password") {
+                authPasswordInput.type = "text";
+                togglePasswordBtn.innerText = "👁️‍🗨️";
+                
+                setTimeout(() => {
+                    if (authPasswordInput.type === "text") {
+                        authPasswordInput.type = "password";
+                        togglePasswordBtn.innerText = "👁️";
+                    }
+                }, 3000);
+            } else {
+                authPasswordInput.type = "password";
+                togglePasswordBtn.innerText = "👁️";
+            }
+        });
+    }
+
+    // --- NEW: Profile Settings (Username, Password, & Bio Management) ---
+    const updateUsernameBtn = document.getElementById("update-username-btn");
+    const newUsernameInput = document.getElementById("new-username");
+    const displayUsername = document.getElementById("profile-username-display");
+
+    if (updateUsernameBtn && newUsernameInput) {
+        updateUsernameBtn.addEventListener("click", () => {
+            const newName = newUsernameInput.value.trim();
+            if (newName.length < 3) {
+                alert("Username must be at least 3 characters long.");
+                return;
+            }
+            if (displayUsername) {
+                displayUsername.innerText = "@" + newName;
+            }
+            alert("Username successfully updated to @" + newName);
+            newUsernameInput.value = "";
+        });
+    }
+
+    const updatePasswordBtn = document.getElementById("update-password-btn");
+    const currentPasswordInput = document.getElementById("current-password");
+    const newPasswordInput = document.getElementById("new-password");
+
+    if (updatePasswordBtn) {
+        updatePasswordBtn.addEventListener("click", () => {
+            const currentPwd = currentPasswordInput.value.trim();
+            const newPwd = newPasswordInput.value.trim();
+
+            if (!currentPwd || !newPwd) {
+                alert("Please fill in both password fields.");
+                return;
+            }
+
+            const isNewPwdSecure = newPwd.length >= 6 && /[0-9#*!@$%^&+=]/.test(newPwd);
+            if (!isNewPwdSecure) {
+                alert("New password must be at least 6 characters and include a number or special symbol.");
+                return;
+            }
+
+            alert("Password updated successfully!");
+            currentPasswordInput.value = "";
+            newPasswordInput.value = "";
+        });
+    }
+
+    const updateBioBtn = document.getElementById("update-bio-btn");
+    const newBioInput = document.getElementById("new-bio");
+    const displayBio = document.getElementById("profile-bio-display");
+
+    if (updateBioBtn && newBioInput) {
+        updateBioBtn.addEventListener("click", () => {
+            const bioText = newBioInput.value.trim();
             
+            if (bioText.length > 80) {
+                alert("Bio is too long! Please keep it under 80 characters.");
+                return;
+            }
+
+            if (displayBio) {
+                displayBio.innerText = bioText || "No bio yet.";
+            }
+            
+            alert("Profile bio successfully updated!");
+            newBioInput.value = "";
+        });
+    }
+});
+                

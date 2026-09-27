@@ -156,40 +156,27 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // Legal Modals (Terms & Privacy) - Bulletproof Fix
-    const legalModal = document.getElementById("legal-modal");
-    const legalTitle = document.getElementById("legal-title");
-    const legalBody = document.getElementById("legal-body");
-    const closeLegal = document.getElementById("close-legal");
-
+    // Redirect to Standalone Legal Pages (Terms & Privacy)
     const openTermsBtn = document.getElementById("open-terms");
     if (openTermsBtn) {
         openTermsBtn.addEventListener("click", () => {
-            if (!legalModal) return;
-            legalTitle.innerText = "OTA X Terms of Service";
-            legalBody.innerHTML = `
-                <p><strong>1. Global Access:</strong> OTA X is open to users worldwide for streaming, video posting, and universal gifting.</p><br>
-                <p><strong>2. Compliance:</strong> Users must respect security guidelines, community standards, and regional payout structures.</p>
-            `;
-            legalModal.classList.remove("hidden");
+            window.location.href = "terms.html";
         });
     }
 
     const openPrivacyBtn = document.getElementById("open-privacy");
     if (openPrivacyBtn) {
         openPrivacyBtn.addEventListener("click", () => {
-            if (!legalModal) return;
-            legalTitle.innerText = "OTA X Privacy Policy";
-            legalBody.innerHTML = `
-                <p><strong>1. Data Encryption:</strong> All communications and user records are safely stored with high-grade security.</p><br>
-                <p><strong>2. Worldwide Standards:</strong> We ensure absolute data protection across international servers.</p>
-            `;
-            legalModal.classList.remove("hidden");
+            window.location.href = "privacy.html";
         });
     }
 
-    if (closeLegal && legalModal) {
-        closeLegal.addEventListener("click", () => legalModal.classList.add("hidden"));
+    // Redirect to Standalone Feedback Page
+    const openFeedbackBtn = document.getElementById("open-feedback");
+    if (openFeedbackBtn) {
+        openFeedbackBtn.addEventListener("click", () => {
+            window.location.href = "feedback.html";
+        });
     }
 
     // Appeal Modal Controls
@@ -204,8 +191,12 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    document.getElementById("submit-appeal-btn").addEventListener("click", () => {
-        alert("Quote-based appeal submitted for safety review.");
-        document.getElementById("appeal-modal").classList.add("hidden");
-    });
+    const submitAppealBtn = document.getElementById("submit-appeal-btn");
+    if (submitAppealBtn) {
+        submitAppealBtn.addEventListener("click", () => {
+            alert("Quote-based appeal submitted for safety review.");
+            document.getElementById("appeal-modal").classList.add("hidden");
+        });
+    }
 });
+            

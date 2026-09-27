@@ -68,7 +68,10 @@ body { background-color: #0f0f0f; color: #ffffff; display: flex; justify-content
 .legal-footer-text { text-align: center; font-size: 11px; color: #666; line-height: 1.5; margin-top: 10px; }
 .legal-footer-text a { color: #ff3b5c; text-decoration: underline; cursor: pointer; }
 
-#auth-warning { color: #ff3b5c; font-size: 13px; text-align: center; }
+/* Interactive Country Selector Styles */
+.interactive-country-link { color: #fff; font-weight: 600; text-decoration: underline; cursor: pointer; display: inline-flex; align-items: center; gap: 3px; }
+.country-option { background: #1f1f1f; padding: 12px 15px; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: 500; transition: 0.2s; color: #fff; border: 1px solid #333; }
+.country-option:hover { background: #331a20; border-color: #ff3b5c; }
 
 /* Main App Tabs */
 #main-app { flex: 1; display: flex; flex-direction: column; position: relative; height: 100%; }
@@ -115,4 +118,3 @@ body { background-color: #0f0f0f; color: #ffffff; display: flex; justify-content
 #profile-tab { padding: 20px; text-align: center; }
 .profile-header { display: flex; flex-direction: column; align-items: center; gap: 10px; margin-bottom: 20px; }
 .profile-avatar { width: 80px; height: 80px; border-radius: 50%; background: #333; display: flex; justify-content: center; align-items: center; font-size: 32px; color: #ff3b5c; }
-             

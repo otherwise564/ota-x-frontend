@@ -152,15 +152,14 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     };
 
-    // --- UPLOAD & POST CREATION LOGIC ---
+    // --- UPLOAD & POST CREATION LOGIC (Live Backend Connected) ---
     const publishBtn = document.getElementById("publish-post-btn");
     
     if (publishBtn) {
-        publishBtn.addEventListener("click", () => {
+        publishBtn.addEventListener("click", async () => {
             const captionInput = document.getElementById("post-caption");
             const fileInput = document.getElementById("media-file-input");
             const songSelect = document.getElementById("selected-song");
-            const feedTab = document.getElementById("feed-tab");
 
             const captionText = captionInput ? captionInput.value.trim() : "New OTA X Post! 🔥";
             const selectedSong = songSelect ? songSelect.value : "Trending Sound";
@@ -171,35 +170,49 @@ document.addEventListener("DOMContentLoaded", () => {
                 mediaUrl = URL.createObjectURL(fileInput.files[0]);
             }
 
-            const newPostItem = document.createElement("div");
-            newPostItem.className = "video-feed-item";
-            newPostItem.innerHTML = `
-                <div class="video-placeholder" style="background-image: url('${mediaUrl}'); background-size: cover; background-position: center;">
-                    <div class="video-overlay-info">
-                        <h3>@OX_Global_Creator</h3>
-                        <p>${escapeHtml(captionText)}</p>
-                        <div class="sound-tag"><i class="fa-solid fa-music"></i> <span>${escapeHtml(selectedSong)}</span></div>
-                    </div>
-                    <div class="right-action-bar">
-                        <button class="action-btn like-btn" onclick="this.classList.toggle('active')"><i class="fa-solid fa-heart"></i><span>0</span></button>
-                        <button class="action-btn comment-btn"><i class="fa-solid fa-comment-dots"></i><span>0</span></button>
-                        <button class="action-btn gift-btn"><i class="fa-solid fa-gift"></i><span>Gift</span></button>
-                        <button class="action-btn share-btn"><i class="fa-solid fa-share"></i><span>0</span></button>
-                        <button class="action-btn download-btn" onclick="downloadWatermarkedContent('${mediaUrl}', 'OX_Global_Creator', false)">
-                            <i class="fa-solid fa-download"></i><span>Save</span>
-                        </button>
-                    </div>
-                </div>
-            `;
-
-            if (feedTab) {
-                feedTab.insertBefore(newPostItem, feedTab.firstChild);
+            const token = localStorage.getItem("otax_token");
+            if (!token) {
+                alert("Please log in first before publishing a post!");
+                switchToTab('profile-tab');
+                return;
             }
 
-            if (captionInput) captionInput.value = "";
-            if (fileInput) fileInput.value = "";
+            try {
+                publishBtn.innerText = "Publishing globally...";
+                publishBtn.disabled = true;
 
-            switchToTab('feed-tab');
+                const response = await fetch(`${BACKEND_URL}/api/posts`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${token}`
+                    },
+                    body: JSON.stringify({
+                        caption: captionText,
+                        mediaUrl: mediaUrl,
+                        song: selectedSong
+                    })
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.error || "Failed to publish post.");
+                }
+
+                alert("Post published globally to PostgreSQL successfully! 🔥");
+
+                if (captionInput) captionInput.value = "";
+                if (fileInput) fileInput.value = "";
+
+                switchToTab('feed-tab');
+            } catch (error) {
+                console.error("Publish error:", error);
+                alert(error.message);
+            } finally {
+                publishBtn.innerText = "Post";
+                publishBtn.disabled = false;
+            }
         });
     }
 
@@ -458,4 +471,4 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     };
 });
-    
+                            

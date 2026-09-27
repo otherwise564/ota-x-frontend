@@ -59,10 +59,10 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // Handle Log In / Sign Up button click
     nextAuthBtn.addEventListener("click", function() {
-        const emailInput = document.getElementById("auth-input").value;
+        const userInput = document.getElementById("auth-input").value;
         const passwordInput = document.getElementById("auth-password").value;
 
-        if(!emailInput || !passwordInput) {
+        if(!userInput || !passwordInput) {
             alert("Please fill in both fields to continue.");
             return;
         }
@@ -73,11 +73,11 @@ document.addEventListener("DOMContentLoaded", function() {
 
     // Handle Forgot Password click
     forgotPasswordBtn.addEventListener("click", function() {
-        const email = document.getElementById("auth-input").value;
-        if(!email) {
-            alert("Please enter your email address first, then click Forgot Password.");
+        const userInput = document.getElementById("auth-input").value;
+        if(!userInput) {
+            alert("Please enter your email or phone number first, then click Forgot Password.");
         } else {
-            alert("Password reset link has been sent to: " + email);
+            alert("Password reset instructions have been sent to: " + userInput);
         }
     });
 
@@ -239,4 +239,4 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     });
 });
-                                                               
+        

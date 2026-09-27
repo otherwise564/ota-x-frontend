@@ -88,7 +88,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 let endpoint = `${BACKEND_URL}/api/auth/login`;
                 let bodyData = { email: val, password: pwd };
 
-                // If explicitly not in login mode and registration flow is preferred
                 let response = await fetch(endpoint, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
@@ -98,7 +97,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 let data = await response.json();
 
                 if (!response.ok && !isLoginMode) {
-                    // Try registering if login fails during sign-up mode
                     response = await fetch(`${BACKEND_URL}/api/auth/register`, {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
@@ -371,6 +369,44 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
+    // Legal Modal Controls (Terms & Privacy)
+    const legalModal = document.getElementById("legal-modal");
+    const closeLegal = document.getElementById("close-legal");
+    const legalTitle = document.getElementById("legal-title");
+    const legalBody = document.getElementById("legal-body");
+    const openTerms = document.getElementById("open-terms");
+    const openPrivacy = document.getElementById("open-privacy");
+
+    if (openTerms && legalModal) {
+        openTerms.addEventListener("click", () => {
+            legalTitle.innerText = "Terms of Service";
+            legalBody.innerHTML = `
+                <p><strong>1. Acceptance of Terms</strong><br>By accessing or using OTA X, you agree to be bound by these Terms of Service.</p>
+                <p><strong>2. User Content & Conduct</strong><br>You are solely responsible for the videos, voice notes, and text comments you publish. No harassment or illegal content is tolerated.</p>
+                <p><strong>3. Gifting and Virtual Currency</strong><br>OTA X coins and diamonds are part of the platform's engagement ecosystem and subject to digital item policies.</p>
+            `;
+            legalModal.classList.remove("hidden");
+        });
+    }
+
+    if (openPrivacy && legalModal) {
+        openPrivacy.addEventListener("click", () => {
+            legalTitle.innerText = "Privacy Policy";
+            legalBody.innerHTML = `
+                <p><strong>1. Information We Collect</strong><br>We collect your account credentials (email/phone), uploaded media content, and interaction data to provide the global ecosystem experience.</p>
+                <p><strong>2. Data Security</strong><br>Your passwords are securely hashed, and your tokens are handled safely via local storage and PostgreSQL.</p>
+                <p><strong>3. Contact Us</strong><br>For privacy concerns, reach out via your profile support or appeal center.</p>
+            `;
+            legalModal.classList.remove("hidden");
+        });
+    }
+
+    if (closeLegal && legalModal) {
+        closeLegal.addEventListener("click", () => {
+            legalModal.classList.add("hidden");
+        });
+    }
+
     // Watermarked Content Download Function
     window.downloadWatermarkedContent = async function(mediaUrl, creatorUsername, isVideo = false) {
         try {
@@ -423,4 +459,4 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     };
 });
-                
+                                

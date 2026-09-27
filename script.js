@@ -94,23 +94,34 @@ document.addEventListener("DOMContentLoaded", () => {
                     body: JSON.stringify(bodyData)
                 });
 
-                let data = await response.json();
+                let data;
+                try {
+                    data = await response.json();
+                } catch (e) {
+                    data = { error: "Invalid response from server." };
+                }
 
                 if (!response.ok && !isLoginMode) {
+                    // Try Registering if login fails and we are in sign-up mode
                     response = await fetch(`${BACKEND_URL}/api/auth/register`, {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
                         body: JSON.stringify({ username: val.split('@')[0], email: val, password: pwd })
                     });
-                    data = await response.json();
+                    
+                    try {
+                        data = await response.json();
+                    } catch (e) {
+                        data = { error: "Invalid registration response from server." };
+                    }
 
                     if (!response.ok) {
-                        throw new Error(data.error || "Authentication failed.");
+                        throw new Error(data.error || data.message || "Registration failed.");
                     }
 
                     alert("Registration successful! Welcome to OTA X.");
                 } else if (!response.ok && isLoginMode) {
-                    throw new Error(data.error || "Invalid login credentials.");
+                    throw new Error(data.error || data.message || "Invalid login credentials.");
                 } else {
                     if (data.token) {
                         localStorage.setItem("otax_token", data.token);
@@ -123,7 +134,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 mainApp.classList.remove("hidden");
 
             } catch (err) {
-                authWarning.innerText = err.message;
+                console.error("Auth error:", err);
+                authWarning.innerText = err.message || "Network error or server unreachable.";
                 authWarning.classList.remove("hidden");
             } finally {
                 nextAuthBtn.innerText = isLoginMode ? "Log In" : "Sign Up / Continue";
@@ -459,4 +471,4 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     };
 });
-                                
+                        

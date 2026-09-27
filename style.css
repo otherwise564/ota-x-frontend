@@ -639,5 +639,30 @@ html, body {
     line-height: 1.5;
     margin-top: 10px;
     text-align: left;
+}
+
+/* ==========================================
+   LEGAL MODAL FIXES (PROPER SIZING & CENTERING)
+   ========================================== */
+#legal-modal {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+#legal-modal .modal-content,
+#legal-modal > div {
+    width: 90% !important;
+    max-width: 420px !important;
+    max-height: 80vh !important;
+    overflow-y: auto !important;
+    padding: 24px !important;
+    border-radius: 16px !important;
+}
+
+#legal-body {
+    font-size: 14px;
+    line-height: 1.6;
    }
    

@@ -1,3 +1,7 @@
+/* ==========================================
+   OTA X - COMPLETE GLOBAL PLATFORM STYLESHEET
+   ========================================== */
+
 * {
     margin: 0;
     padding: 0;
@@ -40,7 +44,92 @@ body, html {
     display: none !important;
 }
 
-/* Auth Screen Card & OX Logo */
+/* ==========================================
+   ELECTRIC SPARK & NEON GLOW OX LOGO STYLING
+   ========================================== */
+.auth-logo-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.brand-logo-circle {
+    width: 84px;
+    height: 84px;
+    background: radial-gradient(circle, #1a080d 0%, #050505 100%);
+    border: 2px solid #ff3b5c;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    box-shadow: 0 0 15px rgba(255, 59, 92, 0.4), inset 0 0 15px rgba(255, 59, 92, 0.3);
+    animation: electric-pulse 2.5s infinite alternate ease-in-out;
+    margin-bottom: 12px;
+}
+
+/* Electric Spark Animation Ring around the inside */
+.brand-logo-circle::before {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    right: -4px;
+    bottom: -4px;
+    border-radius: 50%;
+    border: 2px dashed rgba(0, 230, 118, 0.7);
+    animation: spark-rotate 4s linear infinite;
+    pointer-events: none;
+    box-shadow: 0 0 8px rgba(0, 230, 118, 0.5);
+}
+
+@keyframes spark-rotate {
+    0% {
+        transform: rotate(0deg);
+        filter: drop-shadow(0 0 2px #00e676);
+    }
+    50% {
+        filter: drop-shadow(0 0 8px #ff3b5c);
+    }
+    100% {
+        transform: rotate(360deg);
+        filter: drop-shadow(0 0 2px #00e676);
+    }
+}
+
+@keyframes electric-pulse {
+    0% {
+        box-shadow: 0 0 10px rgba(255, 59, 92, 0.3), inset 0 0 10px rgba(255, 59, 92, 0.2);
+        border-color: #ff3b5c;
+    }
+    50% {
+        box-shadow: 0 0 25px rgba(0, 230, 118, 0.5), inset 0 0 20px rgba(0, 230, 118, 0.3);
+        border-color: #00e676;
+    }
+    100% {
+        box-shadow: 0 0 10px rgba(255, 59, 92, 0.3), inset 0 0 10px rgba(255, 59, 92, 0.2);
+        border-color: #ff3b5c;
+    }
+}
+
+.logo-o {
+    font-size: 1.8rem;
+    font-weight: 900;
+    color: #ffffff;
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.6);
+}
+
+.logo-x {
+    font-size: 1.8rem;
+    font-weight: 900;
+    color: #ff3b5c;
+    text-shadow: 0 0 14px rgba(255, 59, 92, 0.9);
+}
+
+/* ==========================================
+   AUTH SCREEN & FORMS
+   ========================================== */
 #auth-screen.active {
     display: flex;
     justify-content: center;
@@ -57,51 +146,6 @@ body, html {
     padding: 30px 24px;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
     text-align: center;
-}
-
-.auth-logo-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-bottom: 24px;
-}
-
-.brand-logo-circle {
-    width: 76px;
-    height: 76px;
-    background: #0a0a0a;
-    border: 2px solid #2a2a2a;
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    box-shadow: 0 0 20px rgba(255, 59, 92, 0.15);
-    margin-bottom: 12px;
-}
-
-.logo-o {
-    font-size: 1.8rem;
-    font-weight: 800;
-    color: #ffffff;
-}
-
-.logo-x {
-    font-size: 1.8rem;
-    font-weight: 800;
-    color: #ff3b5c;
-    text-shadow: 0 0 12px rgba(255, 59, 92, 0.6);
-}
-
-.auth-region-pill {
-    background: #161616;
-    border: 1px solid #262626;
-    padding: 5px 14px;
-    border-radius: 20px;
-    font-size: 0.75rem;
-    color: #00e676;
-    display: flex;
-    align-items: center;
-    gap: 6px;
 }
 
 .auth-method-tabs {
@@ -193,7 +237,9 @@ body, html {
     text-decoration: underline;
 }
 
-/* Main App Navigation & Feeds */
+/* ==========================================
+   MAIN APP NAVIGATION & FEEDS
+   ========================================== */
 .top-nav {
     position: absolute;
     top: 0;
@@ -309,7 +355,9 @@ body, html {
     color: #fff;
 }
 
-/* Studio & Profile styling */
+/* ==========================================
+   STUDIO & PROFILE
+   ========================================== */
 .studio-header, .profile-header {
     padding: 25px 20px;
     text-align: center;
@@ -359,7 +407,9 @@ body, html {
     font-size: 0.9rem;
 }
 
-/* Modals & Voice Comments Drawer */
+/* ==========================================
+   MODALS & COMMENT DRAWER
+   ========================================== */
 .modal {
     position: fixed;
     top: 0;
@@ -570,4 +620,5 @@ body, html {
     line-height: 1.5;
     margin-top: 10px;
     text-align: left;
-  }
+        }
+    

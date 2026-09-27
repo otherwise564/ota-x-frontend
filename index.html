@@ -1,1 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OTA X - Global Video Ecosystem</title>
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom TikTok-Standard Styling -->
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+        body { background-color: #0f0f0f; color: #ffffff; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+        .app-container { width: 100%; max-width: 430px; height: 100vh; max-height: 932px; background: #000000; position: relative; overflow: hidden; display: flex; flex-direction: column; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .hidden { display: none !important; }
+        
+        /* Auth Screen Styling */
+        #auth-screen { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #121212; z-index: 100; display: flex; flex-direction: column; justify-content: space-between; padding: 30px 20px; }
+        .auth-header { text-align: center; margin-top: 40px; }
+        .auth-header h1 { font-size: 32px; font-weight: 800; color: #ff3b5c; letter-spacing: 1px; }
+        .auth-header p { color: #888; font-size: 14px; margin-top: 5px; }
+        .auth-body { display: flex; flex-direction: column; gap: 15px; }
+        .auth-tabs { display: flex; background: #1f1f1f; border-radius: 8px; padding: 4px; }
+        .auth-tab-btn { flex: 1; background: transparent; border: none; color: #888; padding: 10px; font-weight: 600; border-radius: 6px; cursor: pointer; transition: 0.2s; }
+        .auth-tab-btn.active { background: #333; color: #fff; }
+        .auth-input { width: 100%; background: #1f1f1f; border: 1px solid #333; border-radius: 8px; padding: 14px; color: #fff; font-size: 16px; outline: none; }
+        .auth-input:focus { border-color: #ff3b5c; }
+        .auth-btn { width: 100%; background: #ff3b5c; color: white; border: none; border-radius: 8px; padding: 14px; font-size: 16px; font-weight: 700; cursor: pointer; }
+        .auth-btn:hover { background: #e0314d; }
+        .auth-footer { text-align: center; font-size: 14px; color: #aaa; cursor: pointer; margin-bottom: 20px; }
+        #auth-warning { color: #ff3b5c; font-size: 13px; text-align: center; }
+        #detected-country-container { text-align: center; font-size: 12px; color: #666; margin-bottom: 10px; }
 
+        /* Main App Tabs */
+        #main-app { flex: 1; display: flex; flex-direction: column; position: relative; height: 100%; }
+        .app-tab { flex: 1; overflow-y: auto; position: relative; background: #000; padding-bottom: 60px; }
+        
+        /* Feed Tab */
+        .video-feed-item { width: 100%; height: 100%; position: relative; display: flex; flex-direction: column; justify-content: flex-end; }
+        .video-overlay-info { padding: 20px; position: absolute; bottom: 60px; left: 0; right: 80px; z-index: 2; text-shadow: 0 1px 3px rgba(0,0,0,0.8); }
+        .video-overlay-info h3 { font-size: 16px; margin-bottom: 6px; }
+        .video-overlay-info p { font-size: 14px; margin-bottom: 8px; color: #ddd; }
+        .sound-tag { display: inline-flex; align-items: center; gap: 6px; font-size: 12px; background: rgba(0,0,0,0.4); padding: 4px 10px; border-radius: 20px; }
+        
+        .right-action-bar { position: absolute; right: 12px; bottom: 80px; display: flex; flex-direction: column; align-items: center; gap: 18px; z-index: 3; }
+        .action-btn { background: none; border: none; color: white; display: flex; flex-direction: column; align-items: center; gap: 4px; cursor: pointer; font-size: 22px; text-shadow: 0 1px 2px rgba(0,0,0,0.5); }
+        .action-btn span { font-size: 11px; font-weight: 600; }
+        .action-btn.active { color: #ff3b5c; }
+
+        /* Bottom Navigation */
+        .bottom-nav { position: absolute; bottom: 0; left: 0; width: 100%; height: 60px; background: #000000; border-top: 1px solid #222; display: flex; justify-content: space-around; align-items: center; z-index: 10; }
+        .bot-nav-btn { background: none; border: none; color: #777; font-size: 20px; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 2px; }
+        .bot-nav-btn span { font-size: 10px; }
+        .bot-nav-btn.active { color: #ffffff; }
+
+        /* Upload Tab */
+        #upload-tab { padding: 20px; display: flex; flex-direction: column; gap: 15px; }
+        #upload-tab h2 { font-size: 20px; margin-bottom: 10px; }
+        .upload-input-group { display: flex; flex-direction: column; gap: 6px; }
+        .upload-input-group label { font-size: 13px; color: #aaa; }
+        .upload-input-group textarea, .upload-input-group select, .upload-input-group input { background: #1a1a1a; border: 1px solid #333; border-radius: 8px; padding: 12px; color: #fff; font-size: 14px; outline: none; }
+        
+        /* Modals & Drawers */
+        .modal { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); z-index: 50; display: flex; justify-content: center; align-items: flex-end; }
+        .modal-content { background: #1a1a1a; width: 100%; max-height: 70vh; border-top-left-radius: 16px; border-top-right-radius: 16px; padding: 20px; display: flex; flex-direction: column; gap: 15px; overflow-y: auto; }
+        .modal-header { display: flex; justify-content: space-between; align-items: center; font-size: 16px; font-weight: 700; }
+        .close-modal { background: none; border: none; color: #aaa; font-size: 18px; cursor: pointer; }
+        
+        /* Gift Grid */
+        .gift-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+        .gift-item { background: #262626; border: 2px solid transparent; border-radius: 10px; padding: 15px; text-align: center; cursor: pointer; }
+        .gift-item.selected { border-color: #ff3b5c; background: #331a20; }
+        .gift-item i { font-size: 24px; color: #ffd700; margin-bottom: 5px; display: block; }
+        
+        /* Profile Tab */
+        #profile-tab { padding: 20px; text-align: center; }
+        .profile-header { display: flex; flex-direction: column; align-items: center; gap: 10px; margin-bottom: 20px; }
+        .profile-avatar { width: 80px; height: 80px; border-radius: 50%; background: #333; display: flex; justify-content: center; align-items: center; font-size: 32px; color: #ff3b5c; }
+    </style>
+</head>
+<body>
+
+    <div class="app-container">
+        <!-- Auth Screen -->
+        <div id="auth-screen" class="active">
+            <div class="auth-header">
+                <h1>OTA X</h1>
+                <p>Global Video Ecosystem</p>
+            </div>
+            <div id="detected-country-container" class="hidden"></div>
+            <div class="auth-body">
+                <div class="auth-tabs">
+                    <button class="auth-tab-btn active" id="tab-email-btn">Email</button>
+                    <button class="auth-tab-btn" id="tab-phone-btn">Phone</button>
+                </div>
+                <input type="email" id="auth-input" class="auth-input" placeholder="Email address">
+                <input type="password" id="auth-password" class="auth-input" placeholder="Secure Password (min 6 chars + symbol/number)">
+                <div id="auth-warning" class="hidden"></div>
+                <button class="auth-btn" id="next-auth-btn">Sign Up / Continue</button>
+            </div>
+            <div class="auth-footer" id="switch-mode-btn">Already have an account? Log In</div>
+        </div>
+
+        <!-- Main App Container -->
+        <div id="main-app" class="hidden">
+            
+            <!-- Feed Tab -->
+            <div id="feed-tab" class="app-tab">
+                <div class="video-feed-item">
+                    <div class="video-overlay-info">
+                        <h3>@OX_Creator</h3>
+                        <p>Welcome to OTA X! Discover trending global videos and live engagement. 🔥</p>
+                        <div class="sound-tag"><i class="fa-solid fa-music"></i> <span>Original Sound - OTA X</span></div>
+                    </div>
+                    <div class="right-action-bar">
+                        <button class="action-btn like-btn" onclick="toggleLike(this)"><i class="fa-solid fa-heart"></i><span>1</span></button>
+                        <button class="action-btn comment-btn" onclick="openComments('1')"><i class="fa-solid fa-comment-dots"></i><span>0</span></button>
+                        <button class="action-btn gift-btn" id="trigger-gift-modal"><i class="fa-solid fa-gift"></i><span>Gift</span></button>
+                        <button class="action-btn share-btn" onclick="alert('Post link copied to clipboard!')"><i class="fa-solid fa-share"></i><span>Share</span></button>
+                        <button class="action-btn download-btn" onclick="downloadWatermarkedContent('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe', 'OX_Creator', false)"><i class="fa-solid fa-download"></i><span>Save</span></button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Upload Tab -->
+            <div id="upload-tab" class="app-tab hidden">
+                <h2>Create Post</h2>
+                <div class="upload-input-group">
+                    <label>Caption</label>
+                    <textarea id="post-caption" rows="3" placeholder="What's on your mind? Add hashtags..."></textarea>
+                </div>
+                <div class="upload-input-group">
+                    <label>Media File (Video/Image)</label>
+                    <input type="file" id="media-file-input" accept="image/*,video/*">
+                </div>
+                <div class="upload-input-group">
+                    <label>Sound Track</label>
+                    <select id="selected-song">
+                        <option>Trending Afrobeats Wave</option>
+                        <option>OTA X Club Anthem</option>
+                        <option>Original Sound</option>
+                    </select>
+                </div>
+                <button class="auth-btn" id="publish-post-btn">Post to OTA X Feed</button>
+            </div>
+
+            <!-- Profile Tab -->
+            <div id="profile-tab" class="app-tab hidden">
+                <div class="profile-header">
+                    <div class="profile-avatar"><i class="fa-solid fa-user"></i></div>
+                    <h3>@OX_Creator</h3>
+                    <p style="color: #888; font-size: 13px;">Coins Balance: <span id="user-coins" style="color: #ffd700; font-weight: bold;">5000</span></p>
+                </div>
+                <div style="display: flex; flex-direction: column; gap: 10px; padding: 0 10px;">
+                    <button class="auth-btn" style="background: #222;" id="open-terms">Terms of Service</button>
+                    <button class="auth-btn" style="background: #222;" id="open-privacy">Privacy Policy</button>
+                    <button class="auth-btn" style="background: #222;" onclick="openAppealModal()">Moderation Appeal Center</button>
+                </div>
+            </div>
+
+            <!-- Bottom Navigation Bar -->
+            <div class="bottom-nav">
+                <button class="bot-nav-btn active" data-tab="feed-tab">
+                    <i class="fa-solid fa-house"></i>
+                    <span>Home</span>
+                </button>
+                <button class="bot-nav-btn" data-tab="upload-tab">
+                    <i class="fa-solid fa-plus"></i>
+                    <span>Upload</span>
+                </button>
+                <button class="bot-nav-btn" data-tab="profile-tab">
+                    <i class="fa-solid fa-user"></i>
+                    <span>Profile</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Gift Modal -->
+        <div id="gift-modal" class="modal hidden">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span>Send Universal Gift</span>
+                    <button class="close-modal" id="close-gift"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+                <div class="gift-grid">
+                    <div class="gift-item" data-cost="100"><i class="fa-solid fa-star"></i><span>Star (100)</span></div>
+                    <div class="gift-item" data-cost="500"><i class="fa-solid fa-gem"></i><span>Diamond (500)</span></div>
+                    <div class="gift-item" data-cost="1000"><i class="fa-solid fa-crown"></i><span>Crown (1000)</span></div>
+                </div>
+                <button class="auth-btn" id="send-gift-action">Send Gift</button>
+            </div>
+        </div>
+
+        <!-- Comments Drawer -->
+        <div id="comment-section-container" class="modal hidden">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span>Comments & Voice Notes</span>
+                    <button class="close-modal" id="close-comments"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+                <div style="flex: 1; min-height: 150px; color: #888; text-align: center; padding-top: 30px;">
+                    No comments yet. Be the first to comment or record a voice note!
+                </div>
+                <div style="display: flex; gap: 10px; align-items: center;">
+                    <input type="text" class="auth-input" placeholder="Add a comment..." style="flex: 1;">
+                    <button class="action-btn" id="record-voice-btn" style="font-size: 28px; color: #aaa;"><i class="fa-solid fa-microphone"></i></button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Legal Modal -->
+        <div id="legal-modal" class="modal hidden">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span id="legal-title">Legal & Policy</span>
+                    <button class="close-modal" id="close-legal"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+                <div id="legal-body" style="font-size: 13px; color: #ccc; line-height: 1.6; display: flex; flex-direction: column; gap: 10px;">
+                </div>
+            </div>
+        </div>
+
+        <!-- Appeal Modal -->
+        <div id="appeal-modal" class="modal hidden">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <span>Moderation Appeal</span>
+                    <button class="close-modal" id="close-appeal"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+                <textarea id="appeal-text" class="auth-input" rows="4" placeholder="Explain your case or quote guidelines..."></textarea>
+                <button class="auth-btn" id="submit-appeal-btn">Submit Appeal</button>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+  </html>
+  

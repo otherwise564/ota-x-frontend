@@ -18,9 +18,6 @@
                     <div class="brand-logo-circle">
                         <span class="logo-o">O</span><span class="logo-x">X</span>
                     </div>
-                    <div id="auth-region-badge" class="auth-region-pill">
-                        <i class="fa-solid fa-location-dot"></i> Global Mode: Worldwide Gifting Enabled
-                    </div>
                 </div>
 
                 <div class="auth-method-tabs">
@@ -30,8 +27,8 @@
 
                 <div class="input-group">
                     <input type="email" id="auth-input" placeholder="Email address" autocomplete="email">
-                    <input type="password" id="auth-password" class="auth-password-input" placeholder="Password (min 4 characters)" autocomplete="current-password">
-                    <div id="auth-warning" class="warning-text hidden">Please enter a valid credential (at least 4 characters).</div>
+                    <input type="password" id="auth-password" class="auth-password-input" placeholder="Password (min 6 chars, numbers & #*!)" autocomplete="current-password">
+                    <div id="auth-warning" class="warning-text hidden">Password must be at least 6 characters and include letters, numbers, or symbols.</div>
                 </div>
 
                 <div id="otp-container" class="hidden">
@@ -52,7 +49,6 @@
 
         <!-- MAIN SOCIAL APP INTERFACE -->
         <section id="main-app" class="screen hidden">
-            
             <header class="top-nav">
                 <span class="nav-tab">Following</span>
                 <span class="nav-tab active">For You</span>
@@ -60,7 +56,6 @@
             </header>
 
             <div class="tab-content-container">
-                <!-- FEED TAB -->
                 <div id="feed-tab" class="app-tab active">
                     <div class="video-feed-item">
                         <div class="video-placeholder">
@@ -78,7 +73,6 @@
                     </div>
                 </div>
 
-                <!-- STUDIO TAB -->
                 <div id="studio-tab" class="app-tab hidden">
                     <div class="studio-header">
                         <h2>OTA X Studio</h2>
@@ -93,7 +87,6 @@
                     </div>
                 </div>
 
-                <!-- PROFILE TAB -->
                 <div id="profile-tab" class="app-tab hidden">
                     <div class="profile-header">
                         <div class="avatar-placeholder">OX</div>
@@ -157,14 +150,11 @@
             <div class="coin-balance">Coins: <span id="user-coins">5,000</span> 🪙</div>
             
             <div class="gift-grid">
-                <!-- Custom Elite Exclusive Showstoppers -->
                 <div class="gift-item custom-gift" data-cost="15000"><i class="fa-solid fa-rocket"></i><span>Rocket Takeoff (15K)</span></div>
                 <div class="gift-item custom-gift" data-cost="20000"><i class="fa-solid fa-helicopter"></i><span>Helicopter Landing (20K)</span></div>
                 <div class="gift-item custom-gift" data-cost="25000"><i class="fa-solid fa-crown"></i><span>Princess Sofia (25K)</span></div>
                 <div class="gift-item custom-gift" data-cost="30000"><i class="fa-solid fa-shield-halved"></i><span>Viber Elite (30K)</span></div>
                 <div class="gift-item custom-gift" data-cost="40000"><i class="fa-solid fa-hippo"></i><span>Elephant Stampede (40K)</span></div>
-
-                <!-- Classic Tiers -->
                 <div class="gift-item" data-cost="1"><i class="fa-solid fa-seedling"></i><span>Rose (1)</span></div>
                 <div class="gift-item" data-cost="5"><i class="fa-solid fa-paw"></i><span>Panda (5)</span></div>
                 <div class="gift-item" data-cost="100"><i class="fa-solid fa-box-archive"></i><span>Confetti (100)</span></div>
@@ -176,7 +166,7 @@
         </div>
     </div>
 
-    <!-- LEGAL MODAL (Terms & Privacy Policy) -->
+    <!-- LEGAL MODAL -->
     <div id="legal-modal" class="modal hidden">
         <div class="modal-content">
             <span class="close-modal" id="close-legal">&times;</span>
@@ -197,5 +187,5 @@
 
     <script src="script.js"></script>
 </body>
-                  </html>
-                  
+    </html>
+    

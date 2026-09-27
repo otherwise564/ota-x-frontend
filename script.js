@@ -64,7 +64,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
             authWarning.classList.add("hidden");
 
-            // Try Logging In First, if user doesn't exist, Register automatically
             try {
                 nextAuthBtn.innerText = "Connecting to OTA X...";
                 nextAuthBtn.disabled = true;
@@ -78,7 +77,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 let data = await response.json();
 
                 if (!response.ok) {
-                    // If login fails because user isn't found or unverified, try registering them
                     response = await fetch(`${BACKEND_URL}/api/auth/register`, {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
@@ -90,16 +88,14 @@ document.addEventListener("DOMContentLoaded", () => {
                         throw new Error(data.error || "Authentication failed.");
                     }
 
-                    alert("Registration successful! Check your email for verification code if required, or login.");
+                    alert("Registration successful! Welcome to OTA X.");
                 } else {
-                    // Save JWT Token
                     if (data.token) {
                         localStorage.setItem("otax_token", data.token);
                     }
                     alert("Login successful! Welcome back to OTA X.");
                 }
 
-                // Transition to main app interface
                 authScreen.classList.remove("active");
                 authScreen.classList.add("hidden");
                 mainApp.classList.remove("hidden");
@@ -134,7 +130,6 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
-    // Helper function for tab switching programmatically
     window.switchToTab = function(tabId) {
         document.querySelectorAll(".app-tab").forEach(tab => {
             tab.classList.add("hidden");
@@ -152,7 +147,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     };
 
-    // --- UPLOAD & POST CREATION LOGIC (Live Backend Connected) ---
+    // --- UPLOAD & POST CREATION LOGIC ---
     const publishBtn = document.getElementById("publish-post-btn");
     
     if (publishBtn) {
@@ -239,11 +234,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
             if (!response.ok) return;
 
-            // Remove existing dynamic feed items to avoid duplicates
             const existingItems = feedTab.querySelectorAll(".video-feed-item.live-post");
             existingItems.forEach(item => item.remove());
 
-            // Loop through live posts and insert them into the feed
             posts.forEach(post => {
                 const username = post.user ? post.user.username : "OX_Creator";
                 const postItem = document.createElement("div");
@@ -256,10 +249,10 @@ document.addEventListener("DOMContentLoaded", () => {
                             <div class="sound-tag"><i class="fa-solid fa-music"></i> <span>${escapeHtml(post.song || 'Trending Sound')}</span></div>
                         </div>
                         <div class="right-action-bar">
-                            <button class="action-btn like-btn" onclick="this.classList.toggle('active')"><i class="fa-solid fa-heart"></i><span>0</span></button>
-                            <button class="action-btn comment-btn"><i class="fa-solid fa-comment-dots"></i><span>0</span></button>
-                            <button class="action-btn gift-btn"><i class="fa-solid fa-gift"></i><span>Gift</span></button>
-                            <button class="action-btn share-btn"><i class="fa-solid fa-share"></i><span>0</span></button>
+                            <button class="action-btn like-btn" onclick="toggleLike(this)"><i class="fa-solid fa-heart"></i><span>1</span></button>
+                            <button class="action-btn comment-btn" onclick="openComments('${post.id}')"><i class="fa-solid fa-comment-dots"></i><span>0</span></button>
+                            <button class="action-btn gift-btn" id="trigger-gift-modal"><i class="fa-solid fa-gift"></i><span>Gift</span></button>
+                            <button class="action-btn share-btn" onclick="alert('Post link copied to clipboard!')"><i class="fa-solid fa-share"></i><span>Share</span></button>
                             <button class="action-btn download-btn" onclick="downloadWatermarkedContent('${post.mediaUrl}', '${escapeHtml(username)}', false)">
                                 <i class="fa-solid fa-download"></i><span>Save</span>
                             </button>
@@ -273,17 +266,29 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    // Load feed on startup
     loadGlobalFeed();
+
+    // Global Interactive Functions
+    window.toggleLike = function(btn) {
+        btn.classList.toggle('active');
+        const span = btn.querySelector('span');
+        let count = parseInt(span.innerText);
+        if (btn.classList.contains('active')) {
+            span.innerText = count + 1;
+        } else {
+            span.innerText = Math.max(0, count - 1);
+        }
+    };
+
+    window.openComments = function(postId) {
+        const commentDrawer = document.getElementById("comment-section-container");
+        if (commentDrawer) commentDrawer.classList.remove("hidden");
+    };
 
     // Universal Gift Modal Controls
     const giftModal = document.getElementById("gift-modal");
-    const triggerGiftModal = document.getElementById("trigger-gift-modal");
     const closeGift = document.getElementById("close-gift");
 
-    if (triggerGiftModal) {
-        triggerGiftModal.addEventListener("click", () => giftModal.classList.remove("hidden"));
-    }
     if (closeGift) {
         closeGift.addEventListener("click", () => giftModal.classList.add("hidden"));
     }
@@ -311,7 +316,7 @@ document.addEventListener("DOMContentLoaded", () => {
             if (currentCoins >= selectedGiftCost) {
                 currentCoins -= selectedGiftCost;
                 if (userCoinsDisplay) userCoinsDisplay.innerText = currentCoins.toLocaleString();
-                alert("OTA X Universal Gift sent worldwide successfully!");
+                alert("OTA X Universal Gift sent successfully!");
                 giftModal.classList.add("hidden");
             } else {
                 alert("Insufficient OTA X Coins!");
@@ -321,17 +326,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Voice Comment Drawer Control
     const commentDrawer = document.getElementById("comment-section-container");
-    const openCommentsBtn = document.getElementById("open-comments-btn");
     const closeComments = document.getElementById("close-comments");
 
-    if (openCommentsBtn) {
-        openCommentsBtn.addEventListener("click", () => commentDrawer.classList.remove("hidden"));
-    }
     if (closeComments) {
         closeComments.addEventListener("click", () => commentDrawer.classList.add("hidden"));
     }
 
-    // Voice Note Recording Simulation
     const recordVoiceBtn = document.getElementById("record-voice-btn");
     if (recordVoiceBtn) {
         let isRecording = false;
@@ -343,62 +343,6 @@ document.addEventListener("DOMContentLoaded", () => {
             } else {
                 recordVoiceBtn.style.color = "#aaa";
                 alert("Voice comment posted to feed successfully!");
-            }
-        });
-    }
-
-    // Redirect to Standalone Legal Pages
-    const openTermsBtn = document.getElementById("open-terms");
-    if (openTermsBtn) {
-        openTermsBtn.addEventListener("click", () => { window.location.href = "terms.html"; });
-    }
-
-    const openPrivacyBtn = document.getElementById("open-privacy");
-    if (openPrivacyBtn) {
-        openPrivacyBtn.addEventListener("click", () => { window.location.href = "privacy.html"; });
-    }
-
-    const openFeedbackBtn = document.getElementById("open-feedback");
-    if (openFeedbackBtn) {
-        openFeedbackBtn.addEventListener("click", () => { window.location.href = "feedback.html"; });
-    }
-
-    // Appeal Modal Controls
-    window.openAppealModal = function() {
-        document.getElementById("appeal-modal").classList.remove("hidden");
-    };
-
-    const closeAppeal = document.getElementById("close-appeal");
-    if (closeAppeal) {
-        closeAppeal.addEventListener("click", () => { document.getElementById("appeal-modal").classList.add("hidden"); });
-    }
-
-    const submitAppealBtn = document.getElementById("submit-appeal-btn");
-    if (submitAppealBtn) {
-        submitAppealBtn.addEventListener("click", () => {
-            alert("Quote-based appeal submitted for safety review.");
-            document.getElementById("appeal-modal").classList.add("hidden");
-        });
-    }
-
-    // Password Show/Hide Eye Toggle
-    const togglePasswordBtn = document.getElementById("toggle-password-btn");
-    const authPasswordInput = document.getElementById("auth-password");
-
-    if (togglePasswordBtn && authPasswordInput) {
-        togglePasswordBtn.addEventListener("click", () => {
-            if (authPasswordInput.type === "password") {
-                authPasswordInput.type = "text";
-                togglePasswordBtn.innerText = "👁️‍🗨️";
-                setTimeout(() => {
-                    if (authPasswordInput.type === "text") {
-                        authPasswordInput.type = "password";
-                        togglePasswordBtn.innerText = "👁️";
-                    }
-                }, 3000);
-            } else {
-                authPasswordInput.type = "password";
-                togglePasswordBtn.innerText = "👁️";
             }
         });
     }
@@ -420,32 +364,6 @@ document.addEventListener("DOMContentLoaded", () => {
             }
             alert("Username successfully updated to @" + newName);
             newUsernameInput.value = "";
-        });
-    }
-
-    const updatePasswordBtn = document.getElementById("update-password-btn");
-    const currentPasswordInput = document.getElementById("current-password");
-    const newPasswordInput = document.getElementById("new-password");
-
-    if (updatePasswordBtn) {
-        updatePasswordBtn.addEventListener("click", () => {
-            const currentPwd = currentPasswordInput.value.trim();
-            const newPwd = newPasswordInput.value.trim();
-
-            if (!currentPwd || !newPwd) {
-                alert("Please fill in both password fields.");
-                return;
-            }
-
-            const isNewPwdSecure = newPwd.length >= 6 && /[0-9#*!@$%^&+=]/.test(newPwd);
-            if (!isNewPwdSecure) {
-                alert("New password must be at least 6 characters and include a number or special symbol.");
-                return;
-            }
-
-            alert("Password updated successfully!");
-            currentPasswordInput.value = "";
-            newPasswordInput.value = "";
         });
     }
 
@@ -491,4 +409,33 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 const fontSize = Math.max(canvas.width * 0.04, 24);
                 ctx.font = `bold ${fontSize}px Arial`;
-       
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+                ctx.shadowColor = 'rgba(0, 0, 0, 0.7)';
+                ctx.shadowBlur = 6;
+
+                const watermarkText = `OTA X • @${creatorUsername}`;
+                const padding = 30;
+                const textX = canvas.width - ctx.measureText(watermarkText).width - padding;
+                const textY = canvas.height - padding;
+
+                ctx.fillText(watermarkText, textX, textY);
+
+                canvas.toBlob(function(blob) {
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `otax-${creatorUsername}.jpg`;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    window.URL.revokeObjectURL(url);
+                    alert('Downloaded with OTA X watermark!');
+                }, 'image/jpeg');
+            };
+        } catch (error) {
+            console.error('Watermark download error:', error);
+            window.open(mediaUrl, '_blank');
+        }
+    };
+});
+                    

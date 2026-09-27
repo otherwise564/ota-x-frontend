@@ -118,3 +118,4 @@ body { background-color: #0f0f0f; color: #ffffff; display: flex; justify-content
 #profile-tab { padding: 20px; text-align: center; }
 .profile-header { display: flex; flex-direction: column; align-items: center; gap: 10px; margin-bottom: 20px; }
 .profile-avatar { width: 80px; height: 80px; border-radius: 50%; background: #333; display: flex; justify-content: center; align-items: center; font-size: 32px; color: #ff3b5c; }
+                                                                                          

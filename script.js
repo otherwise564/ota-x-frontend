@@ -102,7 +102,6 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
 
                 if (!response.ok && !isLoginMode) {
-                    // Try Registering if login fails and we are in sign-up mode
                     response = await fetch(`${BACKEND_URL}/api/auth/register`, {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
@@ -180,7 +179,6 @@ document.addEventListener("DOMContentLoaded", () => {
             }
         });
     };
-
     // --- UPLOAD & POST CREATION LOGIC ---
     const publishBtn = document.getElementById("publish-post-btn");
     
@@ -323,7 +321,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const giftModal = document.getElementById("gift-modal");
     const closeGift = document.getElementById("close-gift");
 
-    if (closeGift) {
+    if (closeGift && giftModal) {
         closeGift.addEventListener("click", () => giftModal.classList.add("hidden"));
     }
 
@@ -351,7 +349,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 currentCoins -= selectedGiftCost;
                 if (userCoinsDisplay) userCoinsDisplay.innerText = currentCoins.toLocaleString();
                 alert("OTA X Universal Gift sent successfully!");
-                giftModal.classList.add("hidden");
+                if (giftModal) giftModal.classList.add("hidden");
             } else {
                 alert("Insufficient OTA X Coins!");
             }
@@ -362,7 +360,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const commentDrawer = document.getElementById("comment-section-container");
     const closeComments = document.getElementById("close-comments");
 
-    if (closeComments) {
+    if (closeComments && commentDrawer) {
         closeComments.addEventListener("click", () => commentDrawer.classList.add("hidden"));
     }
 
@@ -419,6 +417,49 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
+    // Trigger Gift Modal Listener
+    const triggerGiftModal = document.getElementById("trigger-gift-modal");
+    if (triggerGiftModal && giftModal) {
+        triggerGiftModal.addEventListener("click", () => {
+            giftModal.classList.remove("hidden");
+        });
+    }
+
+    // Appeal Modal Controls
+    const appealModal = document.getElementById("appeal-modal");
+    const closeAppeal = document.getElementById("close-appeal");
+    const submitAppealBtn = document.getElementById("submit-appeal-btn");
+
+    window.openAppealModal = function() {
+        if (appealModal) {
+            appealModal.classList.remove("hidden");
+        }
+    };
+
+    if (closeAppeal && appealModal) {
+        closeAppeal.addEventListener("click", () => {
+            appealModal.classList.add("hidden");
+        });
+    }
+
+    if (submitAppealBtn) {
+        submitAppealBtn.addEventListener("click", () => {
+            const appealText = document.getElementById("appeal-text");
+            const text = appealText ? appealText.value.trim() : "";
+            if (!text) {
+                alert("Please explain your case or quote guidelines before submitting.");
+                return;
+            }
+            alert("Appeal submitted successfully to OTA X Moderation!");
+            if (appealModal) {
+                appealModal.classList.add("hidden");
+            }
+            if (appealText) {
+                appealText.value = "";
+            }
+        });
+    }
+
     // Watermarked Content Download Function
     window.downloadWatermarkedContent = async function(mediaUrl, creatorUsername, isVideo = false) {
         try {
@@ -471,4 +512,5 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     };
 });
-                        
+                    
+    

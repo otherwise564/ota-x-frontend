@@ -61,23 +61,84 @@
             </header>
 
             <div class="tab-content-container">
+                <!-- HOME / FEED TAB -->
                 <div id="feed-tab" class="app-tab active">
                     <div class="video-feed-item">
                         <div class="video-placeholder">
                             <div class="video-overlay-info">
                                 <h3>@OX_Global_Official</h3>
-                                <p>Welcome to OTA X worldwide! Built for real creators, high-tier universal gifting, and voice communities. 🔥</p>
+                                <p>Welcome to OTA X worldwide! Built for real creators, high-tier universal gifting, and voice communities. 🔥 #ota #viral</p>
                             </div>
                             <div class="right-action-bar">
                                 <button class="action-btn like-btn"><i class="fa-solid fa-heart"></i><span>124.9K</span></button>
                                 <button class="action-btn comment-btn" id="open-comments-btn"><i class="fa-solid fa-comment-dots"></i><span>4,878</span></button>
                                 <button class="action-btn gift-btn" id="trigger-gift-modal"><i class="fa-solid fa-gift"></i><span>Gift</span></button>
                                 <button class="action-btn share-btn"><i class="fa-solid fa-share"></i><span>9,403</span></button>
+                                <!-- Watermarked Download Button -->
+                                <button class="action-btn download-btn" onclick="downloadWatermarkedContent('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe', 'OX_Global_Official', false)">
+                                    <i class="fa-solid fa-download"></i><span>Save</span>
+                                </button>
                             </div>
                         </div>
                     </div>
                 </div>
 
+                <!-- FRIENDS TAB -->
+                <div id="friends-tab" class="app-tab hidden">
+                    <div class="friends-header" style="padding: 15px; color: white;">
+                        <h2>Friends & Following Feed</h2>
+                        <p style="color: #aaa; font-size: 14px;">See updates from creators you follow.</p>
+                    </div>
+                </div>
+
+                <!-- CREATE / UPLOAD STUDIO TAB -->
+                <div id="create-tab" class="app-tab hidden">
+                    <div class="create-studio-container" style="padding: 20px; text-align: center; color: white;">
+                        <h2>Create OTA X Post 🎥</h2>
+                        <p>Record a video live or upload from your device gallery</p>
+                        
+                        <div style="margin: 25px 0;">
+                            <label for="media-file-input" class="primary-btn" style="background: #ff3b5c; padding: 12px 24px; border-radius: 30px; cursor: pointer; display: inline-block;">
+                                <i class="fa-solid fa-camera"></i> Record / Choose Media
+                            </label>
+                            <input type="file" id="media-file-input" accept="video/*,image/*" capture="environment" style="display: none;">
+                        </div>
+
+                        <div class="caption-box" style="margin-bottom: 20px; text-align: left;">
+                            <label style="font-size: 13px; color: #aaa;">Caption (#hashtags & @mentions):</label>
+                            <textarea id="post-caption" placeholder="Describe your video... Add #tags and mention @friends" style="width: 100%; height: 90px; background: #222; color: white; padding: 10px; border-radius: 8px; border: 1px solid #444; margin-top: 5px;"></textarea>
+                        </div>
+
+                        <div class="song-selector" style="margin-bottom: 20px; text-align: left; background: #1a1a1a; padding: 10px; border-radius: 8px;">
+                            <label style="font-size: 14px; color: #aaa;"><i class="fa-solid fa-music"></i> Background Sound:</label>
+                            <select id="selected-song" style="width: 100%; background: #333; color: white; padding: 8px; margin-top: 5px; border-radius: 4px; border: none;">
+                                <option value="Trending Afrobeats Vibe">🔥 Trending Afrobeats Vibe (Original)</option>
+                                <option value="OTA X Viral Sound 01">⚡ OTA X Viral Sound 01</option>
+                                <option value="Global Club Anthem">🌍 Global Club Anthem</option>
+                            </select>
+                        </div>
+
+                        <button id="publish-post-btn" class="primary-btn" style="width: 100%; background: #fe2c55; border: none; padding: 12px; color: white; font-weight: bold; border-radius: 6px; cursor: pointer;">Post to OTA X Feed</button>
+                    </div>
+                </div>
+
+                <!-- INBOX / NOTIFICATIONS TAB -->
+                <div id="inbox-tab" class="app-tab hidden">
+                    <div class="inbox-header" style="padding: 15px; border-bottom: 1px solid #333; color: white;">
+                        <h2>Inbox</h2>
+                    </div>
+                    <div class="notifications-list" style="color: white; padding: 10px;">
+                        <div class="notification-item" style="display: flex; align-items: center; padding: 12px 0; border-bottom: 1px solid #222;">
+                            <div class="avatar-placeholder" style="width: 40px; height: 40px; border-radius: 50%; background: #fe2c55; display: flex; align-items: center; justify-content: center; font-weight: bold; margin-right: 12px;">OX</div>
+                            <div style="flex-grow: 1;">
+                                <p style="margin: 0; font-size: 14px;"><strong>@otherwise564</strong> reposted your video and added it to favorites.</p>
+                                <span style="font-size: 12px; color: #888;">2h ago</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- STUDIO TAB -->
                 <div id="studio-tab" class="app-tab hidden">
                     <div class="studio-header">
                         <h2>OTA X Studio</h2>
@@ -92,24 +153,30 @@
                     </div>
                 </div>
 
+                <!-- PROFILE TAB -->
                 <div id="profile-tab" class="app-tab hidden">
                     <div class="profile-header">
                         <div class="avatar-placeholder">OX</div>
-                        <h2>OX Global Creator</h2>
-                        <p>Worldwide Account Status: Verified</p>
+                        <h2 id="profile-username-display">@OX_Global_Creator</h2>
+                        <p id="profile-bio-display">Worldwide Account Status: Verified</p>
                     </div>
                     <div class="activity-center">
                         <h3>Activity & Security</h3>
                         <ul>
-                            <li onclick="openAppealModal()"><i class="fa-solid fa-triangle-exclamation"></i> Quote-Based Account Appeals <i class="fa-solid fa-chevron-right"></i></li>
+                            <li onclick="openAppealModal()" style="cursor: pointer; padding: 10px 0;"><i class="fa-solid fa-triangle-exclamation"></i> Quote-Based Account Appeals <i class="fa-solid fa-chevron-right"></i></li>
                         </ul>
                     </div>
                 </div>
             </div>
 
+            <!-- BOTTOM NAVIGATION BAR (TikTok Style) -->
             <nav class="bottom-nav">
                 <button class="bot-nav-btn active" data-tab="feed-tab"><i class="fa-solid fa-house"></i><span>Home</span></button>
-                <button class="bot-nav-btn" data-tab="studio-tab"><i class="fa-solid fa-video"></i><span>Studio</span></button>
+                <button class="bot-nav-btn" data-tab="friends-tab"><i class="fa-solid fa-user-group"></i><span>Friends</span></button>
+                <button class="bot-nav-btn create-tab-btn" data-tab="create-tab" style="background: white; color: black; border-radius: 8px; padding: 2px 10px; font-weight: bold;">
+                    <i class="fa-solid fa-plus" style="color: #fe2c55;"></i>
+                </button>
+                <button class="bot-nav-btn" data-tab="inbox-tab"><i class="fa-solid fa-message"></i><span>Inbox</span></button>
                 <button class="bot-nav-btn" data-tab="profile-tab"><i class="fa-solid fa-user"></i><span>Profile</span></button>
             </nav>
         </section>
@@ -192,5 +259,4 @@
 
     <script src="script.js"></script>
 </body>
-                  </html>
-                  
+</html>

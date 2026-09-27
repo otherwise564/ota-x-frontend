@@ -25,12 +25,11 @@
                     <button class="auth-tab-btn active" id="tab-email-btn">Email</button>
                     <button class="auth-tab-btn" id="tab-phone-btn">Phone</button>
                 </div>
-                <input type="email" id="auth-input" class="auth-input" placeholder="Email address">
+                <input type="text" id="auth-input" class="auth-input" placeholder="Email or phone number">
                 <input type="password" id="auth-password" class="auth-input" placeholder="Password">
                 
                 <div class="forgot-password-link" id="forgot-password-btn">Forgot password?</div>
                 
-                <div id="auth-warning" class="hidden"></div>
                 <button class="auth-btn" id="next-auth-btn">Log In</button>
             </div>
 
@@ -82,7 +81,7 @@
                         <option>Original Sound</option>
                     </select>
                 </div>
-                <button class="auth-btn" id="publish-post-btn">Post to OTA X Feed</button>
+                <button class="auth-btn" id="publish-post-btn" onclick="alert('Post published to OTA X Feed successfully!')">Post to OTA X Feed</button>
             </div>
 
             <!-- Profile Tab -->
@@ -147,7 +146,7 @@
                     <button class="close-modal" id="close-gift"><i class="fa-solid fa-xmark"></i></button>
                 </div>
                 <div class="gift-grid">
-                    <div class="gift-item" data-cost="100"><i class="fa-solid fa-star"></i><span>Star (100)</span></div>
+                    <div class="gift-item selected" data-cost="100"><i class="fa-solid fa-star"></i><span>Star (100)</span></div>
                     <div class="gift-item" data-cost="500"><i class="fa-solid fa-gem"></i><span>Diamond (500)</span></div>
                     <div class="gift-item" data-cost="1000"><i class="fa-solid fa-crown"></i><span>Crown (1000)</span></div>
                 </div>
@@ -201,5 +200,5 @@
     <!-- Link to your script file -->
     <script src="script.js"></script>
 </body>
-    </html>
-        
+                    </html>
+            

@@ -1,165 +1,110 @@
-* { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
-body { background-color: #0b0b0b; color: #ffffff; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
-.app-container { width: 100%; max-width: 430px; height: 100vh; max-height: 932px; background: #000000; position: relative; overflow: hidden; display: flex; flex-direction: column; box-shadow: 0 10px 40px rgba(0,0,0,0.8); border: 1px solid #222; }
-.hidden { display: none !important; }
+/* ==========================================
+   REAL-TIME PLATFORM ENHANCEMENTS
+   ========================================== */
 
-/* Auth Screen Styling */
-#auth-screen { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #121212; z-index: 100; display: flex; flex-direction: column; justify-content: space-between; padding: 30px 20px; overflow-y: auto; }
+/* 1. Live Connection & Streaming Badges */
+.live-badge {
+    background: #ff3b5c;
+    color: #fff;
+    font-size: 10px;
+    font-weight: 800;
+    padding: 2px 8px;
+    border-radius: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    animation: livePulse 1.5s infinite;
+}
 
-/* Rotating Electric Border Ring */
-.auth-logo-container { display: flex; flex-direction: column; align-items: center; margin-top: 30px; }
-.electric-ring-wrapper {
-    position: relative;
-    width: 84px;
-    height: 84px;
+@keyframes livePulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.4; }
+    100% { opacity: 1; }
+}
+
+.online-indicator {
+    position: absolute;
+    bottom: 2px;
+    right: 2px;
+    width: 12px;
+    height: 12px;
+    background: #00ffcc;
+    border: 2px solid #000;
     border-radius: 50%;
+}
+
+/* 2. Real-Time Chat & Comment Stream Bubbles */
+.chat-stream-container {
     display: flex;
-    justify-content: center;
-    align-items: center;
-    background: #000;
+    flex-direction: column;
+    gap: 10px;
+    max-height: 300px;
+    overflow-y: auto;
+    padding: 10px 0;
 }
-.electric-ring-wrapper::before {
-    content: '';
+
+.chat-message-bubble {
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 10px 14px;
+    border-radius: 12px;
+    font-size: 13px;
+    line-height: 1.4;
+    animation: fadeInUp 0.3s ease-out;
+}
+
+.chat-message-bubble .chat-user {
+    font-weight: 700;
+    color: #00f2fe;
+    margin-right: 6px;
+}
+
+@keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+/* 3. Floating Reaction Heart Animation (Live Stream FX) */
+@keyframes floatUp {
+    0% { transform: translateY(0) scale(0.6); opacity: 1; }
+    50% { transform: translateY(-100px) scale(1.2); opacity: 0.8; }
+    100% { transform: translateY(-220px) scale(1); opacity: 0; }
+}
+
+.floating-heart {
     position: absolute;
-    inset: -3px;
-    border-radius: 50%;
-    background: conic-gradient(from 0deg, #ff3b5c, #00ffcc, #ff3b5c);
-    animation: rotateGlow 3s linear infinite;
-    z-index: 1;
-}
-.electric-ring-wrapper::after {
-    content: '';
-    position: absolute;
-    inset: 2px;
-    border-radius: 50%;
-    background: #121212;
-    z-index: 2;
-}
-@keyframes rotateGlow {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
-.electric-logo-inner {
-    position: relative;
-    z-index: 3;
+    bottom: 80px;
+    right: 24px;
+    color: #ff3b5c;
     font-size: 24px;
-    font-weight: 900;
-    letter-spacing: 1px;
+    pointer-events: none;
+    animation: floatUp 2s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+    z-index: 50;
 }
-.electric-logo-inner span:nth-child(1) { color: #fff; }
-.electric-logo-inner span:nth-child(2) { color: #ff3b5c; }
 
-.auth-body { display: flex; flex-direction: column; gap: 14px; margin-top: 10px; }
-.auth-tabs { display: flex; background: #1a1a1a; border-radius: 10px; padding: 4px; border: 1px solid #262626; }
-.auth-tab-btn { flex: 1; background: transparent; border: none; color: #888; padding: 11px; font-weight: 600; font-size: 14px; border-radius: 8px; cursor: pointer; transition: 0.2s; }
-.auth-tab-btn.active { background: #333; color: #fff; box-shadow: 0 2px 8px rgba(0,0,0,0.3); }
-.auth-input { width: 100%; background: #181818; border: 1px solid #2e2e2e; border-radius: 10px; padding: 14px; color: #fff; font-size: 15px; outline: none; transition: 0.2s; }
-.auth-input:focus { border-color: #ff3b5c; background: #1f1f1f; }
+/* 4. Notification Badges & Interactive States */
+.notification-dot {
+    position: absolute;
+    top: -2px;
+    right: -2px;
+    width: 8px;
+    height: 8px;
+    background: #ff3b5c;
+    border-radius: 50%;
+}
 
-.forgot-password-link { text-align: right; font-size: 13px; color: #888; cursor: pointer; margin-top: -4px; }
-.forgot-password-link:hover { color: #ff3b5c; }
+/* 5. Upload Progress Bar Styling */
+.upload-progress-container {
+    width: 100%;
+    background: #181818;
+    border-radius: 8px;
+    height: 6px;
+    overflow: hidden;
+    margin-top: 8px;
+}
 
-.auth-btn { width: 100%; background: #ff3b5c; color: white; border: none; border-radius: 10px; padding: 14px; font-size: 16px; font-weight: 700; cursor: pointer; transition: background 0.2s, transform 0.1s; }
-.auth-btn:hover { background: #e0314d; }
-.auth-btn:active { transform: scale(0.98); }
-
-.auth-footer { text-align: center; font-size: 14px; color: #888; cursor: pointer; margin-top: 10px; }
-.auth-footer span { color: #fff; font-weight: 600; text-decoration: underline; }
-
-.legal-footer-text { text-align: center; font-size: 12px; color: #777; line-height: 1.5; margin-top: 15px; }
-.legal-footer-text a { color: #ff3b5c; text-decoration: underline; cursor: pointer; }
-
-/* Interactive Country Selector Styles */
-.interactive-country-link { color: #fff; font-weight: 600; text-decoration: underline; cursor: pointer; display: inline-flex; align-items: center; gap: 4px; }
-.country-option { background: #181818; padding: 14px 16px; border-radius: 10px; cursor: pointer; font-size: 15px; font-weight: 500; transition: 0.2s; color: #fff; border: 1px solid #2a2a2a; display: flex; align-items: center; gap: 10px; }
-.country-option:hover { background: #26161b; border-color: #ff3b5c; }
-
-/* Main App Tabs */
-#main-app { flex: 1; display: flex; flex-direction: column; position: relative; height: 100%; background: #000; }
-.app-tab { flex: 1; overflow-y: auto; position: relative; background: #000; padding-bottom: 70px; }
-
-/* Top Header Bar (Search bar fixed to top right on feed) */
-.top-header-bar { position: absolute; top: 0; left: 0; width: 100%; height: 50px; display: flex; justify-content: center; align-items: center; z-index: 20; background: linear-gradient(180deg, rgba(0,0,0,0.8) 0%, transparent 100%); pointer-events: none; }
-.top-nav-links { display: flex; gap: 20px; pointer-events: auto; }
-.top-nav-tab { color: #888; font-size: 15px; font-weight: 600; cursor: pointer; text-shadow: 0 1px 3px rgba(0,0,0,0.8); }
-.top-nav-tab.active { color: #fff; border-bottom: 2px solid #fff; padding-bottom: 2px; }
-.top-search-btn { position: absolute; right: 15px; background: none; border: none; color: #fff; font-size: 18px; cursor: pointer; pointer-events: auto; }
-
-/* Feed Tab Layout Fixes */
-.video-feed-item { width: 100%; height: 100%; position: relative; display: flex; flex-direction: column; justify-content: flex-end; background: linear-gradient(180deg, #111 0%, #000 100%); }
-
-.video-overlay-info { padding: 15px; position: absolute; bottom: 70px; left: 0; right: 85px; z-index: 10; text-shadow: 0 1px 4px rgba(0,0,0,0.9); pointer-events: auto; }
-.video-overlay-info h3 { font-size: 17px; margin-bottom: 6px; font-weight: 700; color: #fff; }
-.video-overlay-info p { font-size: 14px; margin-bottom: 10px; color: #e0e0e0; line-height: 1.4; }
-.sound-tag { display: inline-flex; align-items: center; gap: 8px; font-size: 12px; background: rgba(255,255,255,0.1); backdrop-filter: blur(5px); padding: 5px 12px; border-radius: 20px; color: #fff; border: 1px solid rgba(255,255,255,0.08); }
-
-.right-action-bar { position: absolute; right: 12px; bottom: 75px; display: flex; flex-direction: column; align-items: center; gap: 16px; z-index: 25; pointer-events: auto; }
-.action-item-wrapper { display: flex; flex-direction: column; align-items: center; }
-.action-btn { background: rgba(0, 0, 0, 0.3); border: none; width: 45px; height: 45px; border-radius: 50%; color: white; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; font-size: 20px; text-shadow: 0 2px 4px rgba(0,0,0,0.6); transition: transform 0.1s, background 0.2s; pointer-events: auto; }
-.action-btn:active { transform: scale(0.9); }
-.action-btn i { pointer-events: none; }
-.action-btn span { font-size: 11px; font-weight: 600; color: #f1f1f1; margin-top: 3px; }
-.action-btn.active { color: #ff3b5c; }
-
-/* Bottom Navigation */
-.bottom-nav { position: absolute; bottom: 0; left: 0; width: 100%; height: 65px; background: #000000; border-top: 1px solid #1a1a1a; display: flex; justify-content: space-around; align-items: center; z-index: 30; backdrop-filter: blur(10px); }
-.bot-nav-btn { background: none; border: none; color: #666; font-size: 20px; cursor: pointer; display: flex; flex-direction: column; align-items: center; gap: 3px; transition: color 0.2s; }
-.bot-nav-btn span { font-size: 11px; font-weight: 500; }
-.bot-nav-btn.active { color: #ff3b5c; }
-
-/* Upload Tab */
-#upload-tab { padding: 24px 20px; display: flex; flex-direction: column; gap: 18px; background: #0a0a0a; }
-#upload-tab h2 { font-size: 22px; font-weight: 700; margin-bottom: 4px; color: #fff; }
-.upload-input-group { display: flex; flex-direction: column; gap: 8px; }
-.upload-input-group label { font-size: 13px; font-weight: 600; color: #aaa; text-transform: uppercase; letter-spacing: 0.5px; }
-.upload-input-group textarea, .upload-input-group select, .upload-input-group input { background: #161616; border: 1px solid #2a2a2a; border-radius: 12px; padding: 14px; color: #fff; font-size: 15px; outline: none; transition: border-color 0.2s; }
-.upload-input-group textarea:focus, .upload-input-group select:focus, .upload-input-group input:focus { border-color: #ff3b5c; }
-
-/* --- Profile Tab Layout (TikTok Style) --- */
-#profile-tab { padding: 45px 16px 20px 16px; background: #000; display: flex; flex-direction: column; align-items: center; }
-
-.profile-top-bar { position: absolute; top: 12px; left: 16px; right: 16px; display: flex; justify-content: space-between; align-items: center; z-index: 10; }
-.profile-top-bar i { font-size: 18px; color: #fff; cursor: pointer; }
-.profile-top-right { display: flex; gap: 16px; align-items: center; }
-
-.profile-main-info { display: flex; flex-direction: column; align-items: center; width: 100%; margin-top: 10px; }
-.profile-avatar-container { position: relative; width: 88px; height: 88px; margin-bottom: 12px; }
-.profile-avatar-img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; border: 2px solid #333; }
-.profile-avatar-badge { position: absolute; bottom: 0; right: 0; background: #00f2fe; color: #000; width: 26px; height: 26px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 14px; font-weight: bold; border: 2px solid #000; }
-
-.profile-username { font-size: 21px; font-weight: 800; color: #fff; display: flex; align-items: center; gap: 6px; }
-.profile-handle { font-size: 14px; color: #888; margin-top: 2px; margin-bottom: 16px; }
-
-.profile-stats-row { display: flex; gap: 28px; margin-bottom: 16px; text-align: center; }
-.stat-box { display: flex; flex-direction: column; }
-.stat-num { font-size: 17px; font-weight: 700; color: #fff; }
-.stat-label { font-size: 13px; color: #888; }
-
-.profile-bio { font-size: 14px; color: #ddd; text-align: center; line-height: 1.4; max-width: 320px; margin-bottom: 20px; }
-.profile-bio a { color: #fff; text-decoration: underline; }
-
-.profile-action-buttons { display: flex; gap: 10px; width: 100%; max-width: 340px; margin-bottom: 20px; }
-.prof-btn { flex: 1; background: #222; border: none; color: #fff; padding: 10px; border-radius: 8px; font-weight: 600; font-size: 14px; cursor: pointer; transition: background 0.2s; }
-.prof-btn:hover { background: #333; }
-
-.profile-content-tabs { display: flex; justify-content: space-around; width: 100%; border-bottom: 1px solid #222; margin-bottom: 2px; }
-.prof-tab-icon { background: none; border: none; color: #666; font-size: 18px; padding: 10px; cursor: pointer; flex: 1; text-align: center; border-bottom: 2px solid transparent; }
-.prof-tab-icon.active { color: #fff; border-bottom-color: #fff; }
-
-.profile-grid-posts { display: grid; grid-template-columns: repeat(3, 1fr); gap: 3px; width: 100%; }
-.grid-post-item { aspect-ratio: 3/4; background: #161616; position: relative; display: flex; align-items: flex-end; padding: 6px; font-size: 11px; color: #fff; font-weight: 600; background-size: cover; background-position: center; }
-
-/* Modals & Drawers */
-.modal { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.75); z-index: 50; display: flex; justify-content: center; align-items: flex-end; backdrop-filter: blur(4px); }
-.modal-content { background: #141414; width: 100%; max-height: 75vh; border-top-left-radius: 20px; border-top-right-radius: 20px; padding: 24px; display: flex; flex-direction: column; gap: 16px; overflow-y: auto; border-top: 1px solid #2a2a2a; box-shadow: 0 -10px 30px rgba(0,0,0,0.5); }
-.modal-header { display: flex; justify-content: space-between; align-items: center; font-size: 17px; font-weight: 700; color: #fff; border-bottom: 1px solid #222; padding-bottom: 12px; }
-.close-modal { background: none; border: none; color: #aaa; font-size: 20px; cursor: pointer; padding: 4px; }
-.close-modal:hover { color: #fff; }
-
-/* Gift Grid */
-.gift-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 10px 0; }
-.gift-item { background: #1a1a1a; border: 2px solid #262626; border-radius: 12px; padding: 18px 10px; text-align: center; cursor: pointer; transition: 0.2s; }
-.gift-item.selected { border-color: #ff3b5c; background: #26161b; }
-.gift-item i { font-size: 26px; color: #ffd700; margin-bottom: 8px; display: block; }
-.gift-item span { font-size: 12px; font-weight: 600; color: #ddd; }
-           
+.upload-progress-bar {
+    width: 0%;
+    height: 100%;
+    background: linear-gradient(90deg, #ff3b5c, #00ffcc);
+    transition: width 0.3s ease;
+}

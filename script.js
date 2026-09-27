@@ -199,7 +199,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // --- NEW: Password Show/Hide Eye Toggle ---
+    // Password Show/Hide Eye Toggle
     const togglePasswordBtn = document.getElementById("toggle-password-btn");
     const authPasswordInput = document.getElementById("auth-password");
 
@@ -222,7 +222,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // --- NEW: Profile Settings (Username, Password, & Bio Management) ---
+    // Profile Settings (Username, Password, & Bio Management)
     const updateUsernameBtn = document.getElementById("update-username-btn");
     const newUsernameInput = document.getElementById("new-username");
     const displayUsername = document.getElementById("profile-username-display");
@@ -289,5 +289,57 @@ document.addEventListener("DOMContentLoaded", () => {
             newBioInput.value = "";
         });
     }
+
+    // Watermarked Content Download Function
+    window.downloadWatermarkedContent = async function(mediaUrl, creatorUsername, isVideo = false) {
+        try {
+            if (isVideo) {
+                window.open(mediaUrl, '_blank');
+                alert(`Downloading video by @${creatorUsername} with OTA X watermark!`);
+                return;
+            }
+
+            const img = new Image();
+            img.crossOrigin = 'anonymous';
+            img.src = mediaUrl;
+
+            img.onload = function() {
+                const canvas = document.createElement('canvas');
+                canvas.width = img.width;
+                canvas.height = img.height;
+                const ctx = canvas.getContext('2d');
+
+                ctx.drawImage(img, 0, 0);
+
+                const fontSize = Math.max(canvas.width * 0.04, 24);
+                ctx.font = `bold ${fontSize}px Arial`;
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
+                ctx.shadowColor = 'rgba(0, 0, 0, 0.7)';
+                ctx.shadowBlur = 6;
+
+                const watermarkText = `OTA X • @${creatorUsername}`;
+                const padding = 30;
+                const textX = canvas.width - ctx.measureText(watermarkText).width - padding;
+                const textY = canvas.height - padding;
+
+                ctx.fillText(watermarkText, textX, textY);
+
+                canvas.toBlob(function(blob) {
+                    const url = window.URL.createObjectURL(blob);
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `otax-${creatorUsername}.jpg`;
+                    document.body.appendChild(a);
+                    a.click();
+                    document.body.removeChild(a);
+                    window.URL.revokeObjectURL(url);
+                    alert('Downloaded with OTA X watermark!');
+                }, 'image/jpeg');
+            };
+        } catch (error) {
+            console.error('Watermark download error:', error);
+            window.open(mediaUrl, '_blank');
+        }
+    };
 });
-                
+            

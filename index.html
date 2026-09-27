@@ -45,7 +45,7 @@
         <!-- Main App Container -->
         <div id="main-app" class="hidden">
             
-            <!-- Top Header Navigation (Search & Feeds Switcher) -->
+            <!-- Top Header Navigation (Search & Feeds Switcher) - Scoped to Feed Only -->
             <div class="top-header-bar">
                 <div class="top-nav-links">
                     <span class="top-nav-tab">Following</span>
@@ -132,7 +132,7 @@
                 </div>
             </div>
 
-            <!-- Profile Tab Redesigned -->
+            <!-- Profile Tab Redesigned (Clean & Dynamic State) -->
             <div id="profile-tab" class="app-tab hidden">
                 <div class="profile-top-bar">
                     <i class="fa-solid fa-user-plus"></i>
@@ -144,8 +144,11 @@
                 </div>
 
                 <div class="profile-main-info">
-                    <div class="profile-avatar-container">
-                        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150" alt="Avatar" class="profile-avatar-img">
+                    <!-- Clean dynamic placeholder avatar container -->
+                    <div class="profile-avatar-container" id="profile-avatar-container">
+                        <div class="profile-avatar-placeholder" id="profile-avatar-display">
+                            <i class="fa-solid fa-user"></i>
+                        </div>
                         <div class="profile-avatar-badge"><i class="fa-solid fa-plus" style="font-size: 12px;"></i></div>
                     </div>
                     
@@ -153,9 +156,9 @@
                     <div class="profile-handle">@ox_creator</div>
 
                     <div class="profile-stats-row">
-                        <div class="stat-box"><span class="stat-num">42</span><span class="stat-label">Following</span></div>
-                        <div class="stat-box"><span class="stat-num">1,340</span><span class="stat-label">Followers</span></div>
-                        <div class="stat-box"><span class="stat-num">24.5K</span><span class="stat-label">Likes</span></div>
+                        <div class="stat-box"><span class="stat-num">0</span><span class="stat-label">Following</span></div>
+                        <div class="stat-box"><span class="stat-num">0</span><span class="stat-label">Followers</span></div>
+                        <div class="stat-box"><span class="stat-num">0</span><span class="stat-label">Likes</span></div>
                     </div>
 
                     <div class="profile-action-buttons">
@@ -176,15 +179,7 @@
                 </div>
 
                 <div class="profile-grid-posts" id="user-posts-grid">
-                    <div class="grid-post-item" style="background-image: linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=300');">
-                        <span><i class="fa-solid fa-play"></i> 1.2K</span>
-                    </div>
-                    <div class="grid-post-item" style="background-image: linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1579783902614-a3fb3927b675?w=300');">
-                        <span><i class="fa-solid fa-play"></i> 3.4K</span>
-                    </div>
-                    <div class="grid-post-item" style="background-image: linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.7)), url('https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=300');">
-                        <span><i class="fa-solid fa-play"></i> 850</span>
-                    </div>
+                    <div class="ota-empty-post" style="padding: 30px; text-align: center; color: #666; width: 100%;">No posts yet</div>
                 </div>
 
                 <!-- Slide-Out Menu Drawer -->
@@ -318,5 +313,5 @@
     <!-- Link to your script file -->
     <script src="script.js"></script>
 </body>
-    </html>
-                        
+                                </html>
+                    

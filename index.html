@@ -3,125 +3,150 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OTAX Platform</title>
+    <title>OTA X - Universal Social Media & Live Studio</title>
     <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
+
+    <!-- APP CONTAINER -->
     <div id="app-container">
 
-        <!-- AUTHENTICATION SCREEN -->
-        <div id="auth-screen" class="screen active">
-            <div class="auth-box">
-                <div>
-                    <div class="auth-logo">
-                        <span style="color: #000; text-shadow: 0 0 2px rgba(255,255,255,0.3);">O</span><span style="color: #fe2c55;">X</span>
+        <!-- AUTH SCREEN -->
+        <section id="auth-screen" class="screen active">
+            <div class="auth-card">
+                <h1>OTA X</h1>
+                <p>Enter your phone number or email to continue</p>
+                
+                <div class="input-group">
+                    <input type="text" id="auth-input" placeholder="Phone number or Email">
+                    <div id="auth-warning" class="warning-text hidden">Please provide a complete phone number or valid email address (at least 4 characters).</div>
+                </div>
+
+                <div id="otp-container" class="hidden">
+                    <input type="text" id="otp-input" placeholder="Enter 6-digit verification code">
+                    <button id="verify-otp-btn" class="primary-btn">Verify & Proceed</button>
+                </div>
+
+                <button id="next-auth-btn" class="primary-btn">Continue</button>
+                <p class="terms-text">By continuing, you agree to OTA X Terms and Privacy Policy.</p>
+            </div>
+        </section>
+
+        <!-- MAIN APP INTERFACE -->
+        <section id="main-app" class="screen hidden">
+            
+            <!-- TOP NAVIGATION TABS -->
+            <header class="top-nav">
+                <span class="nav-tab" data-target="feed-tab">Following</span>
+                <span class="nav-tab active" data-target="feed-tab">For You</span>
+                <i class="fa-solid fa-magnifying-glass search-icon" id="open-search"></i>
+            </header>
+
+            <!-- TAB CONTENTS -->
+            <div class="tab-content-container">
+                
+                <!-- FEED TAB -->
+                <div id="feed-tab" class="app-tab active">
+                    <div class="video-feed-item">
+                        <div class="video-placeholder">
+                            <video loop autoplay muted src="" poster=""></video>
+                            <div class="video-overlay-info">
+                                <h3>@ΩDX3_Official</h3>
+                                <p>Welcome to OTA X! Building the future of real-time social media. 🦅🔥 #otax #viral</p>
+                            </div>
+                            <div class="right-action-bar">
+                                <button class="action-btn like-btn"><i class="fa-solid fa-heart"></i><span>124.9K</span></button>
+                                <button class="action-btn comment-btn"><i class="fa-solid fa-comment-dots"></i><span>4,878</span></button>
+                                <button class="action-btn gift-btn" id="trigger-gift-modal"><i class="fa-solid fa-gift"></i><span>Gift</span></button>
+                                <button class="action-btn share-btn"><i class="fa-solid fa-share"></i><span>9,403</span></button>
+                            </div>
+                        </div>
                     </div>
-                    <span id="geo-location-badge" class="geo-badge">📍 Detecting Region...</span>
                 </div>
 
-                <div id="form-container">
-                    <div class="auth-tabs">
-                        <button class="auth-tab active" id="tab-email" onclick="setAuthMode('email')">Email</button>
-                        <button class="auth-tab" id="tab-phone" onclick="setAuthMode('phone')">Phone</button>
+                <!-- STUDIO TAB (OTA X Studio & Live) -->
+                <div id="studio-tab" class="app-tab hidden">
+                    <div class="studio-header">
+                        <h2>OTA X Studio</h2>
+                        <span id="monetization-badge" class="badge">Checking Region...</span>
                     </div>
-
-                    <input type="email" id="auth-email" class="auth-input" placeholder="Email address" style="margin-bottom: 12px;">
-                    <input type="password" id="auth-password" class="auth-input" placeholder="Password" style="margin-bottom: 12px;">
-                    <button class="auth-btn" onclick="handleSignUp()" style="width: 100%;">Sign Up</button>
-                    <button class="auth-btn-secondary" onclick="handleSignIn()" style="width: 100%; margin-top: 8px;">Log In</button>
+                    <div class="studio-dashboard">
+                        <div class="stat-card">
+                            <h3>Total Diamonds</h3>
+                            <p id="diamond-count">0 💎</p>
+                        </div>
+                        <div class="stat-card">
+                            <h3>Live Viewers</h3>
+                            <p>0 Active</p>
+                        </div>
+                        <button id="start-live-btn" class="primary-btn live-btn">Go REAL-TIME Live 🔴</button>
+                    </div>
                 </div>
-            </div>
-        </div>
 
-        <!-- HOME FEED SCREEN -->
-        <div id="home-screen" class="screen">
-            <div style="flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center;">
-                <h3>OTAX Smart Main Feed</h3>
-                <p style="color: #666; font-size: 12px; margin-top: 5px;">Swipe up for next video stream</p>
-            </div>
-        </div>
-
-        <!-- DISCOVERY / #TAG SCREEN -->
-        <div id="tag-screen" class="screen" style="padding: 15px; background: #121212;">
-            <h2 style="font-size: 18px; margin-bottom: 15px;"># Discovery & Tags</h2>
-            <input type="text" placeholder="Search #tags, trends..." class="auth-input" style="margin-bottom: 15px;">
-            <div style="display: flex; flex-direction: column; gap: 10px;">
-                <div style="background: #1f1f1f; padding: 12px; border-radius: 8px; border: 1px solid #333;" onclick="switchScreen('home-screen')">
-                    <h4 style="color: #25f4ee; font-size: 14px;">#OtaxDanceWave</h4>
-                    <p style="color: #888; font-size: 11px; margin-top: 3px;">1.4M posts</p>
+                <!-- PROFILE & ACTIVITY CENTER TAB -->
+                <div id="profile-tab" class="app-tab hidden">
+                    <div class="profile-header">
+                        <div class="avatar-placeholder">ΩD</div>
+                        <h2>ΩDX3 🦅</h2>
+                        <p id="user-country-display">Region: Loading...</p>
+                    </div>
+                    <div class="activity-center">
+                        <h3>Activity Center</h3>
+                        <ul>
+                            <li onclick="alert('Opening Watch History...')"><i class="fa-solid fa-clock-rotate-left"></i> Watch history <i class="fa-solid fa-chevron-right"></i></li>
+                            <li onclick="alert('Opening Comments log...')"><i class="fa-solid fa-comment"></i> Comments <i class="fa-solid fa-chevron-right"></i></li>
+                            <li onclick="openAppealModal()"><i class="fa-solid fa-triangle-exclamation"></i> Account Appeals / Reports <i class="fa-solid fa-chevron-right"></i></li>
+                        </ul>
+                    </div>
                 </div>
-                <div style="background: #1f1f1f; padding: 12px; border-radius: 8px; border: 1px solid #333;">
-                    <h4 style="color: #25f4ee; font-size: 14px;">#AfrobeatsLive</h4>
-                    <p style="color: #888; font-size: 11px; margin-top: 3px;">890K posts</p>
-                </div>
+
             </div>
+
+            <!-- BOTTOM NAVIGATION BAR -->
+            <nav class="bottom-nav">
+                <button class="bot-nav-btn active" data-tab="feed-tab"><i class="fa-solid fa-house"></i><span>Home</span></button>
+                <button class="bot-nav-btn" data-tab="explore-tab"><i class="fa-solid fa-compass"></i><span>Explore</span></button>
+                <button class="bot-nav-btn create-btn" id="create-content-btn"><i class="fa-solid fa-plus"></i></button>
+                <button class="bot-nav-btn" data-tab="studio-tab"><i class="fa-solid fa-video"></i><span>Studio</span></button>
+                <button class="bot-nav-btn" data-tab="profile-tab"><i class="fa-solid fa-user"></i><span>Profile</span></button>
+            </nav>
+
+        </section>
+
+    </div>
+
+    <!-- UNIVERSAL GIFT MODAL -->
+    <div id="gift-modal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close-modal" id="close-gift">&times;</span>
+            <h3>OTA X Universal Gifting</h3>
+            <div class="coin-balance">Coins: <span id="user-coins">500</span> 🪙</div>
+            <div class="gift-grid">
+                <div class="gift-item" data-cost="1"><i class="fa-solid fa-seedling"></i><span>Rose (1)</span></div>
+                <div class="gift-item" data-cost="10"><i class="fa-solid fa-mug-hot"></i><span>Coffee (10)</span></div>
+                <div class="gift-item" data-cost="100"><i class="fa-solid fa-paw"></i><span>Panda (100)</span></div>
+                <div class="gift-item" data-cost="500"><i class="fa-solid fa-champagne-glasses"></i><span>Perfume (500)</span></div>
+                <div class="gift-item" data-cost="1000"><i class="fa-solid fa-car-side"></i><span>Sports Car (1000)</span></div>
+                <div class="gift-item" data-cost="5000"><i class="fa-solid fa-dragon"></i><span>Golden Dragon (5000)</span></div>
+                <div class="gift-item" data-cost="30000"><i class="fa-solid fa-earth-americas"><span>Universe (30K)</span></div>
+            </div>
+            <button id="send-gift-action" class="primary-btn">Send Gift</button>
         </div>
+    </div>
 
-        <!-- CAMERA / CREATE SCREEN -->
-        <div id="camera-screen" class="screen" style="background: #000;">
-            <div style="width: 100%; flex: 1; position: relative;">
-                <video id="live-camera" autoplay playsinline style="width: 100%; height: 100%; object-fit: cover;"></video>
-                <div style="position: absolute; top: 15px; left: 15px;">
-                    <span style="background: rgba(0,0,0,0.5); padding: 5px 10px; border-radius: 15px; font-size: 11px; color: #25f4ee; cursor: pointer;" onclick="switchScreen('editing-screen')">✨ Effects & Audio</span>
-                </div>
-            </div>
-            <div style="width: 100%; display: flex; justify-content: space-around; align-items: center; padding: 25px; background: #000;">
-                <button onclick="toggleCamera()" style="background: rgba(255,255,255,0.2); border: none; width: 45px; height: 45px; border-radius: 50%; color: #fff; cursor: pointer;">🔄</button>
-                <button onclick="switchScreen('editing-screen')" style="background: #fe2c55; border: none; width: 70px; height: 70px; border-radius: 50%; color: #fff; font-weight: bold; cursor: pointer;">⏺</button>
-                <button onclick="alert('Gallery uploaded')" style="background: rgba(255,255,255,0.2); border: none; width: 45px; height: 45px; border-radius: 50%; color: #fff; cursor: pointer;">📁</button>
-            </div>
+    <!-- APPEAL / REPORT MODAL -->
+    <div id="appeal-modal" class="modal hidden">
+        <div class="modal-content">
+            <span class="close-modal" id="close-appeal">&times;</span>
+            <h3>Quote-Based Appeal & Report System</h3>
+            <p>Submit context or quotes regarding your account review:</p>
+            <textarea id="appeal-text" placeholder="Explain your case or quote safety parameters..."></textarea>
+            <button id="submit-appeal-btn" class="primary-btn">Submit Appeal</button>
         </div>
-
-        <!-- EDITING STUDIO SCREEN -->
-        <div id="editing-screen" class="screen" style="background: #121212;">
-            <div style="display: flex; justify-content: space-between; align-items: center; padding: 15px; border-bottom: 1px solid #333;">
-                <button onclick="switchScreen('camera-screen')" style="background: none; border: none; color: #fff; font-size: 14px; cursor: pointer;">Cancel</button>
-                <span style="font-weight: bold; font-size: 14px;">Video Studio Editor</span>
-                <button onclick="alert('Video Published!')" style="background: #fe2c55; border: none; color: #fff; padding: 6px 14px; border-radius: 4px; font-size: 12px; font-weight: bold; cursor: pointer;">Post</button>
-            </div>
-            <div style="flex: 1; display: flex; justify-content: center; align-items: center; background: #000;">
-                <span style="color: #666; font-size: 13px;">[Clip Timeline Preview]</span>
-            </div>
-            <div style="padding: 15px; background: #1f1f1f; display: flex; justify-content: space-around;">
-                <button style="background: none; border: none; color: #fff; font-size: 12px; cursor: pointer;">🎵 Sounds</button>
-                <button style="background: none; border: none; color: #fff; font-size: 12px; cursor: pointer;">✍️ Text</button>
-                <button style="background: none; border: none; color: #fff; font-size: 12px; cursor: pointer;">🎨 Filters</button>
-            </div>
-        </div>
-
-        <!-- INBOX SCREEN -->
-        <div id="inbox-screen" class="screen" style="padding: 20px;">
-            <h2>Inbox</h2>
-            <p style="color: #777; margin-top: 10px;">Notifications and messages.</p>
-        </div>
-
-        <!-- PROFILE SCREEN -->
-        <div id="profile-screen" class="screen" style="background: #121212;">
-            <div style="display: flex; gap: 20px; align-items: center; padding: 25px 20px;">
-                <div style="width: 70px; height: 70px; background: #000; border: 2px solid #fe2c55; border-radius: 50%; display: flex; justify-content: center; align-items: center;">
-                    <span style="font-size: 32px; color: #000; text-shadow: 0 0 2px #fff;">O</span><span style="font-size: 12px; color: #fe2c55;">X</span>
-                </div>
-                <div>
-                    <h3 id="profile-username" style="font-size: 16px;">@ΩDX3</h3>
-                    <span style="font-size: 13px; color: #aaa; margin-top: 4px; display: block;">0 Followers</span>
-                </div>
-            </div>
-            <div style="display: flex; border-bottom: 1px solid #333; margin-top: 15px;">
-                <button style="flex: 1; padding: 12px; background: none; border: none; color: #fff; font-weight: bold;">Videos</button>
-            </div>
-        </div>
-
-        <!-- BOTTOM NAVIGATION BAR -->
-        <nav class="bottom-nav" id="main-nav" style="display: none;">
-            <button class="nav-item active" onclick="switchScreen('home-screen', this)">🏠 <span>Home</span></button>
-            <button class="nav-item" onclick="switchScreen('tag-screen', this)"># <span>Discover</span></button>
-            <button class="create-btn-nav" onclick="switchScreen('camera-screen', this); startCamera();">+</button>
-            <button class="nav-item" onclick="switchScreen('inbox-screen', this)">💬 <span>Inbox</span></button>
-            <button class="nav-item" onclick="switchScreen('profile-screen', this)">👤 <span>Profile</span></button>
-        </nav>
-
     </div>
 
     <script src="script.js"></script>
 </body>
-</html>
+    </html>
+    

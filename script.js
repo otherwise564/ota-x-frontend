@@ -42,8 +42,25 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // Real Server-Connected Authentication (Prisma + PostgreSQL via Render)
+    // Toggle between Sign Up and Log In mode
+    const switchModeBtn = document.getElementById("switch-mode-btn");
     const nextAuthBtn = document.getElementById("next-auth-btn");
+    let isLoginMode = false;
+
+    if (switchModeBtn && nextAuthBtn) {
+        switchModeBtn.addEventListener("click", () => {
+            isLoginMode = !isLoginMode;
+            if (isLoginMode) {
+                switchModeBtn.innerText = "Don't have an account? Sign Up";
+                nextAuthBtn.innerText = "Log In";
+            } else {
+                switchModeBtn.innerText = "Already have an account? Log In";
+                nextAuthBtn.innerText = "Sign Up / Continue";
+            }
+        });
+    }
+
+    // Real Server-Connected Authentication (Prisma + PostgreSQL via Render)
     const authPassword = document.getElementById("auth-password");
     const authWarning = document.getElementById("auth-warning");
     const authScreen = document.getElementById("auth-screen");
@@ -68,15 +85,20 @@ document.addEventListener("DOMContentLoaded", () => {
                 nextAuthBtn.innerText = "Connecting to OTA X...";
                 nextAuthBtn.disabled = true;
 
-                let response = await fetch(`${BACKEND_URL}/api/auth/login`, {
+                let endpoint = `${BACKEND_URL}/api/auth/login`;
+                let bodyData = { email: val, password: pwd };
+
+                // If explicitly not in login mode and registration flow is preferred
+                let response = await fetch(endpoint, {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
-                    body: JSON.stringify({ email: val, password: pwd })
+                    body: JSON.stringify(bodyData)
                 });
 
                 let data = await response.json();
 
-                if (!response.ok) {
+                if (!response.ok && !isLoginMode) {
+                    // Try registering if login fails during sign-up mode
                     response = await fetch(`${BACKEND_URL}/api/auth/register`, {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
@@ -89,11 +111,13 @@ document.addEventListener("DOMContentLoaded", () => {
                     }
 
                     alert("Registration successful! Welcome to OTA X.");
+                } else if (!response.ok && isLoginMode) {
+                    throw new Error(data.error || "Invalid login credentials.");
                 } else {
                     if (data.token) {
                         localStorage.setItem("otax_token", data.token);
                     }
-                    alert("Login successful! Welcome back to OTA X.");
+                    alert(isLoginMode ? "Login successful! Welcome back to OTA X." : "Authentication successful!");
                 }
 
                 authScreen.classList.remove("active");
@@ -104,7 +128,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 authWarning.innerText = err.message;
                 authWarning.classList.remove("hidden");
             } finally {
-                nextAuthBtn.innerText = "Next";
+                nextAuthBtn.innerText = isLoginMode ? "Log In" : "Sign Up / Continue";
                 nextAuthBtn.disabled = false;
             }
         });
@@ -206,7 +230,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 console.error("Publish error:", error);
                 alert(error.message);
             } finally {
-                publishBtn.innerText = "Post";
+                publishBtn.innerText = "Post to OTA X Feed";
                 publishBtn.disabled = false;
             }
         });
@@ -347,45 +371,6 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // Profile Settings Management
-    const updateUsernameBtn = document.getElementById("update-username-btn");
-    const newUsernameInput = document.getElementById("new-username");
-    const displayUsername = document.getElementById("profile-username-display");
-
-    if (updateUsernameBtn && newUsernameInput) {
-        updateUsernameBtn.addEventListener("click", () => {
-            const newName = newUsernameInput.value.trim();
-            if (newName.length < 3) {
-                alert("Username must be at least 3 characters long.");
-                return;
-            }
-            if (displayUsername) {
-                displayUsername.innerText = "@" + newName;
-            }
-            alert("Username successfully updated to @" + newName);
-            newUsernameInput.value = "";
-        });
-    }
-
-    const updateBioBtn = document.getElementById("update-bio-btn");
-    const newBioInput = document.getElementById("new-bio");
-    const displayBio = document.getElementById("profile-bio-display");
-
-    if (updateBioBtn && newBioInput) {
-        updateBioBtn.addEventListener("click", () => {
-            const bioText = newBioInput.value.trim();
-            if (bioText.length > 80) {
-                alert("Bio is too long! Please keep it under 80 characters.");
-                return;
-            }
-            if (displayBio) {
-                displayBio.innerText = bioText || "No bio yet.";
-            }
-            alert("Profile bio successfully updated!");
-            newBioInput.value = "";
-        });
-    }
-
     // Watermarked Content Download Function
     window.downloadWatermarkedContent = async function(mediaUrl, creatorUsername, isVideo = false) {
         try {
@@ -438,4 +423,4 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     };
 });
-                    
+                

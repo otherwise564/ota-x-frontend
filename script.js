@@ -205,6 +205,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (captionInput) captionInput.value = "";
                 if (fileInput) fileInput.value = "";
 
+                loadGlobalFeed();
                 switchToTab('feed-tab');
             } catch (error) {
                 console.error("Publish error:", error);
@@ -226,6 +227,54 @@ document.addEventListener("DOMContentLoaded", () => {
         };
         return text.replace(/[&<>"']/g, function(m) { return map[m]; });
     }
+
+    // --- FETCH & DISPLAY GLOBAL POSTS FROM BACKEND ---
+    async function loadGlobalFeed() {
+        const feedTab = document.getElementById("feed-tab");
+        if (!feedTab) return;
+
+        try {
+            const response = await fetch(`${BACKEND_URL}/api/posts`);
+            const posts = await response.json();
+
+            if (!response.ok) return;
+
+            // Remove existing dynamic feed items to avoid duplicates
+            const existingItems = feedTab.querySelectorAll(".video-feed-item.live-post");
+            existingItems.forEach(item => item.remove());
+
+            // Loop through live posts and insert them into the feed
+            posts.forEach(post => {
+                const username = post.user ? post.user.username : "OX_Creator";
+                const postItem = document.createElement("div");
+                postItem.className = "video-feed-item live-post";
+                postItem.innerHTML = `
+                    <div class="video-placeholder" style="background-image: url('${post.mediaUrl || 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe'}'); background-size: cover; background-position: center;">
+                        <div class="video-overlay-info">
+                            <h3>@${escapeHtml(username)}</h3>
+                            <p>${escapeHtml(post.caption)}</p>
+                            <div class="sound-tag"><i class="fa-solid fa-music"></i> <span>${escapeHtml(post.song || 'Trending Sound')}</span></div>
+                        </div>
+                        <div class="right-action-bar">
+                            <button class="action-btn like-btn" onclick="this.classList.toggle('active')"><i class="fa-solid fa-heart"></i><span>0</span></button>
+                            <button class="action-btn comment-btn"><i class="fa-solid fa-comment-dots"></i><span>0</span></button>
+                            <button class="action-btn gift-btn"><i class="fa-solid fa-gift"></i><span>Gift</span></button>
+                            <button class="action-btn share-btn"><i class="fa-solid fa-share"></i><span>0</span></button>
+                            <button class="action-btn download-btn" onclick="downloadWatermarkedContent('${post.mediaUrl}', '${escapeHtml(username)}', false)">
+                                <i class="fa-solid fa-download"></i><span>Save</span>
+                            </button>
+                        </div>
+                    </div>
+                `;
+                feedTab.appendChild(postItem);
+            });
+        } catch (error) {
+            console.error("Error loading feed:", error);
+        }
+    }
+
+    // Load feed on startup
+    loadGlobalFeed();
 
     // Universal Gift Modal Controls
     const giftModal = document.getElementById("gift-modal");
@@ -442,33 +491,4 @@ document.addEventListener("DOMContentLoaded", () => {
 
                 const fontSize = Math.max(canvas.width * 0.04, 24);
                 ctx.font = `bold ${fontSize}px Arial`;
-                ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
-                ctx.shadowColor = 'rgba(0, 0, 0, 0.7)';
-                ctx.shadowBlur = 6;
-
-                const watermarkText = `OTA X • @${creatorUsername}`;
-                const padding = 30;
-                const textX = canvas.width - ctx.measureText(watermarkText).width - padding;
-                const textY = canvas.height - padding;
-
-                ctx.fillText(watermarkText, textX, textY);
-
-                canvas.toBlob(function(blob) {
-                    const url = window.URL.createObjectURL(blob);
-                    const a = document.createElement('a');
-                    a.href = url;
-                    a.download = `otax-${creatorUsername}.jpg`;
-                    document.body.appendChild(a);
-                    a.click();
-                    document.body.removeChild(a);
-                    window.URL.revokeObjectURL(url);
-                    alert('Downloaded with OTA X watermark!');
-                }, 'image/jpeg');
-            };
-        } catch (error) {
-            console.error('Watermark download error:', error);
-            window.open(mediaUrl, '_blank');
-        }
-    };
-});
-                            
+       

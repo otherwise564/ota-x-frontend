@@ -1,4 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
+    // Live Render Backend URL
+    const BACKEND_URL = "https://ota-x-backend.onrender.com";
+
     // Auto-detect user country via IP
     const countryContainer = document.getElementById("detected-country-container");
     
@@ -39,7 +42,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // Stronger Auth Validation (Min 6 characters, checks for numbers or symbols like #, *, !)
+    // Real Server-Connected Authentication (Prisma + PostgreSQL via Render)
     const nextAuthBtn = document.getElementById("next-auth-btn");
     const authPassword = document.getElementById("auth-password");
     const authWarning = document.getElementById("auth-warning");
@@ -47,21 +50,67 @@ document.addEventListener("DOMContentLoaded", () => {
     const mainApp = document.getElementById("main-app");
 
     if (nextAuthBtn) {
-        nextAuthBtn.addEventListener("click", () => {
+        nextAuthBtn.addEventListener("click", async () => {
             const val = authInput.value.trim();
             const pwd = authPassword.value.trim();
 
             const isPasswordSecure = pwd.length >= 6 && /[0-9#*!@$%^&+=]/.test(pwd);
 
             if (val.length < 4 || !isPasswordSecure) {
+                authWarning.innerText = "Please enter a valid email and a secure password (min 6 chars with number/symbol).";
                 authWarning.classList.remove("hidden");
                 return;
             }
 
             authWarning.classList.add("hidden");
-            authScreen.classList.remove("active");
-            authScreen.classList.add("hidden");
-            mainApp.classList.remove("hidden");
+
+            // Try Logging In First, if user doesn't exist, Register automatically
+            try {
+                nextAuthBtn.innerText = "Connecting to OTA X...";
+                nextAuthBtn.disabled = true;
+
+                let response = await fetch(`${BACKEND_URL}/api/auth/login`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ email: val, password: pwd })
+                });
+
+                let data = await response.json();
+
+                if (!response.ok) {
+                    // If login fails because user isn't found or unverified, try registering them
+                    response = await fetch(`${BACKEND_URL}/api/auth/register`, {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ username: val.split('@')[0], email: val, password: pwd })
+                    });
+                    data = await response.json();
+
+                    if (!response.ok) {
+                        throw new Error(data.error || "Authentication failed.");
+                    }
+
+                    alert("Registration successful! Check your email for verification code if required, or login.");
+                } else {
+                    // Save JWT Token
+                    if (data.token) {
+                        localStorage.setItem("otax_token", data.token);
+                    }
+                    alert("Login successful! Welcome back to OTA X.");
+                }
+
+                // Transition to main app interface
+                authScreen.classList.remove("active");
+                authScreen.classList.add("hidden");
+                mainApp.classList.remove("hidden");
+
+            } catch (err) {
+                authWarning.innerText = err.message;
+                authWarning.classList.remove("hidden");
+            } finally {
+                nextAuthBtn.innerText = "Next";
+                nextAuthBtn.disabled = false;
+            }
         });
     }
 
@@ -116,14 +165,12 @@ document.addEventListener("DOMContentLoaded", () => {
             const captionText = captionInput ? captionInput.value.trim() : "New OTA X Post! 🔥";
             const selectedSong = songSelect ? songSelect.value : "Trending Sound";
             
-            // Default placeholder image if no file is selected
             let mediaUrl = "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe";
 
             if (fileInput && fileInput.files && fileInput.files[0]) {
                 mediaUrl = URL.createObjectURL(fileInput.files[0]);
             }
 
-            // Create new feed item element
             const newPostItem = document.createElement("div");
             newPostItem.className = "video-feed-item";
             newPostItem.innerHTML = `
@@ -145,21 +192,17 @@ document.addEventListener("DOMContentLoaded", () => {
                 </div>
             `;
 
-            // Prepend new post to the top of the feed
             if (feedTab) {
                 feedTab.insertBefore(newPostItem, feedTab.firstChild);
             }
 
-            // Reset inputs
             if (captionInput) captionInput.value = "";
             if (fileInput) fileInput.value = "";
 
-            // Automatically switch back to Home feed tab
             switchToTab('feed-tab');
         });
     }
 
-    // Helper function to prevent HTML injection in captions
     function escapeHtml(text) {
         const map = {
             '&': '&amp;',
@@ -242,27 +285,20 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // Redirect to Standalone Legal Pages (Terms & Privacy)
+    // Redirect to Standalone Legal Pages
     const openTermsBtn = document.getElementById("open-terms");
     if (openTermsBtn) {
-        openTermsBtn.addEventListener("click", () => {
-            window.location.href = "terms.html";
-        });
+        openTermsBtn.addEventListener("click", () => { window.location.href = "terms.html"; });
     }
 
     const openPrivacyBtn = document.getElementById("open-privacy");
     if (openPrivacyBtn) {
-        openPrivacyBtn.addEventListener("click", () => {
-            window.location.href = "privacy.html";
-        });
+        openPrivacyBtn.addEventListener("click", () => { window.location.href = "privacy.html"; });
     }
 
-    // Redirect to Standalone Feedback Page
     const openFeedbackBtn = document.getElementById("open-feedback");
     if (openFeedbackBtn) {
-        openFeedbackBtn.addEventListener("click", () => {
-            window.location.href = "feedback.html";
-        });
+        openFeedbackBtn.addEventListener("click", () => { window.location.href = "feedback.html"; });
     }
 
     // Appeal Modal Controls
@@ -272,9 +308,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const closeAppeal = document.getElementById("close-appeal");
     if (closeAppeal) {
-        closeAppeal.addEventListener("click", () => {
-            document.getElementById("appeal-modal").classList.add("hidden");
-        });
+        closeAppeal.addEventListener("click", () => { document.getElementById("appeal-modal").classList.add("hidden"); });
     }
 
     const submitAppealBtn = document.getElementById("submit-appeal-btn");
@@ -294,7 +328,6 @@ document.addEventListener("DOMContentLoaded", () => {
             if (authPasswordInput.type === "password") {
                 authPasswordInput.type = "text";
                 togglePasswordBtn.innerText = "👁️‍🗨️";
-                
                 setTimeout(() => {
                     if (authPasswordInput.type === "text") {
                         authPasswordInput.type = "password";
@@ -308,7 +341,7 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // Profile Settings (Username, Password, & Bio Management)
+    // Profile Settings Management
     const updateUsernameBtn = document.getElementById("update-username-btn");
     const newUsernameInput = document.getElementById("new-username");
     const displayUsername = document.getElementById("profile-username-display");
@@ -361,16 +394,13 @@ document.addEventListener("DOMContentLoaded", () => {
     if (updateBioBtn && newBioInput) {
         updateBioBtn.addEventListener("click", () => {
             const bioText = newBioInput.value.trim();
-            
             if (bioText.length > 80) {
                 alert("Bio is too long! Please keep it under 80 characters.");
                 return;
             }
-
             if (displayBio) {
                 displayBio.innerText = bioText || "No bio yet.";
             }
-            
             alert("Profile bio successfully updated!");
             newBioInput.value = "";
         });
@@ -428,4 +458,4 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     };
 });
-                    
+    

@@ -1,11 +1,11 @@
-document.addEventListener("DOMContentLoaded", function() {
+Document.addEventListener("DOMContentLoaded", function() {
     const authScreen = document.getElementById("auth-screen");
     const mainApp = document.getElementById("main-app");
     const nextAuthBtn = document.getElementById("next-auth-btn");
     const switchModeBtn = document.getElementById("switch-mode-btn");
     const forgotPasswordBtn = document.getElementById("forgot-password-btn");
     
-    // Modals (Safe guarded against null elements)
+    // Legal Modals
     const legalModal = document.getElementById("legal-modal");
     const legalTitle = document.getElementById("legal-title");
     const legalBody = document.getElementById("legal-body");
@@ -43,8 +43,20 @@ document.addEventListener("DOMContentLoaded", function() {
     const commentTextInput = document.getElementById("comment-text-input");
     const commentsListContainer = document.getElementById("comments-list-container");
 
+    // Profile & Upload Elements
+    const publishPostBtn = document.getElementById("publish-post-btn");
+    const postCaptionInput = document.getElementById("post-caption");
+    const mediaFileInput = document.getElementById("media-file-input");
+    const feedTab = document.getElementById("feed-tab");
+    const userCoinsSpan = document.getElementById("user-coins");
+
     let isLoginMode = true;
     let selectedGiftCost = 100;
+
+    // Restore saved coins or profile data if available
+    if (localStorage.getItem('ota_coins')) {
+        if (userCoinsSpan) userCoinsSpan.innerText = localStorage.getItem('ota_coins');
+    }
 
     // Toggle Login / Sign Up mode
     if (switchModeBtn) {
@@ -188,12 +200,12 @@ document.addEventListener("DOMContentLoaded", function() {
 
     if (sendGiftAction) {
         sendGiftAction.addEventListener("click", function() {
-            const userCoinsSpan = document.getElementById("user-coins");
             if (userCoinsSpan) {
                 let currentCoins = parseInt(userCoinsSpan.innerText);
                 if(currentCoins >= selectedGiftCost) {
                     currentCoins -= selectedGiftCost;
                     userCoinsSpan.innerText = currentCoins;
+                    localStorage.setItem('ota_coins', currentCoins);
                     alert("Universal Gift sent successfully! Creator rewarded.");
                     if (giftModal) giftModal.classList.add("hidden");
                 } else {
@@ -201,6 +213,79 @@ document.addEventListener("DOMContentLoaded", function() {
                 }
             }
         });
+    }
+
+    // Real-Time Post Publishing Logic (Pushes upload directly to feed & profile grid)
+    if (publishPostBtn) {
+        publishPostBtn.addEventListener("click", function() {
+            const caption = postCaptionInput ? postCaptionInput.value.trim() : "";
+            const soundChoice = document.getElementById("selected-song")?.value || "Original Sound - OTA X";
+
+            if (!caption) {
+                alert("Please write a caption before posting!");
+                return;
+            }
+
+            // Create new feed item dynamically
+            const newFeedItem = document.createElement("div");
+            newFeedItem.className = "video-feed-item";
+            newFeedItem.innerHTML = `
+                <div class="video-overlay-info">
+                    <h3>@OX_Creator</h3>
+                    <p>${escapeHtml(caption)}</p>
+                    <div class="sound-tag"><i class="fa-solid fa-music"></i> <span>${escapeHtml(soundChoice)}</span></div>
+                </div>
+                <div class="right-action-bar">
+                    <div class="action-item-wrapper">
+                        <button class="action-btn like-btn" onclick="toggleLike(this)"><i class="fa-solid fa-heart"></i></button>
+                        <span class="action-count">0</span>
+                    </div>
+                    <div class="action-item-wrapper">
+                        <button class="action-btn comment-btn" onclick="openComments('new')"><i class="fa-solid fa-comment-dots"></i></button>
+                        <span class="action-count">0</span>
+                    </div>
+                    <div class="action-item-wrapper">
+                        <button class="action-btn bookmark-btn"><i class="fa-solid fa-bookmark"></i></button>
+                        <span class="action-count">0</span>
+                    </div>
+                    <div class="action-item-wrapper">
+                        <button class="action-btn share-btn" onclick="alert('Post link copied!')"><i class="fa-solid fa-share"></i></button>
+                        <span class="action-count">0</span>
+                    </div>
+                </div>
+            `;
+
+            if (feedTab) {
+                feedTab.prepend(newFeedItem);
+            }
+
+            // Also add to profile grid view
+            const postsGrid = document.getElementById("user-posts-grid");
+            if (postsGrid) {
+                // Remove 'no posts yet' message if present
+                if (postsGrid.querySelector(".ota-empty-post")) {
+                    postsGrid.innerHTML = "";
+                }
+                const gridItem = document.createElement("div");
+                gridItem.className = "grid-post-item";
+                gridItem.style.background = "#181818";
+                gridItem.innerHTML = `<span><i class="fa-solid fa-play"></i> 0</span>`;
+                postsGrid.prepend(gridItem);
+            }
+
+            alert("Post published to OTA X Feed successfully!");
+            if (postCaptionInput) postCaptionInput.value = "";
+            if (mediaFileInput) mediaFileInput.value = "";
+
+            // Switch to Home Feed tab automatically to view it
+            document.querySelector('[data-tab="feed-tab"]').click();
+        });
+    }
+
+    // Helper to sanitize text input
+    function escapeHtml(text) {
+        const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' };
+        return text.replace(/[&<>"']/g, m => map[m]);
     }
 
     // Comments & Voice Note Logic
@@ -239,7 +324,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 }
                 const commentItem = document.createElement("div");
                 commentItem.style.cssText = "background: #1a1a1a; padding: 10px; border-radius: 8px; margin-bottom: 8px; text-align: left; color: #fff; font-size: 13px;";
-                commentItem.innerHTML = `<strong>@You:</strong> ${text}`;
+                commentItem.innerHTML = `<strong>@You:</strong> ${escapeHtml(text)}`;
                 commentsListContainer.appendChild(commentItem);
                 commentTextInput.value = "";
             }
@@ -278,16 +363,16 @@ document.addEventListener("DOMContentLoaded", function() {
         btn.classList.toggle("active");
         const span = btn.parentElement.querySelector(".action-count") || btn.querySelector("span");
         if (span) {
-            let count = parseInt(span.innerText) || 120000;
+            let count = parseInt(span.innerText.replace(/,/g, '')) || 0;
             if(btn.classList.contains("active")) {
                 span.innerText = (count + 1).toLocaleString();
             } else {
-                span.innerText = (count - 1).toLocaleString();
+                span.innerText = Math.max(0, count - 1).toLocaleString();
             }
         }
     }
 
-    // Bottom Navigation Tab Switching Logic (Fixes Create, Home, Profile, Inbox tabs)
+    // Bottom Navigation Tab Switching Logic
     const navButtons = document.querySelectorAll(".bot-nav-btn");
     const appTabs = document.querySelectorAll(".app-tab");
 
@@ -309,4 +394,4 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     });
 });
-            
+                                          

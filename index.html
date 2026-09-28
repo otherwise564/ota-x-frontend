@@ -3,315 +3,2086 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>OTA X - Global Video Ecosystem</title>
-    <!-- FontAwesome for Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Link to your stylesheet -->
+
+    <title>OTA X</title>
+
+    <meta
+        name="description"
+        content="OTA X — Connect, Create and Discover."
+    >
+
+    <!-- Font Awesome -->
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    >
+
+    <!-- OTA X CSS -->
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
-    <div class="app-container">
-        <!-- Auth Screen -->
-        <div id="auth-screen" class="active">
-            <div class="auth-logo-container">
-                <div class="electric-ring-wrapper">
-                    <div class="electric-logo-inner"><span>0</span><span>X</span></div>
+<div class="app-container">
+
+    <!-- =====================================================
+         OTA X AUTHENTICATION SCREEN
+    ====================================================== -->
+
+    <section id="auth-screen" class="active">
+
+        <!-- Animated OTA X Logo -->
+        <div class="auth-logo-container">
+
+            <div class="electric-ring-wrapper">
+
+                <!-- Electric light travelling around the circle -->
+                <div class="electric-ring"></div>
+
+                <!-- OX -->
+                <div class="electric-logo-inner">
+                    <span class="ox-letter">O</span>
+                    <span class="ox-letter">X</span>
                 </div>
+
             </div>
 
-            <div class="auth-body">
-                <div class="auth-tabs">
-                    <button class="auth-tab-btn active" id="tab-email-btn">Email</button>
-                    <button class="auth-tab-btn" id="tab-phone-btn">Phone</button>
-                </div>
-                <input type="text" id="auth-input" class="auth-input" placeholder="Email or phone number">
-                <input type="password" id="auth-password" class="auth-input" placeholder="Password">
-                
-                <div class="forgot-password-link" id="forgot-password-btn">Forgot password?</div>
-                
-                <button class="auth-btn" id="next-auth-btn">Log In</button>
+
+            <!-- OTA X animated name -->
+            <div class="auth-brand-name">
+                <span>OTA</span>
+                <strong>X</strong>
             </div>
 
-            <div>
-                <div class="auth-footer" id="switch-mode-btn">Don't have an account? <span>Sign Up</span></div>
-                <!-- Interactive Country Selector Link -->
-                <div class="legal-footer-text">
-                    By continuing from <span id="selected-country-btn" class="interactive-country-link">Nigeria <i class="fa-solid fa-chevron-down" style="font-size: 9px;"></i></span>, you agree to OTA X <a id="open-terms">Terms of Service</a> and <a id="open-privacy">Privacy Policy</a>.
-                </div>
-            </div>
+
+            <p class="auth-tagline">
+                Connect. Create. Discover.
+            </p>
+
         </div>
 
-        <!-- Main App Container -->
-        <div id="main-app" class="hidden">
-            
-            <!-- Top Header Navigation (Search & Feeds Switcher) - Scoped to Feed Only -->
-            <div class="top-header-bar">
-                <div class="top-nav-links">
-                    <span class="top-nav-tab">Following</span>
-                    <span class="top-nav-tab active">For You</span>
-                </div>
-                <button class="top-search-btn" id="open-search-modal"><i class="fa-solid fa-magnifying-glass"></i></button>
+
+        <!-- =================================================
+             AUTH FORM
+        ================================================== -->
+
+        <div class="auth-body">
+
+            <h2 id="auth-mode-title">
+                Log in to OTA X
+            </h2>
+
+
+            <!-- Login / Sign Up -->
+            <div class="auth-main-tabs">
+
+                <button
+                    type="button"
+                    id="login-mode-btn"
+                    class="auth-main-tab active"
+                >
+                    Log In
+                </button>
+
+
+                <button
+                    type="button"
+                    id="signup-mode-btn"
+                    class="auth-main-tab"
+                >
+                    Sign Up
+                </button>
+
             </div>
 
-            <!-- Feed Tab -->
-            <div id="feed-tab" class="app-tab">
-                <div class="video-feed-item">
-                    <!-- Bottom-Left Video Metadata -->
-                    <div class="video-overlay-info">
-                        <h3>@OX_Creator</h3>
-                        <p>Welcome to OTA X! Discover trending global videos and live engagement. 🔥</p>
-                        <div class="sound-tag"><i class="fa-solid fa-music"></i> <span>Original Sound - OTA X</span></div>
-                    </div>
-                    
-                    <!-- Right-Side Vertical Action Bar -->
-                    <div class="right-action-bar">
-                        <div class="action-item-wrapper">
-                            <button class="action-btn like-btn" onclick="toggleLike(this)"><i class="fa-solid fa-heart"></i></button>
-                            <span class="action-count">120K</span>
-                        </div>
-                        <div class="action-item-wrapper">
-                            <button class="action-btn comment-btn" onclick="openComments('1')"><i class="fa-solid fa-comment-dots"></i></button>
-                            <span class="action-count">924</span>
-                        </div>
-                        <div class="action-item-wrapper">
-                            <button class="action-btn bookmark-btn"><i class="fa-solid fa-bookmark"></i></button>
-                            <span class="action-count">7,139</span>
-                        </div>
-                        <div class="action-item-wrapper">
-                            <button class="action-btn share-btn" onclick="alert('Post link copied to clipboard!')"><i class="fa-solid fa-share"></i></button>
-                            <span class="action-count">1,454</span>
-                        </div>
-                    </div>
-                </div>
+
+            <!-- Username / Email -->
+            <input
+                type="text"
+                id="auth-username"
+                class="auth-input"
+                placeholder="Username or email"
+                autocomplete="username"
+            >
+
+
+            <!-- Email -->
+            <input
+                type="email"
+                id="auth-email"
+                class="auth-input signup-only hidden"
+                placeholder="Email address"
+                autocomplete="email"
+            >
+
+
+            <!-- Phone -->
+            <div
+                id="phone-field"
+                class="phone-field signup-only hidden"
+            >
+
+                <button
+                    type="button"
+                    id="selected-country-btn"
+                    class="country-code-btn"
+                >
+
+                    <span id="selected-country-flag">
+                        🇳🇬
+                    </span>
+
+                    <span id="selected-country-code">
+                        +234
+                    </span>
+
+                    <i class="fa-solid fa-chevron-down"></i>
+
+                </button>
+
+
+                <input
+                    type="tel"
+                    id="auth-phone"
+                    class="auth-input phone-number-input"
+                    placeholder="Phone number"
+                    autocomplete="tel"
+                >
+
             </div>
 
-            <!-- Friends Tab -->
-            <div id="friends-tab" class="app-tab hidden">
-                <div style="padding: 20px; text-align: center; color: #888; padding-top: 50px;">
-                    <h3>Friends Feed</h3>
-                    <p>Connect with people you follow and see updates from your network.</p>
-                </div>
+
+            <!-- Password -->
+            <div class="password-field">
+
+                <input
+                    type="password"
+                    id="auth-password"
+                    class="auth-input"
+                    placeholder="Password"
+                    autocomplete="current-password"
+                >
+
+
+                <button
+                    type="button"
+                    id="toggle-password"
+                    class="password-toggle"
+                    aria-label="Show password"
+                >
+                    <i class="fa-solid fa-eye"></i>
+                </button>
+
             </div>
 
-            <!-- Upload / Create Studio Tab -->
-            <div id="upload-tab" class="app-tab hidden">
-                <h2>Upload Video</h2>
-                <div class="upload-input-group">
-                    <label>Caption</label>
-                    <textarea id="post-caption" rows="3" placeholder="What's on your mind? Add hashtags..."></textarea>
-                </div>
-                <div class="upload-input-group">
-                    <label>Media File</label>
-                    <input type="file" id="media-file-input" accept="image/*,video/*">
-                </div>
-                <div class="upload-input-group">
-                    <label>Sound Track</label>
-                    <select id="selected-song">
-                        <option>Trending Afrobeats Wave</option>
-                        <option>OTA X Club Anthem</option>
-                        <option>Original Sound</option>
-                    </select>
-                </div>
-                <button class="auth-btn" id="publish-post-btn" onclick="alert('Post published to OTA X Feed successfully!')">Post to OTA X Feed</button>
+
+            <!-- Confirm password -->
+            <input
+                type="password"
+                id="auth-confirm-password"
+                class="auth-input signup-only hidden"
+                placeholder="Confirm password"
+                autocomplete="new-password"
+            >
+
+
+            <!-- Preferred region -->
+            <button
+                type="button"
+                id="region-selector-btn"
+                class="region-selector signup-only hidden"
+            >
+
+                <span>
+
+                    <i class="fa-solid fa-globe"></i>
+
+                    <span id="selected-region-name">
+                        Nigeria
+                    </span>
+
+                </span>
+
+
+                <i class="fa-solid fa-chevron-right"></i>
+
+            </button>
+
+
+            <!-- Forgot password -->
+            <button
+                type="button"
+                id="forgot-password-btn"
+                class="forgot-password-link"
+            >
+                Forgot password?
+            </button>
+
+
+            <!-- Login / Signup button -->
+            <button
+                type="button"
+                id="next-auth-btn"
+                class="auth-btn"
+            >
+                Log In
+            </button>
+
+
+            <!-- Authentication status -->
+            <div
+                id="auth-message"
+                class="auth-message"
+                aria-live="polite"
+            ></div>
+
+        </div>
+
+
+        <!-- =================================================
+             SWITCH LOGIN / SIGNUP
+        ================================================== -->
+
+        <button
+            type="button"
+            id="switch-mode-btn"
+            class="auth-footer"
+        >
+
+            Don't have an account?
+            <span>Sign Up</span>
+
+        </button>
+
+
+        <!-- =================================================
+             LEGAL + REGION
+        ================================================== -->
+
+        <div class="legal-footer-text">
+
+            <div class="legal-region-row">
+
+                <span>
+                    Region:
+                </span>
+
+
+                <button
+                    type="button"
+                    id="login-country-btn"
+                    class="interactive-country-link"
+                >
+
+                    <span id="login-country-name">
+                        Nigeria
+                    </span>
+
+                    <i class="fa-solid fa-chevron-down"></i>
+
+                </button>
+
             </div>
 
-            <!-- Inbox Tab -->
-            <div id="inbox-tab" class="app-tab hidden">
-                <div style="padding: 20px;">
-                    <h3>Inbox</h3>
-                    <div style="display: flex; flex-direction: column; gap: 15px; margin-top: 20px;">
-                        <div style="display: flex; align-items: center; gap: 12px; background: #111; padding: 12px; border-radius: 8px;">
-                            <div class="profile-avatar" style="width: 40px; height: 40px; font-size: 16px;"><i class="fa-solid fa-bell"></i></div>
-                            <div>
-                                <h4 style="margin: 0; font-size: 14px;">System Notifications</h4>
-                                <p style="margin: 3px 0 0; font-size: 12px; color: #888;">Welcome to OTA X! Your account is active.</p>
-                            </div>
+
+            <p>
+
+                By continuing, you agree to OTA X
+                <a href="terms.html">
+                    Terms of Service
+                </a>
+
+                and acknowledge the
+                <a href="privacy.html">
+                    Privacy Policy
+                </a>.
+
+            </p>
+
+
+            <div class="auth-legal-links">
+
+                <a href="community-guidelines.html">
+                    Community Guidelines
+                </a>
+
+
+                <a href="copyright.html">
+                    Copyright
+                </a>
+
+
+                <a href="feedback.html">
+                    Feedback
+                </a>
+
+            </div>
+
+        </div>
+
+    </section>
+        <!-- =====================================================
+         OTA X MAIN APP
+    ====================================================== -->
+
+    <section id="main-app" class="hidden">
+
+        <!-- =================================================
+             TOP FEED HEADER
+        ================================================== -->
+
+        <header class="top-header-bar">
+
+            <div class="top-nav-links">
+
+                <button
+                    type="button"
+                    class="top-nav-tab active"
+                    data-feed="for-you"
+                >
+                    For You
+                </button>
+
+                <button
+                    type="button"
+                    class="top-nav-tab"
+                    data-feed="following"
+                >
+                    Following
+                </button>
+
+            </div>
+
+
+            <!-- Search stays at the top-right -->
+            <button
+                type="button"
+                id="open-search-modal"
+                class="top-search-btn"
+                aria-label="Search"
+            >
+                <i class="fa-solid fa-magnifying-glass"></i>
+            </button>
+
+        </header>
+
+
+        <!-- =================================================
+             HOME / FOR YOU
+        ================================================== -->
+
+        <main
+            id="feed-tab"
+            class="app-tab"
+        >
+
+            <!-- Stories -->
+            <section class="stories-section">
+
+                <div class="section-heading">
+
+                    <h3>
+                        Stories
+                    </h3>
+
+                    <button
+                        type="button"
+                        id="view-all-stories-btn"
+                    >
+                        See all
+                    </button>
+
+                </div>
+
+
+                <div
+                    id="stories-list"
+                    class="stories-list"
+                >
+
+                    <!-- Your story -->
+                    <button
+                        type="button"
+                        class="story-item create-story"
+                        id="create-story-btn"
+                    >
+
+                        <div class="story-avatar">
+
+                            <i class="fa-solid fa-plus"></i>
+
                         </div>
-                    </div>
-                </div>
-            </div>
 
-            <!-- Profile Tab Redesigned (Clean & Dynamic State) -->
-            <div id="profile-tab" class="app-tab hidden">
-                <div class="profile-top-bar">
-                    <i class="fa-solid fa-user-plus"></i>
-                    <span style="font-weight: 700; font-size: 15px;">@OX_Creator</span>
-                    <div class="profile-top-right">
-                        <i class="fa-solid fa-qrcode"></i>
-                        <i class="fa-solid fa-bars" id="open-drawer-btn"></i>
-                    </div>
-                </div>
+                        <span>
+                            Your Story
+                        </span>
 
-                <div class="profile-main-info">
-                    <!-- Clean dynamic placeholder avatar container -->
-                    <div class="profile-avatar-container" id="profile-avatar-container">
-                        <div class="profile-avatar-placeholder" id="profile-avatar-display">
+                    </button>
+
+
+                    <!-- Example story -->
+                    <button
+                        type="button"
+                        class="story-item"
+                    >
+
+                        <div class="story-avatar">
                             <i class="fa-solid fa-user"></i>
                         </div>
-                        <div class="profile-avatar-badge"><i class="fa-solid fa-plus" style="font-size: 12px;"></i></div>
-                    </div>
-                    
-                    <div class="profile-username">OX_Creator <i class="fa-solid fa-circle-check" style="color: #00f2fe; font-size: 14px;"></i></div>
-                    <div class="profile-handle">@ox_creator</div>
 
-                    <div class="profile-stats-row">
-                        <div class="stat-box"><span class="stat-num">0</span><span class="stat-label">Following</span></div>
-                        <div class="stat-box"><span class="stat-num">0</span><span class="stat-label">Followers</span></div>
-                        <div class="stat-box"><span class="stat-num">0</span><span class="stat-label">Likes</span></div>
-                    </div>
+                        <span>
+                            OTA Creator
+                        </span>
 
-                    <div class="profile-action-buttons">
-                        <button class="prof-btn">Edit profile</button>
-                        <button class="prof-btn">Share profile</button>
-                    </div>
+                    </button>
 
-                    <div class="profile-bio">
-                        Creating global video ecosystems & viral content 🚀<br>
-                        <a href="#">ota-x-ecosystem.app</a>
-                    </div>
-                </div>
 
-                <div class="profile-content-tabs">
-                    <button class="prof-tab-icon active"><i class="fa-solid fa-grip"></i></button>
-                    <button class="prof-tab-icon"><i class="fa-solid fa-bookmark"></i></button>
-                    <button class="prof-tab-icon"><i class="fa-solid fa-heart"></i></button>
-                </div>
+                    <button
+                        type="button"
+                        class="story-item"
+                    >
 
-                <div class="profile-grid-posts" id="user-posts-grid">
-                    <div class="ota-empty-post" style="padding: 30px; text-align: center; color: #666; width: 100%;">No posts yet</div>
-                </div>
-
-                <!-- Slide-Out Menu Drawer -->
-                <div id="profile-drawer" class="modal hidden" style="align-items: flex-end;">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <span>Settings & Tools</span>
-                            <button class="close-modal" id="close-drawer-btn"><i class="fa-solid fa-xmark"></i></button>
+                        <div class="story-avatar">
+                            <i class="fa-solid fa-user"></i>
                         </div>
-                        <div class="profile-menu-list">
-                            <button class="profile-menu-btn" id="drawer-balance" onclick="document.getElementById('gift-modal').classList.remove('hidden')">
-                                <span style="display: flex; align-items: center; gap: 10px;"><i class="fa-solid fa-wallet" style="color: #ff3b5c;"></i> Balance & Gifts</span>
-                                <span style="color: #ff3b5c; font-weight: 700;"><span id="user-coins">5000</span> Coins <i class="fa-solid fa-chevron-right"></i></span>
-                            </button>
-                            <button class="profile-menu-btn" id="open-terms-profile">
-                                <span><i class="fa-solid fa-file-contract" style="color: #888;"></i> Terms of Service</span>
-                                <i class="fa-solid fa-chevron-right"></i>
-                            </button>
-                            <button class="profile-menu-btn" id="open-privacy-profile">
-                                <span><i class="fa-solid fa-shield-halved" style="color: #888;"></i> Privacy Policy</span>
-                                <i class="fa-solid fa-chevron-right"></i>
-                            </button>
-                            <button class="profile-menu-btn" id="open-appeal-btn">
-                                <span><i class="fa-solid fa-gavel" style="color: #888;"></i> Moderation Appeal Center</span>
-                                <i class="fa-solid fa-chevron-right"></i>
-                            </button>
+
+                        <span>
+                            Trending
+                        </span>
+
+                    </button>
+
+                </div>
+
+            </section>
+
+
+            <!-- Feed -->
+            <section
+                id="posts-feed"
+                class="posts-feed"
+            >
+
+                <!-- Example OTA X post -->
+                <article
+                    class="post-card"
+                    data-post-id="demo-1"
+                >
+
+                    <!-- Post header -->
+                    <div class="post-header">
+
+                        <div class="post-user">
+
+                            <div class="post-avatar">
+                                <i class="fa-solid fa-user"></i>
+                            </div>
+
+
+                            <div class="post-user-info">
+
+                                <strong>
+                                    OTA Creator
+                                </strong>
+
+                                <span>
+                                    @ota_creator
+                                </span>
+
+                            </div>
+
                         </div>
+
+
+                        <button
+                            type="button"
+                            class="post-more-btn"
+                            aria-label="More options"
+                        >
+                            <i class="fa-solid fa-ellipsis"></i>
+                        </button>
+
                     </div>
-                </div>
-            </div>
 
-            <!-- Complete 5-Button Bottom Navigation Bar -->
-            <div class="bottom-nav">
-                <button class="bot-nav-btn active" data-tab="feed-tab">
-                    <i class="fa-solid fa-house"></i>
-                    <span>Home</span>
-                </button>
-                <button class="bot-nav-btn" data-tab="friends-tab">
-                    <i class="fa-solid fa-user-group"></i>
-                    <span>Friends</span>
-                </button>
-                <button class="bot-nav-btn upload-center-btn" data-tab="upload-tab">
-                    <div style="background: #ff3b5c; color: #fff; width: 36px; height: 26px; border-radius: 8px; display: flex; align-items: center; justify-content: center;"><i class="fa-solid fa-plus" style="font-size: 14px;"></i></div>
-                </button>
-                <button class="bot-nav-btn" data-tab="inbox-tab">
-                    <div style="position: relative;">
-                        <i class="fa-solid fa-comment-dots"></i>
-                        <span style="position: absolute; top: -5px; right: -8px; background: #ff3b5c; color: #fff; font-size: 9px; padding: 2px 5px; border-radius: 10px;">4</span>
+
+                    <!-- Caption -->
+                    <div class="post-caption">
+
+                        Welcome to OTA X.
+
+                        <span class="hashtag">
+                            #OTAX
+                        </span>
+
+                        <span class="hashtag">
+                            #ConnectCreateDiscover
+                        </span>
+
                     </div>
-                    <span>Inbox</span>
+
+
+                    <!-- Media -->
+                    <div class="post-media">
+
+                        <div class="post-media-placeholder">
+
+                            <div class="ota-post-logo">
+                                OX
+                            </div>
+
+                            <p>
+                                OTA X
+                            </p>
+
+                            <span>
+                                Your global social experience
+                            </span>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Sound -->
+                    <button
+                        type="button"
+                        class="post-sound"
+                    >
+
+                        <i class="fa-solid fa-music"></i>
+
+                        <span>
+                            Original Sound · OTA X
+                        </span>
+
+                    </button>
+
+
+                    <!-- Actions -->
+                    <div class="post-actions">
+
+                        <button
+                            type="button"
+                            class="post-action like-btn"
+                            data-action="like"
+                        >
+
+                            <i class="fa-regular fa-heart"></i>
+
+                            <span>
+                                0
+                            </span>
+
+                        </button>
+
+
+                        <button
+                            type="button"
+                            class="post-action comment-btn"
+                            data-action="comment"
+                            data-post-id="demo-1"
+                        >
+
+                            <i class="fa-regular fa-comment"></i>
+
+                            <span>
+                                0
+                            </span>
+
+                        </button>
+
+
+                        <button
+                            type="button"
+                            class="post-action repost-btn"
+                            data-action="repost"
+                        >
+
+                            <i class="fa-solid fa-retweet"></i>
+
+                            <span>
+                                0
+                            </span>
+
+                        </button>
+
+
+                        <button
+                            type="button"
+                            class="post-action favorite-btn"
+                            data-action="favorite"
+                        >
+
+                            <i class="fa-regular fa-bookmark"></i>
+
+                            <span>
+                                0
+                            </span>
+
+                        </button>
+
+
+                        <button
+                            type="button"
+                            class="post-action share-btn"
+                            data-action="share"
+                        >
+
+                            <i class="fa-solid fa-share"></i>
+
+                            <span>
+                                0
+                            </span>
+
+                        </button>
+
+                    </div>
+
+                </article>
+
+
+                <!-- Feed loading area -->
+                <div
+                    id="feed-loading"
+                    class="feed-loading hidden"
+                >
+
+                    <i class="fa-solid fa-spinner fa-spin"></i>
+
+                    Loading OTA X...
+
+                </div>
+
+
+                <!-- Empty feed -->
+                <div
+                    id="empty-feed"
+                    class="empty-feed hidden"
+                >
+
+                    <i class="fa-solid fa-camera-retro"></i>
+
+                    <h3>
+                        No posts yet
+                    </h3>
+
+                    <p>
+                        Follow people and create your first OTA X post.
+                    </p>
+
+                </div>
+
+            </section>
+
+        </main>
+
+
+        <!-- =================================================
+             FRIENDS
+        ================================================== -->
+
+        <section
+            id="friends-tab"
+            class="app-tab hidden"
+        >
+
+            <div class="page-header">
+
+                <div>
+
+                    <h2>
+                        Friends
+                    </h2>
+
+                    <p>
+                        People you connect with
+                    </p>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    id="find-friends-btn"
+                    class="header-icon-btn"
+                >
+
+                    <i class="fa-solid fa-user-plus"></i>
+
                 </button>
-                <button class="bot-nav-btn" data-tab="profile-tab">
-                    <i class="fa-solid fa-user"></i>
-                    <span>Profile</span>
+
+            </div>
+
+
+            <!-- Friend requests -->
+            <div class="friends-section">
+
+                <div class="section-heading">
+
+                    <h3>
+                        Friend Requests
+                    </h3>
+
+                    <button
+                        type="button"
+                        id="view-friend-requests"
+                    >
+                        See all
+                    </button>
+
+                </div>
+
+
+                <div
+                    id="friend-requests-list"
+                    class="friend-list"
+                >
+
+                    <div class="empty-state">
+
+                        <i class="fa-solid fa-user-group"></i>
+
+                        <h3>
+                            No new requests
+                        </h3>
+
+                        <p>
+                            When someone follows you, their request will appear here.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Friends -->
+            <div class="friends-section">
+
+                <div class="section-heading">
+
+                    <h3>
+                        Your Friends
+                    </h3>
+
+                </div>
+
+
+                <div
+                    id="friends-list"
+                    class="friend-list"
+                >
+
+                    <div class="empty-state">
+
+                        <i class="fa-regular fa-face-smile"></i>
+
+                        <h3>
+                            No friends yet
+                        </h3>
+
+                        <p>
+                            Connect with people to build your OTA X network.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             CREATE / UPLOAD
+        ================================================== -->
+
+        <section
+            id="upload-tab"
+            class="app-tab hidden"
+        >
+
+            <div class="page-header">
+
+                <div>
+
+                    <h2>
+                        Create
+                    </h2>
+
+                    <p>
+                        Share something with OTA X
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <!-- Create choices -->
+            <div class="create-options">
+
+                <button
+                    type="button"
+                    class="create-option"
+                    id="upload-photo-btn"
+                >
+
+                    <div class="create-option-icon">
+                        <i class="fa-solid fa-image"></i>
+                    </div>
+
+                    <span>
+                        Photo
+                    </span>
+
                 </button>
-            </div>
-        </div>
 
-        <!-- Country Selector Modal -->
-        <div id="country-modal" class="modal hidden">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <span>Select Region & Country</span>
-                    <button class="close-modal" id="close-country"><i class="fa-solid fa-xmark"></i></button>
-                </div>
-                <input type="text" id="country-search-input" class="auth-input" placeholder="Search country...">
-                <div id="country-list" style="display: flex; flex-direction: column; gap: 8px; max-height: 250px; overflow-y: auto;">
-                    <div class="country-option" data-country="Nigeria">🇳🇬 Nigeria</div>
-                    <div class="country-option" data-country="United States">🇺🇸 United States</div>
-                    <div class="country-option" data-country="United Kingdom">🇬🇧 United Kingdom</div>
-                    <div class="country-option" data-country="Ghana">🇬🇭 Ghana</div>
-                    <div class="country-option" data-country="South Africa">🇿🇦 South Africa</div>
-                    <div class="country-option" data-country="Canada">🇨🇦 Canada</div>
-                    <div class="country-option" data-country="France">🇫🇷 France</div>
-                    <div class="country-option" data-country="Germany">🇩🇪 Germany</div>
-                    <div class="country-option" data-country="Brazil">🇧🇷 Brazil</div>
-                    <div class="country-option" data-country="Japan">🇯🇵 Japan</div>
-                </div>
-            </div>
-        </div>
 
-        <!-- Gift Modal -->
-        <div id="gift-modal" class="modal hidden">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <span>Send Universal Gift</span>
-                    <button class="close-modal" id="close-gift"><i class="fa-solid fa-xmark"></i></button>
-                </div>
-                <div class="gift-grid">
-                    <div class="gift-item selected" data-cost="100"><i class="fa-solid fa-star"></i><span>Star (100)</span></div>
-                    <div class="gift-item" data-cost="500"><i class="fa-solid fa-gem"></i><span>Diamond (500)</span></div>
-                    <div class="gift-item" data-cost="1000"><i class="fa-solid fa-crown"></i><span>Crown (1000)</span></div>
-                </div>
-                <button class="auth-btn" id="send-gift-action">Send Gift</button>
-            </div>
-        </div>
+                <button
+                    type="button"
+                    class="create-option"
+                    id="upload-video-btn"
+                >
 
-        <!-- Comments Drawer -->
-        <div id="comment-section-container" class="modal hidden">
-            <div class="modal-content" style="display: flex; flex-direction: column; height: 60vh;">
-                <div class="modal-header">
-                    <span>Comments & Voice Notes</span>
-                    <button class="close-modal" id="close-comments"><i class="fa-solid fa-xmark"></i></button>
-                </div>
-                <div id="comments-list-container" style="flex: 1; overflow-y: auto; color: #888; text-align: center; padding-top: 30px;">
-                    No comments yet. Be the first to comment or record a voice note!
-                </div>
-                <div style="display: flex; gap: 8px; align-items: center; padding-top: 10px; border-top: 1px solid #222;">
-                    <input type="text" id="comment-text-input" class="auth-input" placeholder="Add a comment..." style="flex: 1; margin: 0;">
-                    <button class="action-btn" id="record-voice-btn" style="width: 40px; height: 40px; background: #1a1a1a; border-radius: 50%; font-size: 16px; color: #ff3b5c; display: flex; align-items: center; justify-content: center; cursor: pointer;" title="Record Voice Note"><i class="fa-solid fa-microphone"></i></button>
-                    <button class="action-btn" id="send-comment-btn" style="width: 40px; height: 40px; background: #ff3b5c; border-radius: 50%; font-size: 16px; color: #fff; display: flex; align-items: center; justify-content: center; cursor: pointer;" title="Send Comment"><i class="fa-solid fa-paper-plane"></i></button>
-                </div>
-            </div>
-        </div>
+                    <div class="create-option-icon">
+                        <i class="fa-solid fa-video"></i>
+                    </div>
 
-        <!-- Search Modal Overlay -->
-        <div id="search-modal" class="modal hidden">
-            <div class="modal-content" style="background: #111; height: 100%;">
-                <div class="modal-header">
-                    <input type="text" class="auth-input" placeholder="Search accounts, videos, sounds..." style="flex: 1; margin: 0;">
-                    <button class="close-modal" id="close-search" style="margin-left: 10px;"><i class="fa-solid fa-xmark"></i></button>
-                </div>
-                <div style="padding: 20px; color: #888; font-size: 13px;">
-                    Trending Searches: Afrobeats, OTA X Live, Comedy, Skits
-                </div>
+                    <span>
+                        Video
+                    </span>
+
+                </button>
+
+
+                <button
+                    type="button"
+                    class="create-option"
+                    id="create-text-post-btn"
+                >
+
+                    <div class="create-option-icon">
+                        <i class="fa-solid fa-pen"></i>
+                    </div>
+
+                    <span>
+                        Text
+                    </span>
+
+                </button>
+
+
+                <button
+                    type="button"
+                    class="create-option"
+                    id="create-sound-btn"
+                >
+
+                    <div class="create-option-icon">
+                        <i class="fa-solid fa-music"></i>
+                    </div>
+
+                    <span>
+                        Sound
+                    </span>
+
+                </button>
+
             </div>
+
+
+            <!-- Hidden file input -->
+            <input
+                type="file"
+                id="media-file-input"
+                accept="image/*,video/*"
+                hidden
+            >
+
+
+            <!-- Create post editor -->
+            <div
+                id="post-editor"
+                class="post-editor"
+            >
+
+                <label for="post-caption">
+                    Caption
+                </label>
+
+
+                <textarea
+                    id="post-caption"
+                    rows="5"
+                    maxlength="2200"
+                    placeholder="What's happening on OTA X?"
+                ></textarea>
+
+
+                <div class="editor-tools">
+
+                    <button
+                        type="button"
+                        id="add-sound-btn"
+                    >
+
+                        <i class="fa-solid fa-music"></i>
+                        Add sound
+
+                    </button>
+
+
+                    <button
+                        type="button"
+                        id="add-effect-btn"
+                    >
+
+                        <i class="fa-solid fa-wand-magic-sparkles"></i>
+                        Effects
+
+                    </button>
+
+
+                    <button
+                        type="button"
+                        id="add-filter-btn"
+                    >
+
+                        <i class="fa-solid fa-sliders"></i>
+                        Filters
+
+                    </button>
+
+                </div>
+
+
+                <!-- Selected media preview -->
+                <div
+                    id="media-preview"
+                    class="media-preview hidden"
+                ></div>
+
+
+                <!-- Publish -->
+                <button
+                    type="button"
+                    id="publish-post-btn"
+                    class="publish-btn"
+                >
+
+                    Post to OTA X
+
+                </button>
+
+            </div>
+
+
+            <!-- Camera tools -->
+            <div class="camera-tools">
+
+                <button type="button">
+                    <i class="fa-solid fa-gauge-high"></i>
+                    <span>Speed</span>
+                </button>
+
+
+                <button type="button">
+                    <i class="fa-regular fa-clock"></i>
+                    <span>Timer</span>
+                </button>
+
+
+                <button type="button">
+                    <i class="fa-solid fa-circle"></i>
+                    <span>Record</span>
+                </button>
+
+
+                <button type="button">
+                    <i class="fa-solid fa-camera-rotate"></i>
+                    <span>Flip</span>
+                </button>
+
+
+                <button type="button">
+                    <i class="fa-solid fa-bolt"></i>
+                    <span>Flash</span>
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             INBOX
+        ================================================== -->
+
+        <section
+            id="inbox-tab"
+            class="app-tab hidden"
+        >
+
+            <div class="page-header">
+
+                <div>
+
+                    <h2>
+                        Inbox
+                    </h2>
+
+                    <p>
+                        Messages and notifications
+                    </p>
+
+                </div>
+
+
+                <button
+                    type="button"
+                    id="new-message-btn"
+                    class="header-icon-btn"
+                >
+
+                    <i class="fa-regular fa-pen-to-square"></i>
+
+                </button>
+
+            </div>
+
+
+            <!-- Messages -->
+            <div class="inbox-tabs">
+
+                <button
+                    type="button"
+                    class="inbox-tab-btn active"
+                    data-inbox="messages"
+                >
+                    Messages
+                </button>
+
+
+                <button
+                    type="button"
+                    class="inbox-tab-btn"
+                    data-inbox="notifications"
+                >
+                    Notifications
+                </button>
+
+            </div>
+
+
+            <div
+                id="messages-panel"
+                class="inbox-panel"
+            >
+
+                <div
+                    id="conversation-list"
+                    class="conversation-list"
+                >
+
+                    <div class="empty-state">
+
+                        <i class="fa-regular fa-message"></i>
+
+                        <h3>
+                            Your messages
+                        </h3>
+
+                        <p>
+                            Messages from your OTA X friends will appear here.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Notifications -->
+            <div
+                id="notifications-panel"
+                class="inbox-panel hidden"
+            >
+
+                <div
+                    id="notifications-list"
+                    class="notifications-list"
+                >
+
+                    <div class="empty-state">
+
+                        <i class="fa-regular fa-bell"></i>
+
+                        <h3>
+                            No notifications
+                        </h3>
+
+                        <p>
+                            Your activity notifications will appear here.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- =================================================
+             PROFILE
+        ================================================== -->
+
+        <section
+            id="profile-tab"
+            class="app-tab hidden"
+        >
+
+            <!-- Profile header -->
+            <div class="profile-top-bar">
+
+                <button
+                    type="button"
+     <!-- =====================================================
+         OTA X MODALS
+    ====================================================== -->
+
+    <!-- COUNTRY / REGION SELECTOR -->
+    <div id="country-modal" class="modal hidden">
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+
+                <h3>Select Region</h3>
+
+                <button
+                    type="button"
+                    id="close-country"
+                    class="close-modal"
+                >
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+
+            </div>
+
+
+            <input
+                type="search"
+                id="country-search-input"
+                class="auth-input"
+                placeholder="Search country..."
+            >
+
+
+            <div
+                id="country-list"
+                class="country-list"
+            >
+
+                <button class="country-option" data-country="Nigeria" data-code="+234">
+                    🇳🇬 Nigeria
+                </button>
+
+                <button class="country-option" data-country="Ghana" data-code="+233">
+                    🇬🇭 Ghana
+                </button>
+
+                <button class="country-option" data-country="South Africa" data-code="+27">
+                    🇿🇦 South Africa
+                </button>
+
+                <button class="country-option" data-country="Kenya" data-code="+254">
+                    🇰🇪 Kenya
+                </button>
+
+                <button class="country-option" data-country="United States" data-code="+1">
+                    🇺🇸 United States
+                </button>
+
+                <button class="country-option" data-country="United Kingdom" data-code="+44">
+                    🇬🇧 United Kingdom
+                </button>
+
+                <button class="country-option" data-country="Canada" data-code="+1">
+                    🇨🇦 Canada
+                </button>
+
+                <button class="country-option" data-country="France" data-code="+33">
+                    🇫🇷 France
+                </button>
+
+                <button class="country-option" data-country="Germany" data-code="+49">
+                    🇩🇪 Germany
+                </button>
+
+                <button class="country-option" data-country="Brazil" data-code="+55">
+                    🇧🇷 Brazil
+                </button>
+
+                <button class="country-option" data-country="India" data-code="+91">
+                    🇮🇳 India
+                </button>
+
+                <button class="country-option" data-country="Japan" data-code="+81">
+                    🇯🇵 Japan
+                </button>
+
+            </div>
+
         </div>
 
     </div>
 
-    <!-- Link to your script file -->
+
+    <!-- =====================================================
+         SEARCH
+    ====================================================== -->
+
+    <div id="search-modal" class="modal hidden">
+
+        <div class="modal-content search-modal-content">
+
+            <div class="modal-header">
+
+                <h3>
+                    Search OTA X
+                </h3>
+
+                <button
+                    type="button"
+                    id="close-search"
+                    class="close-modal"
+                >
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+
+            </div>
+
+
+            <div class="search-box">
+
+                <i class="fa-solid fa-magnifying-glass"></i>
+
+                <input
+                    type="search"
+                    id="global-search-input"
+                    placeholder="Search people, posts, sounds..."
+                >
+
+            </div>
+
+
+            <div
+                id="search-results"
+                class="search-results"
+            >
+
+                <div class="empty-state">
+
+                    <i class="fa-solid fa-magnifying-glass"></i>
+
+                    <p>
+                        Search OTA X
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         COMMENTS
+    ====================================================== -->
+
+    <div
+        id="comment-section-container"
+        class="modal hidden"
+    >
+
+        <div class="modal-content comments-modal">
+
+            <div class="modal-header">
+
+                <h3>
+                    Comments
+                </h3>
+
+                <button
+                    type="button"
+                    id="close-comments"
+                    class="close-modal"
+                >
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+
+            </div>
+
+
+            <div
+                id="comments-list-container"
+                class="comments-list"
+            >
+
+                <div class="empty-state">
+
+                    <i class="fa-regular fa-comment"></i>
+
+                    <p>
+                        No comments yet.
+                    </p>
+
+                    <span>
+                        Be the first to comment.
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- Comment composer -->
+            <div class="comment-composer">
+
+                <input
+                    type="text"
+                    id="comment-text-input"
+                    class="auth-input"
+                    placeholder="Add a comment..."
+                >
+
+
+                <button
+                    type="button"
+                    id="record-voice-btn"
+                    class="comment-icon-btn"
+                    title="Voice comment"
+                >
+
+                    <i class="fa-solid fa-microphone"></i>
+
+                </button>
+
+
+                <button
+                    type="button"
+                    id="send-comment-btn"
+                    class="send-comment-btn"
+                    title="Send comment"
+                >
+
+                    <i class="fa-solid fa-paper-plane"></i>
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         REPOST
+    ====================================================== -->
+
+    <div
+        id="repost-modal"
+        class="modal hidden"
+    >
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+
+                <h3>
+                    Repost
+                </h3>
+
+                <button
+                    type="button"
+                    id="close-repost"
+                    class="close-modal"
+                >
+
+                    <i class="fa-solid fa-xmark"></i>
+
+                </button>
+
+            </div>
+
+
+            <div class="repost-options">
+
+                <button
+                    type="button"
+                    id="simple-repost-btn"
+                    class="repost-option"
+                >
+
+                    <i class="fa-solid fa-retweet"></i>
+
+                    <div>
+
+                        <strong>
+                            Repost
+                        </strong>
+
+                        <span>
+                            Share this post with your followers.
+                        </span>
+
+                    </div>
+
+                </button>
+
+
+                <button
+                    type="button"
+                    id="repost-comment-btn"
+                    class="repost-option"
+                >
+
+                    <i class="fa-solid fa-quote-left"></i>
+
+                    <div>
+
+                        <strong>
+                            Repost with comment
+                        </strong>
+
+                        <span>
+                            Add your own thoughts before reposting.
+                        </span>
+
+                    </div>
+
+                </button>
+
+            </div>
+
+
+            <textarea
+                id="repost-comment-input"
+                class="auth-input hidden"
+                rows="4"
+                placeholder="Add a comment to your repost..."
+            ></textarea>
+
+
+            <button
+                type="button"
+                id="confirm-repost-btn"
+                class="auth-btn hidden"
+            >
+                Repost
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         SHARE
+    ====================================================== -->
+
+    <div
+        id="share-modal"
+        class="modal hidden"
+    >
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+
+                <h3>
+                    Share
+                </h3>
+
+                <button
+                    type="button"
+                    id="close-share"
+                    class="close-modal"
+                >
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+
+            </div>
+
+
+            <div class="share-options">
+
+                <button type="button" id="share-copy-link">
+                    <i class="fa-solid fa-link"></i>
+                    <span>Copy link</span>
+                </button>
+
+
+                <button type="button" id="share-message">
+                    <i class="fa-regular fa-message"></i>
+                    <span>Send in message</span>
+                </button>
+
+
+                <button type="button" id="share-system">
+                    <i class="fa-solid fa-share-nodes"></i>
+                    <span>Share...</span>
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         STORY CREATOR
+    ====================================================== -->
+
+    <div
+        id="story-modal"
+        class="modal hidden"
+    >
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+
+                <h3>
+                    Create Story
+                </h3>
+
+                <button
+                    type="button"
+                    id="close-story"
+                    class="close-modal"
+                >
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+
+            </div>
+
+
+            <textarea
+                id="story-text"
+                class="auth-input"
+                rows="5"
+                placeholder="Write something for your story..."
+            ></textarea>
+
+
+            <input
+                type="file"
+                id="story-file-input"
+                accept="image/*,video/*"
+            >
+
+
+            <button
+                type="button"
+                id="publish-story-btn"
+                class="auth-btn"
+            >
+                Post Story
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         EDIT PROFILE
+    ====================================================== -->
+
+    <div
+        id="edit-profile-modal"
+        class="modal hidden"
+    >
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+
+                <h3>
+                    Edit Profile
+                </h3>
+
+                <button
+                    type="button"
+                    id="close-edit-profile"
+                    class="close-modal"
+                >
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+
+            </div>
+
+
+            <label>
+                Display name
+            </label>
+
+            <input
+                type="text"
+                id="edit-display-name"
+                class="auth-input"
+                placeholder="Display name"
+            >
+
+
+            <label>
+                Username
+            </label>
+
+            <input
+                type="text"
+                id="edit-username"
+                class="auth-input"
+                placeholder="@username"
+            >
+
+
+            <label>
+                Bio
+            </label>
+
+            <textarea
+                id="edit-bio"
+                class="auth-input"
+                rows="4"
+                maxlength="160"
+                placeholder="Tell people about yourself..."
+            ></textarea>
+
+
+            <button
+                type="button"
+                id="save-profile-btn"
+                class="auth-btn"
+            >
+                Save changes
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         SETTINGS DRAWER
+    ====================================================== -->
+
+    <div
+        id="profile-drawer"
+        class="modal hidden"
+    >
+
+        <div class="modal-content drawer-content">
+
+            <div class="modal-header">
+
+                <h3>
+                    Settings
+                </h3>
+
+                <button
+                    type="button"
+                    id="close-drawer-btn"
+                    class="close-modal"
+                >
+                    <i class="fa-solid fa-xmark"></i>
+                </button>
+
+            </div>
+
+
+            <div class="settings-list">
+
+                <button
+                    type="button"
+                    class="settings-item"
+                    id="open-account-settings"
+                >
+
+                    <i class="fa-solid fa-user"></i>
+
+                    <span>
+                        Account
+                    </span>
+
+                    <i class="fa-solid fa-chevron-right"></i>
+
+                </button>
+
+
+                <button
+                    type="button"
+                    class="settings-item"
+                    id="open-privacy-settings"
+                >
+
+                    <i class="fa-solid fa-shield-halved"></i>
+
+                    <span>
+                        Privacy
+                    </span>
+
+                    <i class="fa-solid fa-chevron-right"></i>
+
+                </button>
+
+
+                <button
+                    type="button"
+                    class="settings-item"
+                    id="open-security-settings"
+                >
+
+                    <i class="fa-solid fa-lock"></i>
+
+                    <span>
+                        Security
+                    </span>
+
+                    <i class="fa-solid fa-chevron-right"></i>
+
+                </button>
+
+
+                <button
+                    type="button"
+                    class="settings-item"
+                    id="open-notification-settings"
+                >
+
+                    <i class="fa-solid fa-bell"></i>
+
+                    <span>
+                        Notifications
+                    </span>
+
+                    <i class="fa-solid fa-chevron-right"></i>
+
+                </button>
+
+
+                <button
+                    type="button"
+                    class="settings-item"
+                    id="open-message-settings"
+                >
+
+                    <i class="fa-solid fa-message"></i>
+
+                    <span>
+                        Messages
+                    </span>
+
+                    <i class="fa-solid fa-chevron-right"></i>
+
+                </button>
+
+
+                <button
+                    type="button"
+                    class="settings-item"
+                    id="open-appearance-settings"
+                >
+
+                    <i class="fa-solid fa-circle-half-stroke"></i>
+
+                    <span>
+                        Appearance
+                    </span>
+
+                    <i class="fa-solid fa-chevron-right"></i>
+
+                </button>
+
+
+                <button
+                    type="button"
+                    class="settings-item"
+                    id="change-region-settings"
+                >
+
+                    <i class="fa-solid fa-globe"></i>
+
+                    <span>
+                        Region
+                    </span>
+
+                    <i class="fa-solid fa-chevron-right"></i>
+
+                </button>
+
+
+                <button
+                    type="button"
+                    class="settings-item"
+                    id="open-feedback"
+                >
+
+                    <i class="fa-regular fa-comment-dots"></i>
+
+                    <span>
+                        Help & Feedback
+                    </span>
+
+                    <i class="fa-solid fa-chevron-right"></i>
+
+                </button>
+
+
+                <a
+                    href="community-guidelines.html"
+                    class="settings-item"
+                >
+
+                    <i class="fa-solid fa-users"></i>
+
+                    <span>
+                        Community Guidelines
+                    </span>
+
+                    <i class="fa-solid fa-chevron-right"></i>
+
+                </a>
+
+
+                <a
+                    href="copyright.html"
+                    class="settings-item"
+                >
+
+                    <i class="fa-solid fa-copyright"></i>
+
+                    <span>
+                        Copyright
+                    </span>
+
+                    <i class="fa-solid fa-chevron-right"></i>
+
+                </a>
+
+
+                <a
+                    href="terms.html"
+                    class="settings-item"
+                >
+
+                    <i class="fa-solid fa-file-contract"></i>
+
+                    <span>
+                        Terms of Service
+                    </span>
+
+                    <i class="fa-solid fa-chevron-right"></i>
+
+                </a>
+
+
+                <a
+                    href="privacy.html"
+                    class="settings-item"
+                >
+
+                    <i class="fa-solid fa-shield"></i>
+
+                    <span>
+                        Privacy Policy
+                    </span>
+
+                    <i class="fa-solid fa-chevron-right"></i>
+
+                </a>
+
+
+                <button
+                    type="button"
+                    id="logout-btn"
+                    class="settings-item danger"
+                >
+
+                    <i class="fa-solid fa-right-from-bracket"></i>
+
+                    <span>
+                        Log out
+                    </span>
+
+                    <i class="fa-solid fa-chevron-right"></i>
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         EMAIL VERIFICATION
+    ====================================================== -->
+
+    <div
+        id="verification-modal"
+        class="modal hidden"
+    >
+
+        <div class="modal-content">
+
+            <div class="verification-icon">
+
+                <i class="fa-solid fa-envelope"></i>
+
+            </div>
+
+
+            <h3>
+                Verify your email
+            </h3>
+
+
+            <p>
+                Enter the verification code sent to your email address.
+            </p>
+
+
+            <input
+                type="text"
+                id="verification-code"
+                class="auth-input verification-code-input"
+                maxlength="6"
+                inputmode="numeric"
+                placeholder="6-digit code"
+            >
+
+
+            <button
+                type="button"
+                id="verify-account-btn"
+                class="auth-btn"
+            >
+                Verify Account
+            </button>
+
+
+            <button
+                type="button"
+                id="resend-code-btn"
+                class="secondary-btn"
+            >
+                Resend code
+            </button>
+
+
+            <div
+                id="verification-message"
+                class="auth-message"
+            ></div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         PASSWORD RESET
+    ====================================================== -->
+
+    <div
+        id="forgot-password-modal"
+        class="modal hidden"
+    >
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+
+                <h3>
+                    Reset password
+                </h3>
+
+             <!-- =====================================================
+         OTA X APP OVERLAY
+    ====================================================== -->
+
+    <div
+        id="toast-message"
+        class="toast-message hidden"
+        aria-live="polite"
+    ></div>
+
+
+    <!-- =====================================================
+         GLOBAL LOADING SCREEN
+    ====================================================== -->
+
+    <div
+        id="global-loading"
+        class="global-loading hidden"
+    >
+
+        <div class="loading-logo">
+            OX
+        </div>
+
+        <div class="loading-spinner"></div>
+
+        <p>
+            Loading OTA X...
+        </p>
+
+    </div>
+
+
+    <!-- =====================================================
+         HIDDEN DATA / STATE ELEMENTS
+    ====================================================== -->
+
+    <input
+        type="hidden"
+        id="current-user-id"
+        value=""
+    >
+
+    <input
+        type="hidden"
+        id="current-post-id"
+        value=""
+    >
+
+    <input
+        type="hidden"
+        id="selected-post-id"
+        value=""
+    >
+
+
+    <!-- =====================================================
+         OTA X JAVASCRIPT
+    ====================================================== -->
+
     <script src="script.js"></script>
+
+</div>
+
 </body>
-                                </html>
-                    
+                    </html>

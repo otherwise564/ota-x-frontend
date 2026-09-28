@@ -1,5 +1,5 @@
 /* ==========================================
-   OTA X - CORE STYLES & LAYOUT
+   OTA X - TIKTOK-STYLE CORE & AUTH STYLES
    ========================================== */
 
 * {
@@ -30,9 +30,106 @@ body {
     max-height: 890px;
     background: #121212;
     position: relative;
-    overflow: hidden;
+    overflow-y: auto;
     display: flex;
     flex-direction: column;
+}
+
+/* TikTok-Style Auth Screen */
+#auth-screen {
+    padding: 40px 24px;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.auth-logo-container {
+    margin-bottom: 30px;
+}
+
+.auth-logo-container h1 {
+    font-size: 36px;
+    font-weight: 900;
+    letter-spacing: -1px;
+    color: #ffffff;
+}
+
+.auth-logo-container h1 span {
+    color: #ff3b5c;
+}
+
+.auth-logo-container p {
+    font-size: 14px;
+    color: #888;
+    margin-top: 6px;
+}
+
+.auth-form-group {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.auth-input-field, #auth-input, #auth-password {
+    width: 100%;
+    height: 48px;
+    background: #1f1f1f;
+    border: 1px solid #333;
+    border-radius: 8px;
+    padding: 0 16px;
+    color: #fff;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.auth-input-field:focus, #auth-input:focus, #auth-password:focus {
+    border-color: #ff3b5c;
+}
+
+.auth-submit-btn {
+    width: 100%;
+    height: 48px;
+    background: #ff3b5c;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: opacity 0.2s;
+}
+
+.auth-submit-btn:active {
+    opacity: 0.8;
+}
+
+.auth-switch-text {
+    font-size: 13px;
+    color: #aaa;
+    margin-top: 20px;
+    cursor: pointer;
+}
+
+.auth-switch-text span {
+    color: #ff3b5c;
+    font-weight: 600;
+}
+
+.forgot-password-link {
+    font-size: 13px;
+    color: #888;
+    background: none;
+    border: none;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.forgot-password-link:hover {
+    color: #fff;
 }
 
 /* Feed & Content Layout */
@@ -199,7 +296,6 @@ body {
    REAL-TIME PLATFORM ENHANCEMENTS
    ========================================== */
 
-/* 1. Live Connection & Streaming Badges */
 .live-badge {
     background: #ff3b5c;
     color: #fff;
@@ -229,7 +325,6 @@ body {
     border-radius: 50%;
 }
 
-/* 2. Real-Time Chat & Comment Stream Bubbles */
 .chat-stream-container {
     display: flex;
     flex-direction: column;
@@ -260,7 +355,6 @@ body {
     to { opacity: 1; transform: translateY(0); }
 }
 
-/* 3. Floating Reaction Heart Animation (Live Stream FX) */
 @keyframes floatUp {
     0% { transform: translateY(0) scale(0.6); opacity: 1; }
     50% { transform: translateY(-100px) scale(1.2); opacity: 0.8; }
@@ -278,7 +372,6 @@ body {
     z-index: 50;
 }
 
-/* 4. Notification Badges & Interactive States */
 .notification-dot {
     position: absolute;
     top: -2px;
@@ -289,7 +382,6 @@ body {
     border-radius: 50%;
 }
 
-/* 5. Upload Progress Bar Styling */
 .upload-progress-container {
     width: 100%;
     background: #181818;

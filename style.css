@@ -1667,3 +1667,757 @@ body.light-mode .country-option {
         border-right: 1px solid #222;
     }
    }
+
+/* =====================================================
+   OTA X PREMIUM MOBILE DESIGN
+   Preserves the existing logo and brand colours.
+   ===================================================== */
+
+:root {
+    --otax-red: #e00000;
+    --otax-red-bright: #ff3030;
+    --otax-black: #050505;
+    --otax-panel: #111111;
+    --otax-border: rgba(255,255,255,.09);
+}
+
+html {
+    background: #000;
+    -webkit-text-size-adjust: 100%;
+}
+
+body {
+    background: #000;
+    color: #fff;
+    overscroll-behavior: none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+button {
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+}
+
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+textarea:focus-visible {
+    outline: 2px solid var(--otax-red-bright);
+    outline-offset: 3px;
+}
+
+.app-container {
+    background: var(--otax-black);
+    isolation: isolate;
+}
+
+#main-app {
+    background: var(--otax-black);
+}
+
+.app-tab {
+    overscroll-behavior-y: contain;
+    -webkit-overflow-scrolling: touch;
+}
+
+.top-header-bar {
+    min-height: 58px;
+    background: linear-gradient(
+        180deg,
+        rgba(0,0,0,.96) 0%,
+        rgba(0,0,0,.65) 65%,
+        transparent 100%
+    );
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+}
+
+.top-nav-links {
+    gap: 24px;
+}
+
+.top-nav-tab {
+    font-size: 15px;
+    letter-spacing: .1px;
+    transition: color .2s ease;
+}
+
+.top-nav-tab.active {
+    color: #fff;
+}
+
+.top-nav-tab.active::after {
+    width: 24px;
+    height: 3px;
+    border-radius: 4px;
+    background: var(--otax-red);
+}
+
+.top-search-btn,
+.header-icon-btn {
+    transition: background .2s ease, transform .2s ease;
+}
+
+.top-search-btn:active,
+.header-icon-btn:active {
+    transform: scale(.92);
+}
+
+.stories-list {
+    padding-bottom: 5px;
+}
+
+.story-avatar {
+    border-color: var(--otax-red);
+    box-shadow: 0 0 0 2px rgba(224,0,0,.12);
+}
+
+.post-card {
+    position: relative;
+    overflow: hidden;
+    background: #080808;
+    border-top: 1px solid var(--otax-border);
+}
+
+.post-media {
+    overflow: hidden;
+    background:
+        radial-gradient(
+            circle at 50% 40%,
+            rgba(224,0,0,.13),
+            transparent 48%
+        ),
+        #101010;
+}
+
+.post-media-placeholder {
+    background:
+        radial-gradient(
+            ellipse at 50% 40%,
+            rgba(224,0,0,.16),
+            transparent 60%
+        ),
+        linear-gradient(145deg, #151515, #050505 72%);
+}
+
+.ota-post-logo {
+    text-shadow:
+        0 0 12px rgba(224,0,0,.45),
+        0 0 30px rgba(224,0,0,.16);
+}
+
+.post-caption {
+    color: #fff;
+    line-height: 1.55;
+    overflow-wrap: anywhere;
+}
+
+.hashtag {
+    color: #ff4a4a;
+    font-weight: 650;
+}
+
+.post-sound {
+    max-width: 85%;
+    border-radius: 30px;
+    color: #f5f5f5;
+}
+
+.post-actions {
+    gap: 15px;
+}
+
+.post-action {
+    transition: transform .18s ease, color .18s ease;
+}
+
+.post-action:active {
+    transform: scale(.9);
+}
+
+.post-action.active,
+.like-btn.active {
+    color: var(--otax-red-bright);
+}
+
+.bottom-nav {
+    border-top: 1px solid rgba(255,255,255,.09);
+    background: rgba(5,5,5,.97);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+.bot-nav-btn {
+    transition: color .18s ease, transform .18s ease;
+}
+
+.bot-nav-btn.active {
+    color: #fff;
+}
+
+.bot-nav-btn.active i {
+    color: var(--otax-red-bright);
+}
+
+.auth-body h2 {
+    letter-spacing: -.45px;
+}
+
+.auth-input,
+.region-selector,
+.country-code-btn {
+    border-radius: 12px;
+    background: #111;
+    border-color: #303030;
+    transition: border-color .2s ease, background .2s ease;
+}
+
+.auth-input:focus {
+    background: #151515;
+    border-color: var(--otax-red);
+    box-shadow: 0 0 0 3px rgba(224,0,0,.1);
+}
+
+.auth-btn {
+    border-radius: 12px;
+    background: linear-gradient(135deg, #e00000, #a90000);
+    box-shadow: 0 5px 20px rgba(224,0,0,.15);
+    transition: transform .18s ease, filter .18s ease;
+}
+
+.auth-btn:active {
+    transform: scale(.985);
+    filter: brightness(.9);
+}
+
+.auth-main-tab.active::after {
+    border-radius: 5px;
+}
+
+.page-header {
+    padding-top: max(20px, env(safe-area-inset-top, 0px));
+}
+
+.empty-state,
+.empty-feed {
+    color: #aaa;
+}
+
+@media (max-width: 520px) {
+    .app-container {
+        width: 100%;
+        max-width: none;
+        height: 100vh;
+        height: 100dvh;
+        min-height: 0;
+        margin: 0;
+    }
+
+    #main-app {
+        height: 100vh;
+        height: 100dvh;
+    }
+
+    .app-tab {
+        padding-bottom: calc(78px + env(safe-area-inset-bottom, 0px));
+    }
+
+    .bottom-nav {
+        height: calc(66px + env(safe-area-inset-bottom, 0px));
+        padding-bottom: env(safe-area-inset-bottom, 0px);
+    }
+
+    #auth-screen {
+        min-height: 100%;
+        padding:
+            max(20px, env(safe-area-inset-top, 0px))
+            20px
+            max(20px, env(safe-area-inset-bottom, 0px));
+    }
+
+    .auth-logo-container {
+        margin-bottom: 22px;
+    }
+
+    .auth-body {
+        max-width: 420px;
+    }
+
+    .auth-input,
+    .auth-btn,
+    .region-selector {
+        min-height: 49px;
+    }
+
+    .page-header {
+        padding-left: 17px;
+        padding-right: 17px;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        scroll-behavior: auto !important;
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .01ms !important;
+    }
+}
+
+
+/* =====================================================
+   OTA X — IMMERSIVE FULL-SCREEN FEED
+   Original logo and brand colours remain unchanged.
+   ===================================================== */
+
+#main-app > .top-header-bar {
+    z-index: 120;
+}
+
+#feed-tab {
+    padding: 0;
+    padding-bottom: 66px;
+    overflow-y: auto;
+    overscroll-behavior-y: contain;
+    scroll-snap-type: y mandatory;
+    scrollbar-width: none;
+    background: #000;
+}
+
+#feed-tab::-webkit-scrollbar,
+#posts-feed::-webkit-scrollbar {
+    display: none;
+}
+
+#feed-tab > .stories-section {
+    display: none;
+}
+
+#posts-feed {
+    display: block;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+#posts-feed > .post-card {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: calc(100vh - 66px);
+    height: calc(100dvh - 66px);
+    min-height: 420px;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    isolation: isolate;
+    border: 0;
+    border-radius: 0;
+    background: #080808;
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
+}
+
+#posts-feed > .post-card > .post-media {
+    position: absolute;
+    inset: 0;
+    z-index: -2;
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    margin: 0;
+    overflow: hidden;
+    border-radius: 0;
+    background: #080808;
+}
+
+#posts-feed .post-media-placeholder {
+    width: 100%;
+    height: 100%;
+    min-height: 0;
+    background:
+        radial-gradient(
+            ellipse at 50% 42%,
+            rgba(224, 0, 0, .20),
+            transparent 58%
+        ),
+        linear-gradient(160deg, #171010 0%, #080808 54%, #000 100%);
+}
+
+#posts-feed .post-media-placeholder p {
+    color: #fff;
+    font-size: 20px;
+    letter-spacing: .5px;
+}
+
+#posts-feed .post-media-placeholder span {
+    color: #bbb;
+    font-size: 12px;
+}
+
+#posts-feed > .post-card::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background: linear-gradient(
+        to bottom,
+        rgba(0, 0, 0, .44) 0%,
+        transparent 23%,
+        transparent 48%,
+        rgba(0, 0, 0, .28) 66%,
+        rgba(0, 0, 0, .86) 100%
+    );
+}
+
+#posts-feed > .post-card > .post-header {
+    position: absolute;
+    top: 70px;
+    left: 14px;
+    right: 56px;
+    z-index: 3;
+    min-width: 0;
+}
+
+#posts-feed .post-user {
+    min-width: 0;
+    gap: 10px;
+}
+
+#posts-feed .post-avatar {
+    flex-shrink: 0;
+    width: 42px;
+    height: 42px;
+    border: 1px solid rgba(255,255,255,.35);
+    background: #181818;
+    box-shadow: 0 2px 12px rgba(0,0,0,.3);
+}
+
+#posts-feed .post-user-info {
+    min-width: 0;
+    text-shadow: 0 1px 5px #000;
+}
+
+#posts-feed .post-user-info strong {
+    font-size: 14px;
+    color: #fff;
+}
+
+#posts-feed .post-user-info span {
+    color: #ddd;
+    font-size: 12px;
+}
+
+#posts-feed .post-more-btn {
+    color: #fff;
+}
+
+#posts-feed > .post-card > .post-caption {
+    position: absolute;
+    left: 14px;
+    right: 70px;
+    bottom: 105px;
+    z-index: 3;
+    max-height: 24%;
+    padding: 8px 0;
+    overflow: auto;
+    color: #fff;
+    font-size: 14px;
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+    text-shadow: 0 1px 5px rgba(0,0,0,.9);
+    scrollbar-width: none;
+}
+
+#posts-feed > .post-card > .post-caption::-webkit-scrollbar {
+    display: none;
+}
+
+#posts-feed .hashtag {
+    color: #ff5555;
+    font-weight: 700;
+}
+
+#posts-feed > .post-card > .post-sound {
+    position: absolute;
+    left: 14px;
+    right: 72px;
+    bottom: 76px;
+    z-index: 4;
+    width: auto;
+    padding: 8px 0;
+    overflow: hidden;
+    color: #fff;
+    font-size: 12px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    text-shadow: 0 1px 5px #000;
+}
+
+#posts-feed > .post-card > .post-actions {
+    position: absolute;
+    right: 10px;
+    bottom: 78px;
+    z-index: 5;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 18px;
+    width: 48px;
+}
+
+#posts-feed > .post-card > .post-actions > .post-action {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    min-width: 44px;
+    min-height: 44px;
+    padding: 3px;
+    color: #fff;
+    font-size: 11px;
+    font-weight: 650;
+    text-shadow: 0 1px 5px #000;
+}
+
+#posts-feed > .post-card > .post-actions > .post-action i {
+    font-size: 25px;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,.45));
+}
+
+#posts-feed > .post-card > .post-actions > .post-action.active,
+#posts-feed > .post-card > .post-actions > .post-action.like-btn.active {
+    color: #ff3030;
+}
+
+#posts-feed > .post-card > .post-actions > .post-action span {
+    color: #fff;
+    font-size: 11px;
+}
+
+#posts-feed > .post-card > .post-actions > .post-action:active {
+    transform: scale(.9);
+}
+
+#feed-tab > #feed-loading,
+#feed-tab > #empty-feed {
+    padding: 28px 18px;
+    color: #fff;
+    text-align: center;
+    background: #080808;
+}
+
+#feed-tab > #empty-feed i {
+    color: #ff3030;
+    font-size: 30px;
+    margin-bottom: 12px;
+}
+
+#main-app > .bottom-nav {
+    z-index: 150;
+    height: 66px;
+    background: rgba(5,5,5,.97);
+    border-top: 1px solid rgba(255,255,255,.1);
+}
+
+@media (max-width: 520px) {
+    #feed-tab {
+        padding-bottom: calc(66px + env(safe-area-inset-bottom, 0px));
+    }
+
+    #posts-feed > .post-card {
+        height: calc(100vh - 66px);
+        height: calc(100dvh - 66px - env(safe-area-inset-bottom, 0px));
+        min-height: 420px;
+    }
+
+    #posts-feed > .post-card > .post-header {
+        top: max(70px, calc(env(safe-area-inset-top, 0px) + 58px));
+    }
+
+    #posts-feed > .post-card > .post-caption {
+        bottom: 105px;
+        max-height: 25%;
+    }
+
+    #posts-feed > .post-card > .post-sound {
+        bottom: 76px;
+    }
+
+    #posts-feed > .post-card > .post-actions {
+        right: 8px;
+        bottom: 78px;
+        gap: 16px;
+    }
+}
+
+
+/* OTA X logo: OX above small OTAx inside the circle */
+.electric-logo-inner {
+    flex-direction: column;
+    gap: 0;
+}
+
+.ox-letters {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    line-height: 1;
+}
+
+.logo-mini-brand {
+    margin-top: 3px;
+    font-size: 9px;
+    line-height: 1;
+    font-weight: 900;
+    letter-spacing: 1px;
+    animation: brandColor 4s linear infinite;
+}
+
+.logo-mini-brand strong {
+    color: var(--red);
+}
+
+/* OTA X animated brand in the home feed header */
+.top-header-bar {
+    display: flex;
+    justify-content: center;
+    padding: 0 52px 0 14px;
+    box-sizing: border-box;
+}
+
+.home-brand-name {
+    position: absolute;
+    left: 14px;
+    top: 19px;
+    z-index: 2;
+    display: inline-flex;
+    align-items: center;
+    white-space: nowrap;
+    font-size: 16px;
+    line-height: 1;
+    font-weight: 900;
+    letter-spacing: -0.5px;
+    color: #fff;
+    animation: brandColor 4s linear infinite;
+}
+
+.home-brand-name strong {
+    color: var(--otax-red, #e5092a);
+    font-weight: 950;
+}
+
+.top-nav-links {
+    gap: clamp(8px, 3vw, 20px);
+    margin-left: 42px;
+}
+
+.top-nav-tab {
+    padding-left: 2px;
+    padding-right: 2px;
+    font-size: clamp(12px, 3.5vw, 15px);
+}
+
+.top-search-btn {
+    right: 10px;
+}
+
+/* OTA X login legal links: readable and easy to tap */
+.legal-footer-text {
+    color: #bdbdbd;
+    font-size: 12px;
+    line-height: 1.8;
+}
+
+.legal-footer-text a,
+.interactive-country-link {
+    color: #fff;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+.legal-footer-text a {
+    display: inline-block;
+    padding: 3px 2px;
+}
+
+.interactive-country-link {
+    min-height: 36px;
+    padding: 6px 8px;
+    font-size: inherit;
+}
+
+.legal-footer-text a:focus-visible,
+.interactive-country-link:focus-visible,
+.country-code-btn:focus-visible,
+.region-selector:focus-visible,
+.country-option:focus-visible {
+    outline: 2px solid #ff334f;
+    outline-offset: 3px;
+}
+
+.country-option[hidden] {
+    display: none !important;
+}
+
+#country-modal {
+    z-index: 10000;
+}
+
+#country-modal .modal-content {
+    max-height: 85dvh;
+    overflow-y: auto;
+}
+
+.country-list {
+    max-height: 55dvh;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+}
+
+/* OTA X media upload preview */
+.media-preview:not(.hidden) {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+    padding: 12px;
+    box-sizing: border-box;
+}
+
+.media-preview img,
+.media-preview video {
+    display: block;
+    width: 100%;
+    max-height: 420px;
+    object-fit: contain;
+    border-radius: 8px;
+    background: #000;
+}
+
+.media-preview-label {
+    color: #ddd;
+    font-size: 13px;
+    overflow-wrap: anywhere;
+}
+
+.media-preview button {
+    align-self: flex-start;
+    padding: 9px 14px;
+    border: 1px solid #e00000;
+    border-radius: 7px;
+    background: #171717;
+    color: #fff;
+    cursor: pointer;
+}
+
+.media-preview button:focus-visible {
+    outline: 2px solid #ff3030;
+    outline-offset: 3px;
+}

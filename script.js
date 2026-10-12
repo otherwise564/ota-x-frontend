@@ -318,6 +318,41 @@ document.addEventListener("DOMContentLoaded", () => {
       article.appendChild(media);
     }
 
+    // Post action rail with real post IDs.
+    const actions = document.createElement("div");
+    actions.className = "post-actions";
+    actions.setAttribute("aria-label", "Post actions");
+
+    const actionItems = [
+      ["like", "fa-regular fa-heart", Number(post._count?.likes || 0), "Like"],
+      ["comment", "fa-regular fa-comment", Number(post._count?.comments || 0), "Comment"],
+      ["repost", "fa-solid fa-repeat", Number(post._count?.reposts || 0), "Repost"],
+      ["favorite", "fa-regular fa-bookmark", Number(post._count?.favorites || 0), "Save"],
+      ["share", "fa-solid fa-share", Number(post._count?.shares || 0), "Share"]
+    ];
+
+    for (const [action, iconClass, count, label] of actionItems) {
+      const button = document.createElement("button");
+      button.type = "button";
+      button.className = "post-action " + action + "-btn";
+      button.dataset.action = action;
+      button.dataset.postId = String(post.id || "");
+      button.setAttribute("aria-label", label);
+      button.title = label;
+
+      const icon = document.createElement("i");
+      icon.className = iconClass;
+      icon.setAttribute("aria-hidden", "true");
+
+      const countLabel = document.createElement("span");
+      countLabel.textContent = count.toLocaleString();
+
+      button.append(icon, countLabel);
+      actions.appendChild(button);
+    }
+
+    article.appendChild(actions);
+
     const counts = post._count || {};
     const stats = document.createElement("p");
     stats.className = "post-live-counts";
@@ -328,6 +363,142 @@ document.addEventListener("DOMContentLoaded", () => {
     article.appendChild(stats);
 
     return article;
+  }
+
+
+  // OTA_X_POST_ACTION_HANDLER
+  let postActionBusy = false;
+
+  async function handlePostAction(button) {
+    if (postActionBusy) return;
+
+    const action = button.dataset.action;
+    const postId = button.dataset.postId;
+
+    if (!postId || !/^[1-9]\d*$/.test(postId)) {
+      window.alert("This post has no valid server ID yet.");
+      return;
+    }
+
+    const token = localStorage.getItem("ota_token");
+    if (!token) {
+      showLogin();
+      message("Log in to interact with posts.");
+      return;
+    }
+
+    const countLabel = button.querySelector("span");
+    const currentCount = Number(countLabel?.textContent.replace(/,/g, "") || 0);
+    const wasActive = button.classList.contains("active");
+
+    try {
+      postActionBusy = true;
+      button.disabled = true;
+
+      if (action === "like") {
+        const result = await request("/likes/" + encodeURIComponent(postId), {
+          method: wasActive ? "DELETE" : "POST"
+        });
+        button.classList.toggle("active", Boolean(result.liked));
+        if (countLabel && Number.isFinite(Number(result.likeCount))) {
+          countLabel.textContent = Number(result.likeCount).toLocaleString();
+        }
+      } else if (action === "favorite") {
+        const result = await request("/favorites/" + encodeURIComponent(postId), {
+          method: wasActive ? "DELETE" : "POST"
+        });
+        button.classList.toggle("active", Boolean(result.saved));
+        if (countLabel && Number.isFinite(Number(result.favoriteCount))) {
+          countLabel.textContent = Number(result.favoriteCount).toLocaleString();
+        }
+      } else if (action === "repost") {
+        const result = await request("/reposts/" + encodeURIComponent(postId), {
+          method: wasActive ? "DELETE" : "POST",
+          body: JSON.stringify({})
+        });
+        button.classList.toggle("active", Boolean(result.reposted));
+        if (countLabel && Number.isFinite(Number(result.repostCount))) {
+          countLabel.textContent = Number(result.repostCount).toLocaleString();
+        }
+      } else if (action === "comment") {
+        const text = window.prompt("Write your comment (up to 2,000 characters):");
+        if (text === null) return;
+        if (!text.trim()) {
+          window.alert("Enter a comment first.");
+          return;
+        }
+        if (text.trim().length > 2000) {
+          window.alert("Comments can contain up to 2,000 characters.");
+          return;
+        }
+
+        await request("/comments/" + encodeURIComponent(postId), {
+          method: "POST",
+          body: JSON.stringify({ text: text.trim() })
+        });
+
+        if (countLabel) {
+          countLabel.textContent = (currentCount + 1).toLocaleString();
+        }
+      } else if (action === "share") {
+        const shareUrl = location.origin + location.pathname + "#post-" + postId;
+        if (navigator.share) {
+          await navigator.share({
+            title: "OTA X",
+            text: "Check out this post on OTA X",
+            url: shareUrl
+          });
+        } else if (navigator.clipboard?.writeText) {
+          await navigator.clipboard.writeText(shareUrl);
+          window.alert("Post link copied. You can now share it.");
+        } else {
+          window.prompt("Copy this post link:", shareUrl);
+        }
+
+        await request("/shares/" + encodeURIComponent(postId), {
+          method: "POST",
+          body: JSON.stringify({})
+        });
+        if (countLabel) {
+          countLabel.textContent = (currentCount + 1).toLocaleString();
+        }
+      }
+    } catch (error) {
+      if (error.name !== "AbortError") {
+        window.alert(error.message || "That action failed. Please try again.");
+      }
+    } finally {
+      button.disabled = false;
+      postActionBusy = false;
+    }
+  }
+
+  feed?.addEventListener("click", event => {
+    const button = event.target.closest("button[data-action][data-post-id]");
+    if (!button || !feed.contains(button)) return;
+    event.preventDefault();
+    handlePostAction(button);
+  });
+
+  async function hydratePostActionStates(article) {
+    const postId = article?.dataset?.postId;
+    if (!postId || !localStorage.getItem("ota_token")) return;
+
+    const checks = [
+      ["like", "/likes/" + encodeURIComponent(postId) + "/status", "liked"],
+      ["favorite", "/favorites/" + encodeURIComponent(postId) + "/status", "saved"],
+      ["repost", "/reposts/" + encodeURIComponent(postId) + "/status", "reposted"]
+    ];
+
+    await Promise.all(checks.map(async ([action, path, key]) => {
+      try {
+        const result = await request(path);
+        const button = article.querySelector('button[data-action="' + action + '"]');
+        if (button) button.classList.toggle("active", Boolean(result[key]));
+      } catch (error) {
+        console.warn("Could not load " + action + " status for post " + postId, error);
+      }
+    }));
   }
 
   async function loadFeed() {
@@ -361,7 +532,12 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
-      posts.forEach(post => feed.appendChild(renderPost(post)));
+      posts.forEach(post => {
+        const article = renderPost(post);
+        article.dataset.postId = String(post.id || "");
+        feed.appendChild(article);
+        hydratePostActionStates(article);
+      });
     } catch (error) {
       showFeedState("We couldn't load the feed", error.message, true);
     }

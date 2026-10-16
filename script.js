@@ -253,7 +253,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function renderPost(post) {
     const article = document.createElement("article");
-    article.className = "post-card";
+    article.className = "post-card ota-immersive-post";
     article.dataset.postId = post.id || "";
 
     const header = document.createElement("div");
@@ -298,13 +298,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (post.mediaUrl && post.mediaUrl.startsWith("https://")) {
       const media = document.createElement("div");
-      media.className = "post-media";
+      media.className = "post-media ota-post-media";
 
       if (post.mediaType === "VIDEO") {
         const video = document.createElement("video");
         video.src = post.mediaUrl;
-        video.controls = true;
+        video.controls = false;
         video.playsInline = true;
+        video.autoplay = true;
+        video.muted = true;
+        video.loop = true;
         video.preload = "metadata";
         media.appendChild(video);
       } else if (post.mediaType === "IMAGE") {
@@ -909,3 +912,424 @@ document.addEventListener("DOMContentLoaded", () => {
 
   setMode("login");
 });
+
+
+/* OTA_X_INTERFACE_PATCH */
+(function initOtaInterface() {
+  const appearance = document.getElementById("ota-appearance-modal");
+
+  function applyTheme(theme) {
+    theme = theme === "light" ? "light" : "dark";
+    document.body.classList.toggle("light-mode", theme === "light");
+    document.documentElement.dataset.otaTheme = theme;
+    try { localStorage.setItem("ota_theme", theme); } catch (_) {}
+    document.querySelectorAll("[data-ota-theme]").forEach(button => {
+      button.setAttribute("aria-pressed", String(button.dataset.otaTheme === theme));
+    });
+  }
+
+  function refreshProfile() {
+    let user = {};
+    try {
+      const value = JSON.parse(localStorage.getItem("ota_user") || "{}");
+      if (value && typeof value === "object") user = value;
+    } catch (_) {}
+
+    const name = user.displayName || user.name || user.username || "Your profile";
+    const username = user.username ? "@" + String(user.username).replace(/^@/, "") : "Your OTA X account";
+    const nameEl = document.getElementById("ota-profile-display-name");
+    const userEl = document.getElementById("ota-profile-username");
+    const avatarEl = document.getElementById("ota-profile-avatar");
+    if (nameEl) nameEl.textContent = name;
+    if (userEl) userEl.textContent = username;
+    if (avatarEl) avatarEl.textContent =
+      String(name).trim().split(/\s+/).filter(Boolean).slice(0, 2)
+        .map(part => part[0].toUpperCase()).join("") || "OX";
+  }
+
+  function switchTab(id) {
+    const valid = ["feed-tab", "upload-tab", "inbox-tab", "profile-tab"];
+    if (!valid.includes(id) || !document.getElementById(id)) return;
+
+    valid.forEach(tab => {
+      const panel = document.getElementById(tab);
+      if (panel) panel.classList.toggle("hidden", tab !== id);
+    });
+    document.querySelectorAll("[data-ota-nav]").forEach(button => {
+      button.classList.toggle("is-active", button.dataset.otaNav === id);
+    });
+    if (id === "profile-tab") refreshProfile();
+  }
+
+  function openAppearance() {
+    if (!appearance) return;
+    appearance.classList.remove("hidden");
+  }
+
+  function openSettings() {
+    const drawer = document.getElementById("profile-drawer");
+    if (drawer) {
+      drawer.classList.remove("hidden");
+      drawer.classList.add("open");
+      drawer.setAttribute("aria-hidden", "false");
+    } else {
+      openAppearance();
+    }
+  }
+
+  document.querySelectorAll("[data-ota-nav]").forEach(button => {
+    button.addEventListener("click", () => {
+      const target = button.dataset.otaNav;
+      if (target === "discover") {
+        const searchButton = document.getElementById("open-search-modal");
+        const searchModal = document.getElementById("search-modal");
+        if (searchButton) searchButton.click();
+        else if (searchModal) searchModal.classList.remove("hidden");
+        return;
+      }
+      switchTab(target);
+    });
+  });
+
+  document.getElementById("ota-profile-settings")?.addEventListener("click", openSettings);
+  document.getElementById("ota-profile-settings-secondary")?.addEventListener("click", openSettings);
+  document.getElementById("open-appearance-settings")?.addEventListener("click", openAppearance);
+
+  appearance?.querySelectorAll("[data-ota-close-appearance]").forEach(button => {
+    button.addEventListener("click", () => appearance.classList.add("hidden"));
+  });
+  appearance?.querySelectorAll("[data-ota-theme]").forEach(button => {
+    button.addEventListener("click", () => applyTheme(button.dataset.otaTheme));
+  });
+  document.addEventListener("keydown", event => {
+    if (event.key === "Escape" && appearance) appearance.classList.add("hidden");
+  });
+
+  let theme = "dark";
+  try { if (localStorage.getItem("ota_theme") === "light") theme = "light"; } catch (_) {}
+  applyTheme(theme);
+  refreshProfile();
+})();
+
+
+
+/* OTA_X_REAL_PROFILE_API */
+(function initOtaRealProfile() {
+  if (document.documentElement.dataset.otaRealProfileInit === 'true') return;
+  document.documentElement.dataset.otaRealProfileInit = 'true';
+
+  const API_BASE = 'https://ota-x-backend.onrender.com/api';
+  const modal = document.getElementById('edit-profile-modal');
+  const editButton = document.getElementById('ota-edit-profile-button');
+  const saveButton = document.getElementById('save-profile-btn');
+  const closeButton = document.getElementById('close-edit-profile');
+  const usernameInput = document.getElementById('edit-username');
+  const bioInput = document.getElementById('edit-bio');
+  const displayNameInput = document.getElementById('edit-display-name');
+  const profileTab = document.getElementById('profile-tab');
+
+  let currentProfile = null;
+  let loading = false;
+  let saving = false;
+
+  function getToken() {
+    try {
+      return localStorage.getItem('ota_token') || '';
+    } catch (_) {
+      return '';
+    }
+  }
+
+  function setMessage(message, isError) {
+    let box = document.getElementById('ota-profile-api-message');
+
+    if (!box && modal) {
+      box = document.createElement('p');
+      box.id = 'ota-profile-api-message';
+      box.setAttribute('role', 'status');
+      box.setAttribute('aria-live', 'polite');
+
+      const content = modal.querySelector('.modal-content');
+      if (content) content.insertBefore(box, content.querySelector('#save-profile-btn'));
+    }
+
+    if (box) {
+      box.textContent = message;
+      box.classList.toggle('ota-profile-error', Boolean(isError));
+      box.classList.toggle('ota-profile-success', !isError);
+    } else if (message) {
+      window.alert(message);
+    }
+  }
+
+  async function apiRequest(path, options = {}) {
+    const token = getToken();
+
+    if (!token) {
+      throw new Error('Please log in to access your profile.');
+    }
+
+    const response = await fetch(API_BASE + path, {
+      ...options,
+      headers: {
+        Accept: 'application/json',
+        Authorization: 'Bearer ' + token,
+        ...(options.body ? { 'Content-Type': 'application/json' } : {}),
+        ...(options.headers || {})
+      }
+    });
+
+    let result = {};
+    try {
+      result = await response.json();
+    } catch (_) {}
+
+    if (!response.ok) {
+      throw new Error(
+        result.error || result.message || 'The request failed. Please try again.'
+      );
+    }
+
+    return result;
+  }
+
+  function getInitials(username) {
+    const clean = String(username || 'OX').replace(/^@/, '').trim();
+    return clean.slice(0, 2).toUpperCase() || 'OX';
+  }
+
+  function renderAvatar(avatarEl, profile) {
+    if (!avatarEl) return;
+
+    const username = profile.username || '';
+    avatarEl.replaceChildren();
+
+    if (profile.avatarUrl) {
+      const image = document.createElement('img');
+      image.src = profile.avatarUrl;
+      image.alt = 'Profile picture';
+      image.loading = 'lazy';
+      image.referrerPolicy = 'no-referrer';
+
+      image.addEventListener('error', () => {
+        avatarEl.replaceChildren();
+        avatarEl.textContent = getInitials(username);
+      }, { once: true });
+
+      avatarEl.appendChild(image);
+    } else {
+      avatarEl.textContent = getInitials(username);
+    }
+  }
+
+  function renderStats(profile) {
+    if (!profileTab) return;
+
+    let stats = document.getElementById('ota-profile-stats');
+
+    if (!stats) {
+      stats = document.createElement('div');
+      stats.id = 'ota-profile-stats';
+      stats.className = 'ota-profile-stats';
+
+      const usernameEl = document.getElementById('ota-profile-username');
+      if (usernameEl && usernameEl.parentNode) {
+        usernameEl.insertAdjacentElement('afterend', stats);
+      } else {
+        profileTab.appendChild(stats);
+      }
+    }
+
+    const counts = profile.counts || {};
+    const entries = [
+      ['Posts', counts.posts],
+      ['Followers', counts.followers],
+      ['Following', counts.following]
+    ];
+
+    stats.replaceChildren();
+
+    entries.forEach(([label, value]) => {
+      const item = document.createElement('div');
+      item.className = 'ota-profile-stat';
+
+      const number = document.createElement('strong');
+      number.textContent = Number.isFinite(Number(value)) ? String(value) : '0';
+
+      const caption = document.createElement('span');
+      caption.textContent = label;
+
+      item.append(number, caption);
+      stats.appendChild(item);
+    });
+  }
+
+  function renderProfile(profile) {
+    if (!profile || typeof profile !== 'object') return;
+
+    currentProfile = profile;
+
+    const username = String(profile.username || '');
+    const nameEl = document.getElementById('ota-profile-display-name');
+    const usernameEl = document.getElementById('ota-profile-username');
+    const avatarEl = document.getElementById('ota-profile-avatar');
+
+    /* No separate display-name field exists in the current backend. */
+    const displayName = String(profile.displayName || '').trim();
+    if (nameEl) nameEl.textContent = displayName || username || 'Your profile';
+    if (usernameEl) usernameEl.textContent = username ? '@' + username.replace(/^@/, '') : '';
+
+    renderAvatar(avatarEl, profile);
+    renderStats(profile);
+
+    try {
+      const cached = JSON.parse(localStorage.getItem('ota_user') || '{}');
+      localStorage.setItem('ota_user', JSON.stringify({
+        ...cached,
+        id: profile.id,
+        username: profile.username,
+        displayName: profile.displayName,
+        avatarUrl: profile.avatarUrl,
+        bio: profile.bio,
+        isCreatorVerified: profile.isCreatorVerified,
+        isVerified: profile.isVerified
+      }));
+    } catch (_) {}
+
+    const bioEl = document.getElementById('ota-profile-bio');
+    if (bioEl) bioEl.textContent = profile.bio || '';
+
+    const verifiedEl = document.getElementById('ota-profile-verified');
+    if (verifiedEl) {
+      verifiedEl.hidden = !(profile.isVerified || profile.isCreatorVerified);
+    }
+  }
+
+  async function loadProfile(showErrors = false) {
+    if (loading) return currentProfile;
+
+    if (!getToken()) {
+      if (showErrors) setMessage('Please log in to view and edit your profile.', true);
+      return null;
+    }
+
+    loading = true;
+
+    try {
+      const result = await apiRequest('/profile');
+      if (!result.profile) throw new Error('The server returned no profile data.');
+
+      renderProfile(result.profile);
+      return result.profile;
+    } catch (error) {
+      if (showErrors) setMessage(error.message || 'Could not load your profile.', true);
+      return null;
+    } finally {
+      loading = false;
+    }
+  }
+
+  async function openEditor() {
+    if (!modal) return;
+
+    modal.classList.remove('hidden');
+    setMessage('');
+
+    const profile = await loadProfile(true);
+    if (!profile) return;
+
+    if (displayNameInput) displayNameInput.value = profile.displayName || '';
+    if (usernameInput) usernameInput.value = profile.username || '';
+    if (bioInput) bioInput.value = profile.bio || '';
+  }
+
+  async function saveProfile() {
+    if (saving || !saveButton) return;
+
+    const displayName = displayNameInput ? displayNameInput.value.trim() : '';
+    const username = usernameInput ? usernameInput.value.trim().replace(/^@+/, '').toLowerCase() : '';
+    const bio = bioInput ? bioInput.value.trim() : '';
+
+    if (!/^[a-zA-Z0-9_.]{3,30}$/.test(username)) {
+      setMessage('Username must be 3–30 characters and use only letters, numbers, underscores or periods.', true);
+      if (usernameInput) usernameInput.focus();
+      return;
+    }
+
+    if (bio.length > 160) {
+      setMessage('Your bio cannot exceed 160 characters.', true);
+      if (bioInput) bioInput.focus();
+      return;
+    }
+
+    saving = true;
+    saveButton.disabled = true;
+    saveButton.setAttribute('aria-busy', 'true');
+    const originalText = saveButton.textContent;
+    saveButton.textContent = 'Saving…';
+    setMessage('');
+
+    try {
+      const result = await apiRequest('/profile', {
+        method: 'PATCH',
+        body: JSON.stringify({ displayName, username, bio })
+      });
+
+      if (!result.profile) {
+        throw new Error('The server did not confirm the updated profile.');
+      }
+
+      renderProfile(result.profile);
+      setMessage('Profile saved successfully.');
+
+      window.setTimeout(() => {
+        if (modal) modal.classList.add('hidden');
+      }, 700);
+    } catch (error) {
+      setMessage(error.message || 'Could not save your profile. Please try again.', true);
+    } finally {
+      saving = false;
+      saveButton.disabled = false;
+      saveButton.removeAttribute('aria-busy');
+      saveButton.textContent = originalText || 'Save changes';
+    }
+  }
+
+  if (editButton) editButton.addEventListener('click', openEditor);
+
+  /* OTA_X_PROFILE_TAB_REFRESH */
+  document.querySelectorAll('[data-ota-nav]').forEach(button => {
+    button.addEventListener('click', () => {
+      if (button.dataset.otaNav === 'profile-tab') {
+        loadProfile(false);
+      }
+    });
+  });
+  if (saveButton) saveButton.addEventListener('click', saveProfile);
+
+  if (closeButton && modal) {
+    closeButton.addEventListener('click', () => modal.classList.add('hidden'));
+  }
+
+  if (modal) {
+    modal.addEventListener('click', event => {
+      if (event.target === modal) modal.classList.add('hidden');
+    });
+  }
+
+  document.addEventListener('keydown', event => {
+    if (event.key === 'Escape' && modal) modal.classList.add('hidden');
+  });
+
+  document.addEventListener('visibilitychange', () => {
+    if (!document.hidden && profileTab && !profileTab.classList.contains('hidden')) {
+      loadProfile(false);
+    }
+  });
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => loadProfile(false), { once: true });
+  } else {
+    loadProfile(false);
+  }
+})();

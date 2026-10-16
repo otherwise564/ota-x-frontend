@@ -471,181 +471,7 @@
             >
 
                 <!-- Example OTA X post -->
-                <article
-                    class="post-card"
-                    data-post-id="demo-1"
-                >
 
-                    <!-- Post header -->
-                    <div class="post-header">
-
-                        <div class="post-user">
-
-                            <div class="post-avatar">
-                                <i class="fa-solid fa-user"></i>
-                            </div>
-
-
-                            <div class="post-user-info">
-
-                                <strong>
-                                    OTA Creator
-                                </strong>
-
-                                <span>
-                                    @ota_creator
-                                </span>
-
-                            </div>
-
-                        </div>
-
-
-                        <button
-                            type="button"
-                            class="post-more-btn"
-                            aria-label="More options"
-                        >
-                            <i class="fa-solid fa-ellipsis"></i>
-                        </button>
-
-                    </div>
-
-
-                    <!-- Caption -->
-                    <div class="post-caption">
-
-                        Welcome to OTA X.
-
-                        <span class="hashtag">
-                            #OTAX
-                        </span>
-
-                        <span class="hashtag">
-                            #ConnectCreateDiscover
-                        </span>
-
-                    </div>
-
-
-                    <!-- Media -->
-                    <div class="post-media">
-
-                        <div class="post-media-placeholder">
-
-                            <div class="ota-post-logo">
-                                OX
-                            </div>
-
-                            <p>
-                                OTA X
-                            </p>
-
-                            <span>
-                                Your global social experience
-                            </span>
-
-                        </div>
-
-                    </div>
-
-
-                    <!-- Sound -->
-                    <button
-                        type="button"
-                        class="post-sound"
-                    >
-
-                        <i class="fa-solid fa-music"></i>
-
-                        <span>
-                            Original Sound · OTA X
-                        </span>
-
-                    </button>
-
-
-                    <!-- Actions -->
-                    <div class="post-actions">
-
-                        <button
-                            type="button"
-                            class="post-action like-btn"
-                            data-action="like"
-                        >
-
-                            <i class="fa-regular fa-heart"></i>
-
-                            <span>
-                                0
-                            </span>
-
-                        </button>
-
-
-                        <button
-                            type="button"
-                            class="post-action comment-btn"
-                            data-action="comment"
-                            data-post-id="demo-1"
-                        >
-
-                            <i class="fa-regular fa-comment"></i>
-
-                            <span>
-                                0
-                            </span>
-
-                        </button>
-
-
-                        <button
-                            type="button"
-                            class="post-action repost-btn"
-                            data-action="repost"
-                        >
-
-                            <i class="fa-solid fa-retweet"></i>
-
-                            <span>
-                                0
-                            </span>
-
-                        </button>
-
-
-                        <button
-                            type="button"
-                            class="post-action favorite-btn"
-                            data-action="favorite"
-                        >
-
-                            <i class="fa-regular fa-bookmark"></i>
-
-                            <span>
-                                0
-                            </span>
-
-                        </button>
-
-
-                        <button
-                            type="button"
-                            class="post-action share-btn"
-                            data-action="share"
-                        >
-
-                            <i class="fa-solid fa-share"></i>
-
-                            <span>
-                                0
-                            </span>
-
-                        </button>
-
-                    </div>
-
-                </article>
 
 
                 <!-- Feed loading area -->
@@ -1149,17 +975,54 @@
              PROFILE
         ================================================== -->
 
-        <section
-            id="profile-tab"
-            class="app-tab hidden"
-        >
 
-            <!-- Profile header -->
-            <div class="profile-top-bar">
+<section id="profile-tab" class="app-tab hidden" aria-label="Profile">
+  <div class="ota-profile-page">
+    <header class="ota-profile-header">
+      <h1>Profile</h1>
+      <button type="button" id="ota-profile-settings" aria-label="Settings">⚙</button>
+    </header>
+    <div class="ota-profile-identity">
+      <div id="ota-profile-avatar" class="ota-profile-avatar">OX</div>
+      <div>
+        <h2 id="ota-profile-display-name">Your profile</h2>
+        <p id="ota-profile-username">Your OTA X account</p>
+      <p id="ota-profile-bio" class="ota-profile-bio"></p>
+      <span id="ota-profile-verified" class="ota-profile-verified" hidden>Verified</span>
+      </div>
+    </div>
+    <div class="ota-profile-actions">
+      <button type="button" id="ota-edit-profile-button">Edit profile</button>
+      <button type="button" id="ota-profile-settings-secondary">Settings</button>
+    </div>
+    <div class="ota-profile-posts">
+      <h3>Your posts</h3>
+      <p>Your published posts will appear here.</p>
+    </div>
+  </div>
+</section>
 
-                <button
-                    type="button"
-     <!-- =====================================================
+<nav id="ota-bottom-nav" class="ota-bottom-nav" aria-label="Main navigation">
+  <button type="button" data-ota-nav="feed-tab" class="is-active">
+    <span class="ota-nav-icon">⌂</span><span>Home</span>
+  </button>
+  <button type="button" data-ota-nav="discover">
+    <span class="ota-nav-icon">⌕</span><span>Discover</span>
+  </button>
+  <button type="button" data-ota-nav="upload-tab" class="ota-create-nav">
+    <span class="ota-nav-create-icon">+</span><span>Create</span>
+  </button>
+  <button type="button" data-ota-nav="inbox-tab">
+    <span class="ota-nav-icon">♡</span><span>Inbox</span>
+  </button>
+  <button type="button" data-ota-nav="profile-tab">
+    <span class="ota-nav-icon">●</span><span>Profile</span>
+  </button>
+</nav>
+
+</section>
+
+<!-- =====================================================
          OTA X MODALS
     ====================================================== -->
 
@@ -2087,9 +1950,189 @@
          OTA X JAVASCRIPT
     ====================================================== -->
 
-    <script src="script.js"></script>
+
+<div id="ota-appearance-modal" class="hidden" role="dialog"
+     aria-modal="true" aria-labelledby="ota-appearance-title">
+  <div class="ota-appearance-backdrop" data-ota-close-appearance></div>
+  <div class="ota-appearance-panel">
+    <div class="ota-appearance-heading">
+      <h2 id="ota-appearance-title">Appearance</h2>
+      <button type="button" data-ota-close-appearance aria-label="Close">×</button>
+    </div>
+    <p>Choose your preferred OTA X theme.</p>
+    <button type="button" class="ota-theme-option" data-ota-theme="dark">
+      Dark <small>Black and deep red</small>
+    </button>
+    <button type="button" class="ota-theme-option" data-ota-theme="light">
+      Light <small>Light backgrounds</small>
+    </button>
+  </div>
+</div>
+
+<script src="script.js"></script>
 
 </div>
+
+
+<script>
+/* OTA_X_WORLD_COUNTRY_SELECTOR_V1 */
+(() => {
+  "use strict";
+
+  const list = document.getElementById("country-list");
+  const modal = document.getElementById("country-modal");
+
+  if (!list || !modal) return;
+
+  const search = document.getElementById("country-search-input");
+
+  function updateCountry(country, code, flag) {
+    const loginName = document.getElementById("login-country-name");
+    const regionName = document.getElementById("selected-region-name");
+    const countryCode = document.getElementById("selected-country-code");
+    const countryFlag = document.getElementById("selected-country-flag");
+
+    if (loginName) loginName.textContent = country;
+    if (regionName) regionName.textContent = country;
+    if (countryCode) countryCode.textContent = code;
+    if (countryFlag) countryFlag.textContent = flag || "🌐";
+
+    try {
+      localStorage.setItem("ota_selected_country", country);
+      localStorage.setItem("ota_selected_country_code", code);
+      localStorage.setItem("ota_selected_country_flag", flag || "🌐");
+    } catch (error) {
+      console.warn("Could not save country preference.", error);
+    }
+
+    modal.classList.add("hidden");
+  }
+
+  // Delegation also handles country buttons added after page load.
+  list.addEventListener("click", event => {
+    const button = event.target.closest(".country-option");
+    if (!button || !list.contains(button)) return;
+
+    if (button.dataset.country && button.dataset.code) {
+      updateCountry(
+        button.dataset.country,
+        button.dataset.code,
+        button.dataset.flag || "🌐"
+      );
+    }
+  });
+
+  function applyFilter() {
+    const query = (search?.value || "").trim().toLowerCase();
+
+    list.querySelectorAll(".country-option").forEach(button => {
+      const name = button.dataset.country || button.textContent || "";
+      button.hidden = !name.toLowerCase().includes(query);
+    });
+  }
+
+  search?.addEventListener("input", applyFilter);
+
+  async function loadAllCountries() {
+    try {
+      const response = await fetch(
+        "./countrykit.json",
+        { headers: { Accept: "application/json" } }
+      );
+
+      if (!response.ok) {
+        throw new Error("Country service returned HTTP " + response.status);
+      }
+
+      const countries = await response.json();
+
+      if (!Array.isArray(countries) || countries.length < 200) {
+        throw new Error("The returned country list was incomplete.");
+      }
+
+      const entries = countries
+        .map(country => {
+          const name = typeof country.name === "string" ? country.name : country.name?.common;
+          const code = country.calling_code;
+
+          if (!name || !code) {
+            return null;
+          }
+
+          // Some countries share calling codes. Use the service's first
+          // listed suffix when available; otherwise use the root code.
+
+          if (!/^\+\d+$/.test(code)) return null;
+
+          return {
+            name,
+            code,
+            flag: typeof country.flag === "string" ? country.flag : country.flag?.emoji || "🌐",
+            iso: country.cca2 || ""
+          };
+        })
+        .filter(Boolean);
+
+      const unique = new Map();
+      entries.forEach(country => {
+        const key = country.iso || country.name;
+        if (!unique.has(key)) unique.set(key, country);
+      });
+
+      const sorted = Array.from(unique.values())
+        .sort((a, b) => a.name.localeCompare(b.name));
+
+      if (sorted.length < 200) {
+        throw new Error("Not enough usable countries were returned.");
+      }
+
+      const fragment = document.createDocumentFragment();
+
+      sorted.forEach(country => {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "country-option";
+        button.dataset.country = country.name;
+        button.dataset.code = country.code;
+        button.dataset.flag = country.flag;
+        button.textContent = country.flag + " " + country.name +
+          " (" + country.code + ")";
+        fragment.appendChild(button);
+      });
+
+      // Replace the short starter list only after a complete list is ready.
+      list.replaceChildren(fragment);
+      applyFilter();
+
+      // Restore a previously selected country and its flag.
+      try {
+        const savedName = localStorage.getItem("ota_selected_country");
+        const savedCode = localStorage.getItem("ota_selected_country_code");
+        const savedFlag = localStorage.getItem("ota_selected_country_flag");
+        const saved = sorted.find(country =>
+          country.name === savedName && country.code === savedCode
+        );
+
+        if (saved) {
+          updateCountry(saved.name, saved.code, savedFlag || saved.flag);
+        }
+      } catch (error) {
+        console.warn("Could not restore country preference.", error);
+      }
+
+      console.info("OTA X country selector loaded:", sorted.length, "countries.");
+    } catch (error) {
+      // Preserve the existing 12-country list if the service is unavailable.
+      console.warn(
+        "Could not load the worldwide country list. Keeping the starter list.",
+        error
+      );
+    }
+  }
+
+  loadAllCountries();
+})();
+</script>
 
 </body>
                     </html>

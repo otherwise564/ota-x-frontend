@@ -2421,3 +2421,463 @@ textarea:focus-visible {
     outline: 2px solid #ff3030;
     outline-offset: 3px;
 }
+
+
+/* OTA X full-screen feed and navigation */
+:root { --red: #8b0000; --black: #050505; --ota-deep-red: #8b0000; }
+
+html, body {
+  width: 100%;
+  min-height: 100%;
+  margin: 0;
+}
+
+.app-container {
+  width: 100%;
+  max-width: none;
+  height: 100dvh;
+  min-height: 100dvh;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background: #050505;
+}
+
+#main-app {
+  position: relative;
+  width: 100%;
+  height: 100dvh;
+  min-height: 100dvh;
+  overflow: hidden;
+  background: #050505;
+}
+
+#feed-tab {
+  width: 100%;
+  height: 100dvh;
+  min-height: 100dvh;
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
+  scroll-snap-type: y mandatory;
+  scrollbar-width: none;
+  background: #050505;
+}
+#feed-tab::-webkit-scrollbar { display: none; }
+
+#feed-tab .post-card {
+  position: relative;
+  width: 100vw;
+  max-width: none;
+  height: 100dvh;
+  min-height: 100dvh;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  overflow: hidden;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  background: #050505;
+}
+
+#feed-tab .post-media,
+#feed-tab video.post-media,
+#feed-tab img.post-media {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  max-height: none;
+  object-fit: cover;
+  border: 0;
+  border-radius: 0;
+}
+
+.top-header-bar {
+  position: fixed;
+  z-index: 60;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.ota-bottom-nav {
+  position: fixed;
+  z-index: 100;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  width: 100%;
+  min-height: 62px;
+  padding: 6px 4px calc(6px + env(safe-area-inset-bottom, 0px));
+  box-sizing: border-box;
+  background: rgba(5,5,5,.9);
+  border-top: 1px solid rgba(255,255,255,.08);
+  backdrop-filter: blur(14px);
+}
+
+.ota-bottom-nav button {
+  display: flex;
+  min-width: 0;
+  min-height: 48px;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  padding: 3px 0;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: #aaa;
+  font: inherit;
+  font-size: 10px;
+  cursor: pointer;
+}
+.ota-bottom-nav button.is-active { color: #fff; }
+.ota-nav-icon { font-size: 24px; line-height: 1; }
+.ota-nav-create-icon {
+  display: grid;
+  place-items: center;
+  width: 30px;
+  height: 25px;
+  border-radius: 6px;
+  background: #8b0000;
+  color: white;
+  font-size: 25px;
+  line-height: 1;
+}
+
+.ota-profile-page {
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  box-sizing: border-box;
+  padding: max(18px, env(safe-area-inset-top, 0px)) 18px 100px;
+  background: #050505;
+  color: #fff;
+}
+.ota-profile-header,
+.ota-profile-identity,
+.ota-profile-actions,
+.ota-appearance-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.ota-profile-header h1 { font-size: 24px; }
+.ota-profile-header button,
+.ota-appearance-heading button {
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font-size: 25px;
+  cursor: pointer;
+}
+.ota-profile-identity { justify-content: flex-start; margin: 20px 0; }
+.ota-profile-avatar {
+  display: grid;
+  place-items: center;
+  flex: 0 0 72px;
+  width: 72px;
+  height: 72px;
+  border: 2px solid #8b0000;
+  border-radius: 50%;
+  background: #171717;
+  font-size: 22px;
+  font-weight: bold;
+}
+.ota-profile-identity h2 { overflow-wrap: anywhere; }
+.ota-profile-identity p,
+.ota-profile-posts p { color: #aaa; overflow-wrap: anywhere; }
+.ota-profile-actions button {
+  flex: 1;
+  min-height: 40px;
+  border: 1px solid #383838;
+  border-radius: 8px;
+  background: #171717;
+  color: #fff;
+}
+.ota-profile-posts { margin-top: 30px; padding-top: 16px; border-top: 1px solid #333; }
+
+#ota-appearance-modal:not(.hidden) {
+  position: fixed;
+  z-index: 300;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  box-sizing: border-box;
+}
+.ota-appearance-backdrop { position: absolute; inset: 0; background: rgba(0,0,0,.7); }
+.ota-appearance-panel {
+  position: relative;
+  z-index: 1;
+  width: min(100%, 390px);
+  padding: 22px;
+  border: 1px solid #333;
+  border-radius: 16px;
+  background: #111;
+  color: #fff;
+  box-sizing: border-box;
+}
+.ota-appearance-heading h2 { margin: 0; }
+.ota-theme-option {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+  margin-top: 12px;
+  padding: 14px;
+  border: 1px solid #333;
+  border-radius: 10px;
+  background: #1a1a1a;
+  color: inherit;
+  text-align: left;
+}
+.ota-theme-option[aria-pressed="true"] { border-color: #8b0000; }
+.ota-theme-option small { color: #aaa; }
+
+body.light-mode,
+body.light-mode .app-container,
+body.light-mode #main-app,
+body.light-mode #feed-tab,
+body.light-mode .ota-profile-page {
+  background: #f5f5f5;
+  color: #171717;
+}
+body.light-mode .ota-bottom-nav { background: rgba(255,255,255,.94); border-top-color: #ddd; }
+body.light-mode .ota-bottom-nav button { color: #555; }
+body.light-mode .ota-bottom-nav button.is-active { color: #111; }
+body.light-mode .ota-profile-avatar { background: #eee; color: #111; }
+body.light-mode .ota-profile-actions button { background: white; color: #111; border-color: #ddd; }
+body.light-mode .ota-profile-posts { border-top-color: #ddd; }
+body.light-mode .ota-appearance-panel { background: white; color: #171717; border-color: #ddd; }
+body.light-mode .ota-theme-option { background: #f6f6f6; border-color: #ddd; }
+body.light-mode .ota-theme-option small { color: #555; }
+
+
+
+/* OTA X real profile data */
+.ota-profile-stats {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(18px, 5vw, 38px);
+  width: 100%;
+  margin: 18px 0;
+  text-align: center;
+}
+.ota-profile-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 58px;
+}
+.ota-profile-stat strong {
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+.ota-profile-stat span {
+  font-size: .8rem;
+  opacity: .72;
+}
+#ota-profile-avatar img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  border-radius: inherit;
+}
+#ota-profile-api-message {
+  margin: 12px 0;
+  font-size: .9rem;
+  line-height: 1.4;
+}
+#ota-profile-api-message.ota-profile-error {
+  color: #ff6b6b;
+}
+#ota-profile-api-message.ota-profile-success {
+  color: #54d68a;
+}
+#save-profile-btn:disabled {
+  opacity: .65;
+  cursor: wait;
+}
+
+/* OTA X — immersive fullscreen feed */
+#feed-tab {
+  width: 100%;
+  height: 100dvh;
+  min-height: 100dvh;
+  overflow-x: hidden;
+  overflow-y: auto;
+  scroll-snap-type: y mandatory;
+  overscroll-behavior-y: contain;
+  background: #050505;
+}
+
+#feed-tab .post-card.ota-immersive-post {
+  position: relative;
+  isolation: isolate;
+  display: block;
+  width: 100%;
+  height: 100dvh;
+  min-height: 100dvh;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  border: 0;
+  border-radius: 0;
+  box-sizing: border-box;
+  background: #050505;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+}
+
+#feed-tab .ota-post-media {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background: #050505;
+}
+
+#feed-tab .ota-post-media video,
+#feed-tab .ota-post-media img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  object-fit: cover;
+  object-position: center;
+  border: 0;
+  border-radius: 0;
+}
+
+#feed-tab .ota-post-media video {
+  background: #050505;
+}
+
+#feed-tab .ota-immersive-post > .post-header {
+  position: absolute;
+  z-index: 2;
+  left: 16px;
+  right: 82px;
+  bottom: 105px;
+  display: flex;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  border: 0;
+}
+
+#feed-tab .ota-immersive-post .post-user {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+#feed-tab .ota-immersive-post .post-user-info {
+  min-width: 0;
+  color: #fff;
+}
+
+#feed-tab .ota-immersive-post .post-user-info strong,
+#feed-tab .ota-immersive-post .post-user-info span {
+  display: block;
+  color: #fff;
+  overflow-wrap: anywhere;
+  text-shadow: 0 1px 4px #000;
+}
+
+#feed-tab .ota-immersive-post > .post-caption {
+  position: absolute;
+  z-index: 2;
+  left: 16px;
+  right: 82px;
+  bottom: 54px;
+  margin: 0;
+  padding: 0;
+  color: #fff;
+  background: transparent;
+  overflow-wrap: anywhere;
+  text-shadow: 0 1px 4px #000;
+}
+
+#feed-tab .ota-immersive-post > .post-actions {
+  position: absolute;
+  z-index: 3;
+  right: 12px;
+  bottom: 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  border: 0;
+}
+
+#feed-tab .ota-immersive-post .post-action {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 4px;
+  color: #fff;
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  text-shadow: 0 1px 4px #000;
+}
+
+#feed-tab .ota-immersive-post .post-action i {
+  font-size: 25px;
+}
+
+#feed-tab .ota-immersive-post .post-action span {
+  color: #fff;
+  font-size: 12px;
+}
+
+#feed-tab .ota-immersive-post > .post-live-counts {
+  display: none;
+}
+
+#feed-tab .stories-section {
+  display: none !important;
+}
+
+
+/* OTA X — keep feed controls clear of fixed navigation */
+#feed-tab .ota-immersive-post > .post-header {
+  bottom: calc(118px + env(safe-area-inset-bottom, 0px));
+}
+
+#feed-tab .ota-immersive-post > .post-caption {
+  bottom: calc(72px + env(safe-area-inset-bottom, 0px));
+  max-height: 22dvh;
+  overflow-y: auto;
+}
+
+#feed-tab .ota-immersive-post > .post-actions {
+  bottom: calc(110px + env(safe-area-inset-bottom, 0px));
+}
